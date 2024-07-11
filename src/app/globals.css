@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --first: #f5f4f5;
+  --second: #35558287;
+  --third: #007ca687;
+  --fourth: #00a3b187;
+  --fifth: #0a1120;
+  --sixth: #0a1120;
+  --alert: #00a3b1;
+  --background: #1d2732;
+  --green: #07f53b;
+  --red: #f51707;
+}
+
+* ::-webkit-scrollbar {
+  display: none;
+  box-sizing: border-box;
+}
+
+html {
+  overscroll-behavior: none;
+}
+
+body {
+  overscroll-behavior: none;
+  min-height: 100vh;
+  position: fixed;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  color: #0a1120;
+  background:  #f5f4f5;
+  white-space: pre-line;
+  vertical-align: bottom;
+}
+
+button:hover {
+  background: none !important;
+}
+
+
+@media print {
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    min-width: 100%;
+    text-align: center;
+    overflow: scroll;
+    background-image: none;
+  }
+}
+
+.print-page {
+  width: 100%;
+  font-size: 0.8rem;
+  background: white;
+  color: black;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.icon-text {
+  font-size: 0.6rem;
+}
+
+.bounce-point {
+  animation-name: bounce;
+  animation-duration: 4s;
+  animation-iteration-count: 3;
+}
+@keyframes bounce {
+  from {
+    scale: 100%;
+  }
+  49% {
+    scale: 100%;
+  }
+  50% {
+    scale: 300%;
+  }
+  51% {
+    scale: 100%;
+  }
+  to {
+    scale: 100%;
+  }
+}
+
+.custom-toast {
+  animation: slideInOut 4s linear 0s 1 forwards;
+  background-color: #0a1120;
+  z-index: 50;
+  position: fixed;
+  top: 5vh;
+  right: 0px;
+  height: auto;
+  padding: 0.5rem;
+  text-align: center;
+  border-left-width: 2px;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border-color: #00a3b1;
+  color: #f5f4f5;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.custom-bike {
+  animation: slideOut 3s linear 0s 1 forwards;
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0vw);
+  }
+  80% {
+    transform: translateX(0vw);
+  }
+
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes slideInOut {
+  0% {
+    transform: translateX(100%);
+  }
+  10% {
+    transform: translateX(0%);
+  }
+  20% {
+    transform: translateX(0%);
+  }
+  90% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.linear-opacity {
+  animation: linear-opacity;
+}
+
+/*----------------tables----------------------*/
+
+input[type="number"] {
+  background-color: #0a112079;
+  border: 1px #00a3b1 solid;
+  text-align: center;
+}
+
+input[type="text"] {
+  background-color: #0a112079;
+  border: 1px #00a3b1 solid;
+  text-align: center;
+}
+
+input[type="time"] {
+  background-color: #0a112079;
+  border: 1px #00a3b1 solid;
+  text-align: center;
+}
+input[type="string"] {
+  background-color: #0a112079;
+  border: 1px #00a3b1 solid;
+  text-align: center;
+}
+input[type="email"] {
+  background-color: #0a112079;
+  border: 1px #00a3b1 solid;
+  text-align: center;
+}
+input[type="password"] {
+  background-color: #0a112079;
+  border: 1px #00a3b1 solid;
+  text-align: center;
+}
+textarea {
+  min-height: 40vh;
+  padding: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: white;
+  resize: vertical;
+}
+
+td {
+  height: 3rem;
+  border: 1px solid var(--first);
+}
+
+tr {
+  border: 1px solid var(--first);
+}
+
+#zone1 {
+  background-color: rgba(199, 200, 208, 0.7);
+}
+#zone2 {
+  background-color: rgba(64, 159, 207, 0.7);
+}
+#zone3 {
+  background-color: rgba(43, 233, 43, 0.7);
+}
+#zone35 {
+  background-color: rgba(29, 111, 43, 0.7);
+}
+#zone4 {
+  background-color: rgba(255, 255, 0, 0.7);
+}
+#zone45 {
+  background-color: rgba(240, 154, 5, 0.7);
+}
+#zone5 {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+/*----------------session overlay----------------------*/
+
+.overlay-background {
+  background: #f5f4f5;
+  
+}
+.dark-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 20;
+}
