@@ -20,7 +20,7 @@ const Activity = ({ openDay, dayIndex, activity, toggleOverlay }) => {
                     : null
                 }`}
               >
-                <div className="text-left ml-1">
+                <div className="w-full my-2 text-center sm:text-left ml-1">
                   <p className="underline underline-offset-2">
                     {singleActivity[0]}
                   </p>

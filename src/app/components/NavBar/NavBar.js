@@ -12,8 +12,8 @@ function NavBar({
   showProfil,
 }) {
   const [userName, setUserName] = useRecoilState(userNameState);
-  const activeStyle = "border rounded-sm border";
-  const nonActiveStyle = "text-alert border-t border-first border-opacity-20";
+  const activeStyle = "border rounded border";
+  const nonActiveStyle = "text-second border-t border-first border-opacity-20";
 
   const handleCalendarClick = () => {
     setShowCalendar(true);
@@ -32,7 +32,7 @@ function NavBar({
   };
 
   return (
-    <div className="btm-nav bg-alert/10 mx-auto h-12 icon-text z-40">
+    <div className="btm-nav bg-alert/10 mx-auto h-12 text-xs z-40">
       <button
         onClick={handleCalendarClick}
         className={showCalendar ? activeStyle : nonActiveStyle}
