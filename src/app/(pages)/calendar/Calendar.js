@@ -44,18 +44,8 @@ function Calendar({ showConsent }) {
         {homepagePlan && showCalendar && (
           <>
             <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-full">
-              <Image
-                className="absolute top-0 right-0 h-16 w-full z-10 object-cover object-top opacity-50"
-                src="/images/triathlonImage_3.jpg"
-                alt="sport image"
-                quality={100}
-                priority
-                width={600}
-                height={600}
-              />
-              <div className="h-16 absolute right-0 top-0 w-full bg-gradient-to-b from-transparent via-transparent via-80% to-first z-10"></div>
 
-              <div className="flex mx-auto text-center border border-sixth/50 mt-11 mb-10 px-3 py-1 z-20 rounded-md backdrop-blur-sm shadow-xl">
+              <div className="flex mx-auto text-center border border-alert/50 mt-11 mb-10 px-3 py-1 z-20 rounded-md ">
                 {homepagePlan?.name}
               </div>
               <WeekScrollButtons

@@ -8,7 +8,7 @@ const Day = ({ day, toggleDay, dayIndex, openDay, activity }) => {
 
   return (
     <div
-      className={` bg-fourth/10 py-2${
+      className={`shadow-md bg-fourth/10 py-2${
         allDaySessionsDone() ? "border-l-2 border-r-2 border-green" : ""
       }`}
     >

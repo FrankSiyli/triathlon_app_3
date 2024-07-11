@@ -18,7 +18,6 @@ module.exports = {
       third: "#007CA687",
       fourth: "#00A3B187",
       fifth: "#0a1120",
-      sixth: "#0a1120",
       alert: "#00A3B1",
       background: "#1d2732",
       green: "#07f53b",

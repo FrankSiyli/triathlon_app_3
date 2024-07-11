@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import RecoilRootWrapper from "./RecoilRootWrapper";
 import Script from "next/script";
 import { AuthProvider } from "./Providers";
+import Logo from "./components/Logo/Logo";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} font-light font-sans `}>
         <RecoilRootWrapper>
+          <Logo />
           <AuthProvider>{children}</AuthProvider>
         </RecoilRootWrapper>
         <Script
