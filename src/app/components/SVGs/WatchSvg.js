@@ -10,7 +10,7 @@ const WatchSvg = () => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-4 h-4 mr-1"
+        className="w-3 h-3 mr-1"
       >
         <path
           strokeLinecap="round"

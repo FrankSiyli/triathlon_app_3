@@ -10,7 +10,6 @@ const exerciseSchema = new Schema({
 
 const SessionSchema = new Schema({
   _id: Schema.Types.ObjectId,
-  day: { type: String },
   activity: { type: String },
   description: { type: String },
   sessionParts: [

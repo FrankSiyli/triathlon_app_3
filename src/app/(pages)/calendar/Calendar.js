@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import NavBar from "@/app/components/NavBar/NavBar";
-import { v1 as uuidv1 } from "uuid";
 import WeekScrollButtons from "./components/WeekScrollButtons";
 import Day from "./components/Day";
 import SessionOverlay from "./components/SessionOverlay/SessionOverlay";
 import { useOpenOverlay } from "./stateHooks/useOpenOverlay";
-import { useOpenDay } from "./stateHooks/useOpenDay";
 import { useCurrentWeek } from "./stateHooks/useCurrentWeek";
-import { useActivitiesByDay } from "./logicFunctions/useActivitiesByDay";
 import Activity from "./components/Activity";
 import { useRecoilState } from "recoil";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
@@ -21,14 +18,13 @@ function Calendar({ showConsent }) {
   const [showProfil, setShowProfil] = useState(false);
 
   const numberOfPlanWeeks = homepagePlan?.duration;
-  const { openOverlay, toggleOverlay, activityIndex } = useOpenOverlay();
-  const { openDay, toggleDay } = useOpenDay();
+  const { openOverlay, toggleOverlay } = useOpenOverlay();
 
   const { currentWeek, handlePreviousWeekClick, handleNextWeekClick } =
-    useCurrentWeek(homepagePlan, numberOfPlanWeeks, toggleDay);
+    useCurrentWeek(homepagePlan, numberOfPlanWeeks);
 
-  const currentWeekSessions = homepagePlan?.weeks?.[currentWeek]?.sessions;
-  const activitiesByDay = useActivitiesByDay(currentWeekSessions);
+  const currentWeekDays = homepagePlan?.weeks?.[currentWeek]?.days;
+
 
   return (
     <div className="w-full">
@@ -42,7 +38,7 @@ function Calendar({ showConsent }) {
 
         {homepagePlan && showCalendar && (
           <>
-            <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-full">
+            <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
               <div className="flex mx-auto text-center bg-alert text-first mt-11 mb-10 px-3 py-1 z-20 shadow-lg rounded-sm">
                 {homepagePlan?.name}
               </div>
@@ -53,51 +49,19 @@ function Calendar({ showConsent }) {
                 handleNextWeekClick={handleNextWeekClick}
               />
 
-              <div className="flex flex-col sm:flex-row w-full mx-3">
-                {activitiesByDay &&
-                  activitiesByDay.map(([day, activity], dayIndex) => (
-                    <div key={`${day}-${dayIndex}`} className="flex flex-col w-full">
+              <div className="flex flex-col sm:flex-row w-full">
+                {currentWeekDays &&
+                  Object.entries(currentWeekDays).map(([day, activities]) => (
+                    <div key={day} className="flex flex-col w-full">
                       <Day
                         day={day}
-                        openDay={openDay}
-                        toggleDay={toggleDay}
-                        dayIndex={dayIndex}
-                        activity={activity}
-                      />
-
-                      <Activity
-                        openDay={openDay}
-                        dayIndex={dayIndex}
-                        activity={activity}
-                        toggleOverlay={toggleOverlay}
+                        dayIndex={day}
+                        activities={activities}
                       />
                     </div>
                   ))}
               </div>
 
-              {activitiesByDay &&
-                activitiesByDay.map(([day, activity], dayIndex) => (
-                  <div key={`overlay-${dayIndex}`}>
-                    {openDay === dayIndex &&
-                      activity.map((singleActivity, activityIndex) => (
-                        <SessionOverlay
-                          key={`${dayIndex}-${activityIndex}`}
-                          singleActivity={singleActivity}
-                          dayIndex={dayIndex}
-                          activityIndex={activityIndex}
-                          openOverlay={openOverlay}
-                          toggleOverlay={toggleOverlay}
-                          homepagePlan={homepagePlan}
-                          currentWeek={currentWeek}
-                          openDay={openDay}
-                          activitiesByDay={activitiesByDay}
-                          initialOpen={openOverlay.includes(
-                            dayIndex * 1000 + activityIndex
-                          )}
-                        />
-                      ))}
-                  </div>
-                ))}
               <span className="mb-40"></span>
             </div>
           </>
