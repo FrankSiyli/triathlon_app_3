@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import logo from "../../public/images/logoSmall.png";
+import logo from "../../public/images/logoSmallBlack.png";
 import "./globals.css";
 import Image from "next/image";
 import { homepagePlanState } from "./recoil/atoms/plans/homepagePlanState";
@@ -132,9 +132,9 @@ export default function Home() {
       return null;
     }
     return (
-      <div className=" fixed mx-auto z-50 bottom-0 left-0 right-0 flex flex-col gap-3 items-center text-center backdrop-blur-lg px-2 py-2 border border-alert rounded-md max-w-2xl shadow-xl">
-        <p className="text-alert mt-5">Einfach trainieren mit der Siyli-App</p>
-        <p className="text-alert">
+      <div className="fixed mx-auto z-50 bottom-0 left-0 right-0 flex flex-col gap-3 items-center text-center backdrop-blur-lg px-2 py-2 border border-alert rounded-md max-w-2xl shadow-xl">
+        <p className="mt-5">Einfach trainieren mit der Siyli-App</p>
+        <p >
           Finde deinen Trainingsplan und erreiche deine Ziele 🚀
         </p>
         <Image
@@ -153,7 +153,7 @@ export default function Home() {
           Zur Datenschutzrichtlinie
         </span>
         <button
-          className="btn btn-sm btn-outline border border-alert hover:text-alert text-first m-3 py-2 px-6"
+          className="btn btn-sm btn-outline border border-alert hover:text-alert text-fifth m-3 py-2 px-6 shadow-xl"
           onClick={() => acceptCookie()}
         >
           ok

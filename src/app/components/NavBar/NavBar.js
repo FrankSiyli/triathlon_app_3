@@ -12,8 +12,8 @@ function NavBar({
   showProfil,
 }) {
   const [userName, setUserName] = useRecoilState(userNameState);
-  const activeStyle = "text-fifth border-t border-t-alert";
-  const nonActiveStyle = "text-fifth/40 border-t border-t-alert/50";
+  const activeStyle = "text-first border-t border-t-first";
+  const nonActiveStyle = "text-fifth/40";
 
   const handleCalendarClick = () => {
     setShowCalendar(true);
@@ -32,7 +32,7 @@ function NavBar({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 w-full flex justify-between h-12 text-xs  bg-alert/20 z-40">
+    <div className="fixed bottom-0 left-0 w-full flex justify-between h-12 text-xs  bg-alert z-40">
       <button
         onClick={handleCalendarClick}
         className={`flex flex-col items-center justify-center w-1/3  ${showCalendar ? activeStyle : nonActiveStyle}`}
@@ -51,7 +51,7 @@ function NavBar({
             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
           />
         </svg>
-        <span className="text-fifth">Kalender</span>
+        <span className="text-first">Kalender</span>
       </button>
       <button
         onClick={handlePlansClick}
@@ -71,7 +71,7 @@ function NavBar({
             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
           />
         </svg>
-        <span className="text-fifth">Pläne</span>
+        <span className="text-first">Pläne</span>
       </button>
       <button
         onClick={handleProfilClick}
@@ -99,7 +99,7 @@ function NavBar({
         {userName !== "" ? (
           <span className="btm-nav-label">{userName}</span>
         ) : (
-          <span className="text-fifth">Profil</span>
+          <span className="text-first">Profil</span>
         )}
       </button>
     </div>

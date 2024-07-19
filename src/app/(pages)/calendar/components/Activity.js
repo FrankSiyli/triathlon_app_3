@@ -4,14 +4,14 @@ const Activity = ({ openDay, dayIndex, activity, toggleOverlay }) => {
   return (
     <>
       <div className="flex flex-col w-full max-w-xl rounded-md">
-        {
-          activity.map((singleActivity, activityIndex) => (
+      {activity.map((singleActivity, activityIndex) => (
             <button
               key={activityIndex}
               onClick={() => {
+                console.log("Clicked Activity Index:", activityIndex); 
+                console.log("Clicked dayIndex Index:", dayIndex); 
                 toggleOverlay(dayIndex, activityIndex);
               }}
-              className=""
             >
               <div
                 className={`hover:bg-third/10 relative flex justify-between shadow-sm items-center rounded-sm ${

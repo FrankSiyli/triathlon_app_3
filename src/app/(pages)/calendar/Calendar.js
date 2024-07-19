@@ -13,7 +13,6 @@ import { useRecoilState } from "recoil";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import PlansView from "../plans/PlansView";
 import ProfilView from "../profil/ProfilView";
-import Image from "next/image";
 
 function Calendar({ showConsent }) {
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
@@ -44,8 +43,7 @@ function Calendar({ showConsent }) {
         {homepagePlan && showCalendar && (
           <>
             <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-full">
-
-              <div className="flex mx-auto text-center border border-alert/40 mt-11 mb-10 px-3 py-1 z-20 rounded-md ">
+              <div className="flex mx-auto text-center bg-alert text-first mt-11 mb-10 px-3 py-1 z-20 shadow-lg rounded-sm">
                 {homepagePlan?.name}
               </div>
               <WeekScrollButtons
@@ -58,33 +56,32 @@ function Calendar({ showConsent }) {
               <div className="flex flex-col sm:flex-row w-full mx-3">
                 {activitiesByDay &&
                   activitiesByDay.map(([day, activity], dayIndex) => (
-                    <>
-                      <div key={uuidv1()} className="flex flex-col w-full">
-                        <Day
-                          day={day}
-                          openDay={openDay}
-                          toggleDay={toggleDay}
-                          dayIndex={dayIndex}
-                          activity={activity}
-                        />
+                    <div key={`${day}-${dayIndex}`} className="flex flex-col w-full">
+                      <Day
+                        day={day}
+                        openDay={openDay}
+                        toggleDay={toggleDay}
+                        dayIndex={dayIndex}
+                        activity={activity}
+                      />
 
-                        <Activity
-                          dayIndex={dayIndex}
-                          activity={activity}
-                          toggleOverlay={toggleOverlay}
-                        />
-                      </div>
-                    </>
+                      <Activity
+                        openDay={openDay}
+                        dayIndex={dayIndex}
+                        activity={activity}
+                        toggleOverlay={toggleOverlay}
+                      />
+                    </div>
                   ))}
               </div>
 
               {activitiesByDay &&
                 activitiesByDay.map(([day, activity], dayIndex) => (
-                  <div key={dayIndex}>
+                  <div key={`overlay-${dayIndex}`}>
                     {openDay === dayIndex &&
                       activity.map((singleActivity, activityIndex) => (
                         <SessionOverlay
-                          key={activityIndex}
+                          key={`${dayIndex}-${activityIndex}`}
                           singleActivity={singleActivity}
                           dayIndex={dayIndex}
                           activityIndex={activityIndex}
