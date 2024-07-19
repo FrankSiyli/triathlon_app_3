@@ -10,7 +10,6 @@ import { savedWattState } from "@/app/recoil/atoms/user/savedWattState";
 const Sessions = ({
   singleActivity,
   openOverlay,
-  dayIndex,
   activityIndex,
   wattIsActive,
 }) => {
@@ -22,138 +21,122 @@ const Sessions = ({
   const [openMainImage, setOpenMainImage] = useState(null);
   const [openCoolDownImage, setOpenCoolDownImage] = useState(null);
 
-  const renderSection = (
-    sectionData,
-    sectionType,
-    openImageState,
-    setOpenImageState
-  ) => {
-    if (
-      sectionType !== "Hauptteil" &&
-      sectionData[0].exercises[0].name === ""
-    ) {
-      return null;
-    }
-    return (
-      <div>
-        <p className="text-center text-alert p-2 ">{sectionType}</p>
-        {sectionData.map((section, sectionIndex) => (
-          <div key={sectionIndex}>
-            <div className="relative ml-1 border-l border-first p-1 my-2 text-sm">
-              {section.multiplier > 1 && (
-                <p className="absolute top-0 left-2 text-first text-xl">
-                  {section.multiplier} x{" "}
-                </p>
-              )}
-              {section.exercises.map((exercise, exerciseIndex) => (
-                <div
-                  key={exerciseIndex}
-                  className={`flex flex-row justify-between mb-2  ${
-                    exerciseIndex === 0 && section.multiplier > 1 ? "mt-10" : ""
-                  }`}
-                >
-                  <div className="flex gap-2 ml-2">
-                    {exercise.distance > 0 ? (
-                      <p>{exercise.distance}m</p>
-                    ) : exercise.duration > 0 ? (
-                      <p>{formatTime(exercise.duration)}</p>
-                    ) : null}
-                    <p>
-                      {getZones(
-                        exercise,
-                        savedSwimTime,
-                        savedHrMax,
-                        savedWattValue,
-                        wattIsActive
-                      )}
-                    </p>
-                  </div>
-                  <div
-                    className={`mx-3 ${
-                      exercise.duration === 0 && exercise.distance === 0
-                        ? "w-full"
-                        : "w-1/2 text-right"
-                    }`}
-                  >
-                    {exercise.name.trim() !== "" && (
-                      <button
-                        className={` text-sm rounded-md mr-1 cursor-default ${
-                          exercise.imageLink
-                            ? "underline decoration-first decoration-2 underline-offset-4 cursor-pointer "
-                            : ""
-                        }`}
-                        onClick={() => {
-                          if (exercise.imageLink) {
-                            setOpenImageState(
-                              exerciseIndex === openImageState
-                                ? null
-                                : exerciseIndex
-                            );
-                          }
-                        }}
-                      >
-                        <p
-                          className={`${
-                            exercise.duration === 0 && exercise.distance === 0
-                              ? ""
-                              : "text-right"
-                          }`}
-                        >
-                          {exercise.name}
-                        </p>
-                      </button>
-                    )}
-                    {exerciseIndex === openImageState && (
-                      <div className="flex flex-col items-center bg-second m-3 rounded-md">
-                        <Image
-                          width={200}
-                          height={200}
-                          src={`/images/yoga_images/${exercise.imageLink}.png`}
-                          alt="yoga pose"
-                          className="my-5"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+  const renderExercises = (exercises, openImageState, setOpenImageState) => {
+    if (!exercises || exercises.length === 0) return null;
+
+    return exercises.map((exercise, exerciseIndex) => (
+      <div
+        key={exerciseIndex}
+        className={`flex flex-row justify-between mb-2 ${
+          exerciseIndex === 0 && exercises.length > 1 ? "mt-10" : ""
+        }`}
+      >
+        <div className="flex gap-2 ml-2">
+          {exercise.distance > 0 ? (
+            <p>{exercise.distance}m</p>
+          ) : exercise.duration > 0 ? (
+            <p>{formatTime(exercise.duration)}</p>
+          ) : null}
+          <p>
+            {getZones(
+              exercise,
+              savedSwimTime,
+              savedHrMax,
+              savedWattValue,
+              wattIsActive
+            )}
+          </p>
+        </div>
+        <div
+          className={`mx-3 ${
+            exercise.duration === 0 && exercise.distance === 0
+              ? "w-full"
+              : "w-1/2 text-right"
+          }`}
+        >
+          {exercise.name.trim() !== "" && (
+            <button
+              className={`text-sm rounded-md mr-1 cursor-default ${
+                exercise.imageLink
+                  ? "underline decoration-first decoration-2 underline-offset-4 cursor-pointer"
+                  : ""
+              }`}
+              onClick={() => {
+                if (exercise.imageLink) {
+                  setOpenImageState(
+                    exerciseIndex === openImageState
+                      ? null
+                      : exerciseIndex
+                  );
+                }
+              }}
+            >
+              <p
+                className={`${
+                  exercise.duration === 0 && exercise.distance === 0
+                    ? ""
+                    : "text-right"
+                }`}
+              >
+                {exercise.name}
+              </p>
+            </button>
+          )}
+          {exerciseIndex === openImageState && exercise.imageLink && (
+            <div className="flex flex-col items-center bg-second m-3 rounded-md">
+              <Image
+                width={200}
+                height={200}
+                src={`/images/yoga_images/${exercise.imageLink}.png`}
+                alt={`Yoga pose: ${exercise.name}`}
+                className="my-5"
+              />
             </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
-    );
+    ));
   };
+
+  if (!Array.isArray(singleActivity.sessionParts)) return null;
 
   return (
     <>
-      {Array.isArray(singleActivity[2]) &&
-        singleActivity[2].map(
-          (sessionSections) =>
-            openOverlay.includes(dayIndex * 1000 + activityIndex) && (
-              <div key={activityIndex}>
-                <div>
-                  {renderSection(
-                    sessionSections.warmUp,
-                    "Warm Up",
-                    openWarmUpImage,
-                    setOpenWarmUpImage
-                  )}
-                  {renderSection(
-                    sessionSections.main,
-                    "Hauptteil",
-                    openMainImage,
-                    setOpenMainImage
-                  )}
-                  {renderSection(
-                    sessionSections.coolDown,
-                    "Cool Down",
-                    openCoolDownImage,
-                    setOpenCoolDownImage
-                  )}
-                </div>
+      {openOverlay.includes(activityIndex) &&
+        singleActivity.sessionParts.map((sessionSections, index) => (
+          <div key={index}>
+            {sessionSections.warmUp && sessionSections.warmUp.length > 0 && (
+              <div>
+                <p className="text-center text-alert p-2">Warm Up</p>
+                {renderExercises(
+                  sessionSections.warmUp[0]?.exercises,
+                  openWarmUpImage,
+                  setOpenWarmUpImage
+                )}
               </div>
-            )
-        )}
+            )}
+            {sessionSections.main && sessionSections.main.length > 0 && (
+              <div>
+                <p className="text-center text-alert p-2">Hauptteil</p>
+                {renderExercises(
+                  sessionSections.main[0]?.exercises,
+                  openMainImage,
+                  setOpenMainImage
+                )}
+              </div>
+            )}
+            {sessionSections.coolDown && sessionSections.coolDown.length > 0 && (
+              <div>
+                <p className="text-center text-alert p-2">Cool Down</p>
+                {renderExercises(
+                  sessionSections.coolDown[0]?.exercises,
+                  openCoolDownImage,
+                  setOpenCoolDownImage
+                )}
+              </div>
+            )}
+          </div>
+       ) )}
     </>
   );
 };

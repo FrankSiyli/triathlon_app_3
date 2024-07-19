@@ -29,6 +29,10 @@ const SessionOverlay = ({
   currentWeek,
   initialOpen = false,
 }) => {
+
+
+
+
   const [loggedInUserLastLoadedPlan, setLoggedInUserLastLoadedPlan] =
     useRecoilState(loggedInUserLastLoadedPlanState);
   const [isLoading, setIsLoading] = useState(false);
@@ -125,19 +129,19 @@ const SessionOverlay = ({
                       <span className="loading loading-ring loading-xs"></span>
                     </div>
                   )}
-                  {!isLoading && !singleActivity[3] && (
+                  {!isLoading && !singleActivity.isDone && (
                     <div className="border border-alert rounded-md">
                       <CheckSvg />
                     </div>
                   )}
-                  {!isLoading && singleActivity[3] && (
+                  {!isLoading && singleActivity.isDone && (
                     <div className="border border-alert rounded-md ">
                       <UncheckSvg />
                     </div>
                   )}
                 </button>
 
-                {singleActivity[0] === "Rad" ? (
+                {singleActivity.activity === "Rad" ? (
                   <button
                     onClick={handleWattClick}
                     className="flex justify-center items-center text-sm m-3  border border-alert rounded-md"
@@ -157,8 +161,8 @@ const SessionOverlay = ({
                 ) : null}
               </div>
               <div className="w-full h-auto text-right p-1 mr-1">
-                <p>{singleActivity[0]}</p>
-                <p className="my-1">{singleActivity[1]}</p>
+                <p>{singleActivity.activity}</p>
+                <p className="my-1">{singleActivity.description}</p>
                 {totalDistance > 0 ? (
                   <div className="flex justify-end mt-5 -mb-2">
                     <div className="flex items-center">
@@ -180,7 +184,7 @@ const SessionOverlay = ({
             </div>
             <hr
               className={`m-3  ${
-                singleActivity[3] ? "text-green" : "opacity-20"
+                singleActivity.isDone ? "text-green" : "opacity-5"
               }`}
             ></hr>
             <Sessions

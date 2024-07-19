@@ -13,7 +13,6 @@ const Day = ({ day, activities }) => {
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
 
 
-console.log("activities", activities)
 
   const allDaySessionsDone = () => {
     if (activities.length === 0) return false;
