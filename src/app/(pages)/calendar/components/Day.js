@@ -3,8 +3,18 @@ import calculateTotalDistance from "../logicFunctions/totalDistanceFunction";
 import calculateTotalDuration from "../logicFunctions/totalDurationFunction";
 import { formatTime } from "@/app/helperFunctions/formatTime";
 import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
+import { useOpenOverlay } from "../stateHooks/useOpenOverlay";
+import SessionOverlay from "./SessionOverlay/SessionOverlay";
+import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
+import { useRecoilState } from "recoil";
 
 const Day = ({ day, activities }) => {
+  const { openOverlay, toggleOverlay } = useOpenOverlay();
+  const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
+
+
+console.log("activities", activities)
+
   const allDaySessionsDone = () => {
     if (activities.length === 0) return false;
 
@@ -44,7 +54,7 @@ const Day = ({ day, activities }) => {
         }`}
       >
         <div className="ml-1">
-          <div className="font-bold">{day}</div>
+          <div className="font-bold text-fifth/80">{day}</div>
         </div>
       </div>
 
@@ -52,14 +62,16 @@ const Day = ({ day, activities }) => {
         {activities.length === 0 ? (
           null
         ) : (
-          activities.map((activity, index) => {
+          activities.map((activity) => {
             const totalDistance = calculateTotalDistance(activity);
             const totalDuration = calculateTotalDuration(activity);
+            const isOpen = openOverlay === activity._id.$oid;
 
             return (
               <div
-                key={index}
-                className={`ml-2 shadow my-1 `}
+                key={activity._id.$oid}
+                className={`ml-2 shadow my-1 cursor-pointer`}
+                onClick={() => toggleOverlay(activity._id.$oid)}
               >
                 <p className={`text-s my-1 py-1 ${getActivityBgColor(activity.activity)}`}>{activity.activity}</p>
                 <p>{activity.description}</p>
@@ -79,6 +91,19 @@ const Day = ({ day, activities }) => {
                     </div>
                   )}
                 </div>
+
+                {isOpen && (
+                  <SessionOverlay
+                    sessionSections={activity.sessionParts}
+                    singleActivity={activity}
+                    activityIndex={activities.id}
+                    openOverlay={openOverlay}
+                    toggleOverlay={toggleOverlay}
+                    homepagePlan={homepagePlan}
+                 //   currentWeek={currentWeek}
+                    initialOpen={isOpen}
+                  />
+                )}
               </div>
             );
           })

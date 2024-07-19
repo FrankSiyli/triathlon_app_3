@@ -1,14 +1,13 @@
 import { useState } from "react";
 
 export const useOpenOverlay = () => {
-  const [openOverlay, setOpenOverlay] = useState([]);
+  const [openOverlay, setOpenOverlay] = useState(null);
 
-  const toggleOverlay = (dayIndex, activityIndex) => {
-    const clickedIndex = dayIndex * 1000 + activityIndex;
-    if (openOverlay.includes(clickedIndex)) {
-      setOpenOverlay(openOverlay.filter((item) => item !== clickedIndex));
+  const toggleOverlay = (activityId) => {
+    if (openOverlay === activityId) {
+      setOpenOverlay(null);
     } else {
-      setOpenOverlay([...openOverlay, clickedIndex]);
+      setOpenOverlay(activityId);
     }
   };
 

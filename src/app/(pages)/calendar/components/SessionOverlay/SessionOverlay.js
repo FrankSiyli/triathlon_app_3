@@ -22,7 +22,6 @@ import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
 const SessionOverlay = ({
   sessionSections,
   singleActivity,
-  dayIndex,
   activityIndex,
   openOverlay,
   toggleOverlay,
@@ -111,7 +110,7 @@ const SessionOverlay = ({
             <div className="flex">
               <div className="flex flex-col items-start">
                 <button
-                  onClick={() => toggleOverlay(dayIndex, activityIndex)}
+                  onClick={() => toggleOverlay( activityIndex)}
                   className=" btn btn-ghost btn-sm  m-3 border border-transparent text-first "
                 >
                   <ArrowLeftSvg />
@@ -187,7 +186,6 @@ const SessionOverlay = ({
             <Sessions
               singleActivity={singleActivity}
               openOverlay={openOverlay}
-              dayIndex={dayIndex}
               activityIndex={activityIndex}
               wattIsActive={wattIsActive}
             />
@@ -200,7 +198,7 @@ const SessionOverlay = ({
                 Druckversion
               </button>
               <button
-                onClick={() => toggleOverlay(dayIndex, activityIndex)}
+                onClick={() => toggleOverlay( activityIndex)}
                 className="border border-alert text-alert rounded-md mb-20"
               >
                 <UncheckSvg />
@@ -211,7 +209,7 @@ const SessionOverlay = ({
           <>
             <div className="flex">
               <button
-                onClick={() => toggleOverlay(dayIndex, activityIndex)}
+                onClick={() => toggleOverlay( activityIndex)}
                 className="focus:outline-none top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent text-first "
               >
                 <ArrowLeftSvg />
@@ -221,7 +219,6 @@ const SessionOverlay = ({
               ref={printComponentRef}
               singleActivity={singleActivity}
               openOverlay={openOverlay}
-              dayIndex={dayIndex}
               activityIndex={activityIndex}
               totalDistance={totalDistance}
               totalDuration={totalDuration}
@@ -243,7 +240,7 @@ const SessionOverlay = ({
                 </button>
               </div>
               <button
-                onClick={() => toggleOverlay(dayIndex, activityIndex)}
+                onClick={() => toggleOverlay( activityIndex)}
                 className="border border-alert text-alert rounded-md mb-20"
               >
                 <UncheckSvg />
