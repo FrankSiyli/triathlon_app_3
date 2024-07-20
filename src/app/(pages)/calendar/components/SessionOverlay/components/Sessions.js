@@ -6,12 +6,13 @@ import getZones from "@/app/helperFunctions/getZones";
 import { savedHrMaxState } from "@/app/recoil/atoms/user/savedHrMaxState";
 import { savedSwimTimeState } from "@/app/recoil/atoms/user/savedSwimTimeState";
 import { savedWattState } from "@/app/recoil/atoms/user/savedWattState";
+import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 
 const Sessions = ({
   activity,
-  openOverlay,
-  activityIndex,
   wattIsActive,
+  handleViewClick,
+  toggleOverlay,
 }) => {
   const savedSwimTime = useRecoilValue(savedSwimTimeState);
   const savedHrMax = useRecoilValue(savedHrMaxState);
@@ -136,7 +137,22 @@ const Sessions = ({
               </div>
             )}
           </div>
-       ) )}
+       ))}
+       <hr className="m-3 opacity-20 "></hr>
+            <div className="flex flex-col  items-center">
+              <button
+                className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert shadow text-fifth/70"
+                onClick={handleViewClick}
+              >
+                Druckversion
+              </button>
+              <button
+                onClick={() => toggleOverlay(activity.id)}
+                className="border border-alert shadow rounded-md mb-20"
+              >
+                <UncheckSvg />
+              </button>
+            </div>
     </>
   );
 };

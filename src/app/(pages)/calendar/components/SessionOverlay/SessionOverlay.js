@@ -1,7 +1,6 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import PrintSessions from "./components/PrintSessions";
-import { useReactToPrint } from "react-to-print";
 import Sessions from "./components/Sessions";
 import calculateTotalDistance from "../../logicFunctions/totalDistanceFunction";
 import calculateTotalDuration from "../../logicFunctions/totalDurationFunction";
@@ -13,7 +12,6 @@ import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import Alert from "@/app/components/Alerts/Alert";
 import { loggedInUserLastLoadedPlanState } from "@/app/recoil/atoms/user/loggedInUserLastLoadedPlanState";
 import { wattIsActiveState } from "@/app/recoil/atoms/wattIsActiveState";
-import ArrowLeftSvg from "@/app/components/SVGs/arrows/ArrowLeftSvg";
 import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 import CheckSvg from "@/app/components/SVGs/CheckSvg";
 import WatchSvg from "@/app/components/SVGs/WatchSvg";
@@ -22,33 +20,14 @@ import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
 const SessionOverlay = ({
   sessionSections,
   activity,
-  activityIndex,
   openOverlay,
   toggleOverlay,
   homepagePlan,
   currentWeek,
   initialOpen = false,
 }) => {
-  console.log("overlay activity", activity);
 
-  const getActivityBorderColor = (activityType) => {
-    switch (activityType) {
-      case "Laufen":
-        return "border-orange/30";
-      case "Schwimmen":
-        return "border-blue/30";
-      case "Yoga":
-        return "border-green/30";
-      case "Rad":
-        return "border-third/30";
-      case "Sonstiges":
-        return "border-grey/30";
-      case "Stabi":
-        return "border-alert/30";
-      default:
-        return "border-grey/30";
-    }
-  };
+ 
 
   const [loggedInUserLastLoadedPlan, setLoggedInUserLastLoadedPlan] =
     useRecoilState(loggedInUserLastLoadedPlanState);
@@ -58,17 +37,18 @@ const SessionOverlay = ({
   const [wattIsActive, setWattIsActive] = useRecoilState(wattIsActiveState);
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
+  
+
+  const totalDistance = calculateTotalDistance(activity, sessionSections);
+  const totalDuration = calculateTotalDuration(activity, sessionSections);
 
   const handleViewClick = () => {
     setOverlayView(!overlayView);
   };
-  const printComponentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => printComponentRef.current,
-  });
 
-  const totalDistance = calculateTotalDistance(activity, sessionSections);
-  const totalDuration = calculateTotalDuration(activity, sessionSections);
+  const handleWattClick = () => {
+    setWattIsActive(!wattIsActive);
+  };
 
   const handleIsDoneClick = async () => {
     const session = await getSession();
@@ -114,15 +94,31 @@ const SessionOverlay = ({
     setIsLoading(false);
   };
 
-  const handleWattClick = () => {
-    setWattIsActive(!wattIsActive);
+  const getActivityBorderColor = (activityType) => {
+    switch (activityType) {
+      case "Laufen":
+        return "border-orange/30";
+      case "Schwimmen":
+        return "border-blue/30";
+      case "Yoga":
+        return "border-green/30";
+      case "Rad":
+        return "border-third/30";
+      case "Sonstiges":
+        return "border-grey/30";
+      case "Stabi":
+        return "border-alert/30";
+      default:
+        return "border-grey/30";
+    }
   };
+
 
   return (
     <div>
       {initialOpen && (
         <div
-          onClick={() => toggleOverlay(activityIndex)}
+          onClick={() => toggleOverlay(activity.id)}
           className="fixed top-0 left-0 w-screen h-screen bg-background/70 z-20"
         ></div>
       )}
@@ -136,7 +132,7 @@ const SessionOverlay = ({
             <div className="flex">
               <div className="flex flex-col items-start">
                 <button
-                  onClick={() => toggleOverlay(activityIndex)}
+                  onClick={() => toggleOverlay(activity.id)}
                   className="m-3 border border-alert rounded-md shadow hover:text-alert"
                 >
                   <UncheckSvg />
@@ -144,7 +140,7 @@ const SessionOverlay = ({
 
                 <button
                   onClick={handleIsDoneClick}
-                  className="btn btn-ghost btn-sm border border-transparent text-first "
+                  className="btn btn-ghost btn-sm border border-transparent "
                 >
                   {isLoading && (
                     <div className="flex justify-center items-center border border-alert rounded-md w-7 h-7">
@@ -207,70 +203,29 @@ const SessionOverlay = ({
             <hr
               className={`m-3  ${activity.isDone ? "text-green" : "opacity-5"}`}
             ></hr>
+
+
             <Sessions
               activity={activity}
               openOverlay={openOverlay}
-              activityIndex={activityIndex}
               wattIsActive={wattIsActive}
+              handleViewClick={handleViewClick}
+              toggleOverlay={toggleOverlay}
             />
-            <hr className="m-3 opacity-20 "></hr>
-            <div className="flex flex-col  items-center">
-              <button
-                className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert shadow text-fifth/70"
-                onClick={handleViewClick}
-              >
-                Druckversion
-              </button>
-              <button
-                onClick={() => toggleOverlay(activityIndex)}
-                className="border border-alert shadow rounded-md mb-20"
-              >
-                <UncheckSvg />
-              </button>
-            </div>
+
+
+            
           </>
-        ) : (
-          <>
-            <div className="flex">
-              <button
-                onClick={() => toggleOverlay(activityIndex)}
-                className="focus:outline-none top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent"
-              >
-                <ArrowLeftSvg />
-              </button>{" "}
-            </div>
+        ) : (      
             <PrintSessions
-              ref={printComponentRef}
               activity={activity}
               openOverlay={openOverlay}
-              activityIndex={activityIndex}
               totalDistance={totalDistance}
               totalDuration={totalDuration}
               wattIsActive={wattIsActive}
-            />
-            <div className="flex flex-col items-center gap-10">
-              <div className="flex flex-row gap-3">
-                <button
-                  className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert text-first"
-                  onClick={handleViewClick}
-                >
-                  Farbversion
-                </button>
-                <button
-                  onClick={handlePrint}
-                  className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert text-first"
-                >
-                  drucken
-                </button>
-              </div>
-              <button
-                onClick={() => toggleOverlay(activityIndex)}
-                className="border border-alert rounded-md shadow hover:text-alert mb-20"
-              >
-                <UncheckSvg />
-              </button>
-            </div>
-          </>
+              handleViewClick={handleViewClick}
+              toggleOverlay={toggleOverlay}
+            /> 
         )}
         <p className="mb-16">Viel Spaß beim Training 🙂</p>
         {error && showAlert && (

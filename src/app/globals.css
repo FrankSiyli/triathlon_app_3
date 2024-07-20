@@ -45,7 +45,7 @@ body {
   -webkit-overflow-scrolling: touch;
   color: #1e1f22;
   background: rgb(0,163,177);
-  background: linear-gradient(150deg, #dfecee 0%, rgba(245,244,245,1) 60%);  white-space: pre-line;
+  background: linear-gradient(150deg, #dfecee 0%, rgba(245,244,245,1) 40%);  white-space: pre-line;
   vertical-align: bottom;
 }
 
