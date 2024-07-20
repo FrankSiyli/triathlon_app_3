@@ -8,7 +8,7 @@ import SessionOverlay from "./SessionOverlay/SessionOverlay";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import { useRecoilState } from "recoil";
 
-const Day = ({ day, activities }) => {
+const Day = ({ day, activities, dayIndex }) => {
   const { openOverlay, toggleOverlay } = useOpenOverlay();
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
   const allDaySessionsDone = () => {
@@ -60,7 +60,7 @@ const Day = ({ day, activities }) => {
       <div>
         {activities.length === 0
           ? null
-          : activities?.map((activity) => {
+          : activities?.map((activity, activityIndex) => {
               const totalDistance = calculateTotalDistance(activity);
               const totalDuration = calculateTotalDuration(activity);
               const isOpen = openOverlay === activity._id.$oid;
@@ -82,7 +82,7 @@ const Day = ({ day, activities }) => {
                     </div>
                     <p className="ml-1 text-s">{activity.description}</p>
 
-                    <div className="text-xs my-2">
+                    <div className="text-xs ml-1 my-2">
                       {totalDistance > 0 && (
                         <div className="flex items-center">
                           <DistanceSvg />
@@ -103,7 +103,7 @@ const Day = ({ day, activities }) => {
                     <SessionOverlay
                       sessionSections={activity.sessionParts}
                       activity={activity}
-                      activityIndex={activities.id}
+                      activityIndex={activityIndex}
                       openOverlay={openOverlay}
                       toggleOverlay={toggleOverlay}
                       homepagePlan={homepagePlan}

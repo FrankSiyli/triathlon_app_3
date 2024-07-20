@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import NavBar from "@/app/components/NavBar/NavBar";
 import WeekScrollButtons from "./components/WeekScrollButtons";
 import Day from "./components/Day";
-import SessionOverlay from "./components/SessionOverlay/SessionOverlay";
-import { useOpenOverlay } from "./stateHooks/useOpenOverlay";
 import { useCurrentWeek } from "./stateHooks/useCurrentWeek";
-import Activity from "./components/Activity";
 import { useRecoilState } from "recoil";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import PlansView from "../plans/PlansView";
@@ -18,7 +15,6 @@ function Calendar({ showConsent }) {
   const [showProfil, setShowProfil] = useState(false);
 
   const numberOfPlanWeeks = homepagePlan?.duration;
-  const { openOverlay, toggleOverlay } = useOpenOverlay();
 
   const { currentWeek, handlePreviousWeekClick, handleNextWeekClick } =
     useCurrentWeek(homepagePlan, numberOfPlanWeeks);
@@ -51,11 +47,11 @@ function Calendar({ showConsent }) {
 
               <div className="flex flex-col sm:flex-row w-full">
                 {currentWeekDays &&
-                  Object.entries(currentWeekDays).map(([day, activities]) => (
+                  Object.entries(currentWeekDays).map(([day, activities], dayIndex) => (
                     <div key={day} className="flex flex-col w-full">
                       <Day
                         day={day}
-                        dayIndex={day}
+                        dayIndex={dayIndex}
                         activities={activities}
                       />
                     </div>

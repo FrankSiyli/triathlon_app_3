@@ -13,6 +13,7 @@ import { loggedInUserLastLoadedPlanState } from "@/app/recoil/atoms/user/loggedI
 import CheckSvg from "@/app/components/SVGs/CheckSvg";
 import WatchSvg from "@/app/components/SVGs/WatchSvg";
 import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
+import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 
 const Sessions = ({
   activity,
@@ -24,6 +25,7 @@ const Sessions = ({
   setError,
   setShowAlert,
 }) => {
+  const [, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [isLoading, setIsLoading] = useState(false);
   const savedSwimTime = useRecoilValue(savedSwimTimeState);
   const savedHrMax = useRecoilValue(savedHrMaxState);
@@ -87,76 +89,76 @@ const Sessions = ({
     if (!exercises || exercises.length === 0) return null;
 
     return exercises.map((exercise, exerciseIndex) => (
-      <>
+      <div
+        key={exerciseIndex}
+        className={`flex flex-row justify-between mb-2 ${
+          exerciseIndex === 0 && exercises.length > 0 ? "mt-2" : ""
+        }`}
+      >
+        <div className="flex gap-2 ml-2 text-xs">
+          {exercise.distance > 0 ? (
+            <p className="bg-blue/10 rounded p-1">{exercise.distance}m</p>
+          ) : exercise.duration > 0 ? (
+            <p className="bg-purple/10 rounded p-1">
+              {formatTime(exercise.duration)}
+            </p>
+          ) : null}
+          <p className="bg-green/10 rounded p-1">
+            {getZones(
+              exercise,
+              savedSwimTime,
+              savedHrMax,
+              savedWattValue,
+              wattIsActive
+            )}
+          </p>
+        </div>
         <div
-          key={exerciseIndex}
-          className={`flex flex-row justify-between mb-2 ${
-            exerciseIndex === 0 && exercises.length > 0 ? "mt-2" : ""
+          className={`mx-3 ${
+            exercise.duration === 0 && exercise.distance === 0
+              ? "w-full"
+              : "w-1/2 text-right"
           }`}
         >
-          <div className="flex gap-2 ml-2 text-xs">
-            {exercise.distance > 0 ? (
-              <p className="bg-blue/10 rounded p-1">{exercise.distance}m</p>
-            ) : exercise.duration > 0 ? (
-              <p className="bg-purple/10 rounded p-1">{formatTime(exercise.duration)}</p>
-            ) : null}
-            <p className="bg-green/10 rounded p-1">
-              {getZones(
-                exercise,
-                savedSwimTime,
-                savedHrMax,
-                savedWattValue,
-                wattIsActive
-              )}
-            </p>
-          </div>
-          <div
-            className={`mx-3 ${
-              exercise.duration === 0 && exercise.distance === 0
-                ? "w-full"
-                : "w-1/2 text-right"
-            }`}
-          >
-            {exercise.name.trim() !== "" && (
-              <button
-                className={`text-sm rounded-md mr-1 cursor-default ${
-                  exercise.imageLink
-                    ? "underline decoration-alert/30 decoration underline-offset-2 cursor-pointer"
-                    : ""
+          {exercise.name.trim() !== "" && (
+            <button
+              className={`text-sm rounded-md mr-1 cursor-default ${
+                exercise.imageLink
+                  ? "underline decoration-alert/30 decoration underline-offset-2 cursor-pointer"
+                  : ""
+              }`}
+              onClick={() => {
+                if (exercise.imageLink) {
+                  setOpenImageState(
+                    exerciseIndex === openImageState ? null : exerciseIndex
+                  );
+                }
+              }}
+            >
+              <p
+                className={`${
+                  exercise.duration === 0 && exercise.distance === 0
+                    ? ""
+                    : "text-right"
                 }`}
-                onClick={() => {
-                  if (exercise.imageLink) {
-                    setOpenImageState(
-                      exerciseIndex === openImageState ? null : exerciseIndex
-                    );
-                  }
-                }}
               >
-                <p
-                  className={`${
-                    exercise.duration === 0 && exercise.distance === 0
-                      ? ""
-                      : "text-right"
-                  }`}
-                >
-                  {exercise.name}
-                </p>
-              </button>
-            )}
-            {exerciseIndex === openImageState && exercise.imageLink && (
-              <div className="flex flex-col items-center bg-second m-3 rounded-md">
-                <Image
-                  width={200}
-                  height={200}
-                  src={`/images/yoga_images/${exercise.imageLink}.png`}
-                  alt={`Yoga pose: ${exercise.name}`}
-                  className="my-5"
-                />
-              </div>
-            )}
-          </div>
+                {exercise.name}
+              </p>
+            </button>
+          )}
+          {exerciseIndex === openImageState && exercise.imageLink && (
+            <div className="flex flex-col items-center bg-second m-3 rounded-md">
+              <Image
+                width={200}
+                height={200}
+                src={`/images/yoga_images/${exercise.imageLink}.png`}
+                alt={`Yoga pose: ${exercise.name}`}
+                className="my-5"
+              />
+            </div>
+          )}
         </div>
-      </>
+      </div>
     ));
   };
 
@@ -213,63 +215,68 @@ const Sessions = ({
           <p className="px-1">{activity.activity}</p>
           <p className="px-1">{activity.description}</p>
           <div className="mt-3">
-          {totalDistance > 0 ? (
-            <div className="flex justify-end text-xs px-1 -mb-2">
-              <div className="flex items-center">
-                <DistanceSvg />
+            {totalDistance > 0 ? (
+              <div className="flex justify-end text-xs px-1 -mb-2">
+                <div className="flex items-center">
+                  <DistanceSvg />
+                </div>
+                {totalDistance}m
               </div>
-              {totalDistance}m
-            </div>
-          ) : null}
-          {totalDistance > 0 && totalDuration > 0 ? (
-            <span className="mr-5 text-xs">+</span>
-          ) : null}
-          {totalDuration > 0 ? (
-            <div className="flex justify-end text-xs items-center px-1 -mt-1">
-              <WatchSvg />
-              {formatTime(totalDuration)}
-            </div>
-          ) : null}
+            ) : null}
+            {totalDistance > 0 && totalDuration > 0 ? (
+              <span className="mr-5 text-xs">+</span>
+            ) : null}
+            {totalDuration > 0 ? (
+              <div className="flex justify-end text-xs items-center px-1 -mt-1">
+                <WatchSvg />
+                {formatTime(totalDuration)}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
       <hr
         className={`m-3  ${activity.isDone ? "text-green" : "opacity-5"}`}
       ></hr>
-      {activity.sessionParts.map((sessionSections, index) => (
-        <div key={index} className="text-s">
-          {sessionSections.warmUp && sessionSections.warmUp.length > 0 && (
-            <div>
-              <p className="text-left bg-fourth/10 p-1">Warm Up</p>
-              {renderExercises(
-                sessionSections.warmUp[0]?.exercises,
-                openWarmUpImage,
-                setOpenWarmUpImage
+
+      {activity.sessionParts.map((sessionSections, sessionSectionsIndex) => {
+        return (
+          <div key={sessionSectionsIndex} className="text-s">
+            {sessionSections.warmUp && sessionSections.warmUp.length > 0 && (
+              <div>
+                <p className="text-left bg-fourth/10 p-1">Warm Up</p>
+                {renderExercises(
+                  sessionSections.warmUp[0]?.exercises,
+                  openWarmUpImage,
+                  setOpenWarmUpImage
+                )}
+              </div>
+            )}
+            {sessionSections.main && sessionSections.main.length > 0 && (
+              <div>
+                <p className="text-left bg-fourth/10 p-1">Hauptteil</p>
+                {renderExercises(
+                  sessionSections.main[0]?.exercises,
+                  openMainImage,
+                  setOpenMainImage
+                )}
+              </div>
+            )}
+            {sessionSections.coolDown &&
+              sessionSections.coolDown.length > 0 && (
+                <div>
+                  <p className="text-left bg-fourth/10 p-1">Cool Down</p>
+                  {renderExercises(
+                    sessionSections.coolDown[0]?.exercises,
+                    openCoolDownImage,
+                    setOpenCoolDownImage
+                  )}
+                </div>
               )}
-            </div>
-          )}
-          {sessionSections.main && sessionSections.main.length > 0 && (
-            <div>
-              <p className="text-left bg-fourth/10 p-1">Hauptteil</p>
-              {renderExercises(
-                sessionSections.main[0]?.exercises,
-                openMainImage,
-                setOpenMainImage
-              )}
-            </div>
-          )}
-          {sessionSections.coolDown && sessionSections.coolDown.length > 0 && (
-            <div>
-              <p className="text-left bg-fourth/10 p-1">Cool Down</p>
-              {renderExercises(
-                sessionSections.coolDown[0]?.exercises,
-                openCoolDownImage,
-                setOpenCoolDownImage
-              )}
-            </div>
-          )}
-        </div>
-      ))}
+          </div>
+        );
+      })}
+
       <hr className="m-3 opacity-20 "></hr>
       <div className="flex flex-col  items-center">
         <button

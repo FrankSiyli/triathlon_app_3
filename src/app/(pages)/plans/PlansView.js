@@ -40,30 +40,20 @@ function PlansView() {
 
   return (
     <>
-      {activeComponent === "plans" && (
-        <>
-          <div className="flex items-center mx-auto text-center border border-sixth/50 mt-11 mb-10 px-3 py-1 z-20 rounded-md backdrop-blur-sm shadow-xl">
-            <span>Trainingspläne</span>
-          </div>
-          <Image
-            className="absolute top-0 right-0 h-16 w-full z-10 object-cover object-top opacity-50"
-            src="/images/triathlonImage_4.jpg"
-            alt="sport image"
-            quality={100}
-            priority
-            width={600}
-            height={600}
-          />
-          <div className="h-16 absolute right-0 top-0 w-full  bg-gradient-to-b from-transparent via-transparent via-80% to-first z-10"></div>
-        </>
-      )}
 
       {activeComponent === "plans" && (
-        <div className="flex flex-col mx-auto max-w-xl relative h-auto w-full overflow-y-auto max-h-screen ">
+      <div > 
+       <span className="flex justify-center bg-lightBlue text-fifth/80 my-5 px-3 py-1 z-20 rounded-sm">
+          Trainingspläne
+        </span>
+
+        <div className=" h-auto w-full overflow-y-auto max-h-screen ">
+          
+
           {planTypes.map((planType) => (
             <button
               key={planType.type}
-              className="relative flex justify-between  h-12 w-full max-w-xl shadow-md p-2 rounded-md  my-1 "
+              className="relative flex justify-between items-center h-12 w-full max-w-xl shadow p-2 rounded-md  my-1 "
               onClick={() => handlePlanTypeClick(planType.type)}
             >
               <div>
@@ -74,7 +64,7 @@ function PlansView() {
                   width={80}
                   height={80}
                 />
-                <div className="h-12 absolute left-0 top-0 w-20  bg-gradient-to-r from-transparent via-transparent via-80% to-fifth z-40"></div>
+                <div className="h-12 absolute left-0 top-0 w-20  bg-gradient-to-r from-transparent via-transparent via-80% to-first z-40"></div>
               </div>
               <div className="flex flex-col">
                 <p className="ml-5"> {planType.name}</p>
@@ -83,7 +73,7 @@ function PlansView() {
               <ArrowRightSvg />
             </button>
           ))}
-        </div>
+        </div></div>
       )}
 
       {activeComponent === "runPlans" && (

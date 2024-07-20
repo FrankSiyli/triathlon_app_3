@@ -188,7 +188,7 @@ export default function Home() {
           <div className="fixed top-0 left-0 flex justify-start items-center z-50 h-16 w-full  backdrop-blur-lg shadow shadow-alert">
             <button
               onClick={handleBackClick}
-              className="border border-alert rounded p-1 hover:text-alert ml-5 text-first shadow"
+              className="border border-alert rounded p-1 hover:text-alert ml-5 shadow"
             >
               Startseite
             </button>

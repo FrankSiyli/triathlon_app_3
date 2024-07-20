@@ -5,8 +5,6 @@ import Sessions from "./components/Sessions";
 import calculateTotalDistance from "../../logicFunctions/totalDistanceFunction";
 import calculateTotalDuration from "../../logicFunctions/totalDurationFunction";
 import NavBar from "@/app/components/NavBar/NavBar";
-import { useRecoilState } from "recoil";
-import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import Alert from "@/app/components/Alerts/Alert";
 
 const SessionOverlay = ({
@@ -18,7 +16,6 @@ const SessionOverlay = ({
   initialOpen = false,
 }) => {
   const [overlayView, setOverlayView] = useState(true);
-  const [, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,21 +27,23 @@ const SessionOverlay = ({
   };
 
   const getActivityBorderColor = (activityType) => {
-    switch (activityType) {
+   switch (activityType) {
       case "Laufen":
-        return "border-orange/30";
+        return "border-orange/10";
       case "Schwimmen":
-        return "border-blue/30";
+        return "border-blue/10";
       case "Yoga":
-        return "border-green/30";
+        return "border-green/10";
       case "Rad":
-        return "border-third/30";
+        return "border-yellow/50";
       case "Sonstiges":
-        return "border-grey/30";
+        return "border-red/10";
+      case "Faszienrolle":
+        return "border-purple/10";
       case "Stabi":
-        return "border-alert/30";
+        return "border-alert/10";
       default:
-        return "border-grey/30";
+        return "border-grey/10";
     }
   };
 
@@ -64,7 +63,6 @@ const SessionOverlay = ({
         {overlayView ? (
           <Sessions
             activity={activity}
-            openOverlay={openOverlay}
             handleViewClick={handleViewClick}
             toggleOverlay={toggleOverlay}
             totalDistance={totalDistance}
