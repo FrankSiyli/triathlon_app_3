@@ -94,13 +94,13 @@ const Sessions = ({
             exerciseIndex === 0 && exercises.length > 0 ? "mt-2" : ""
           }`}
         >
-          <div className="flex gap-2 ml-2">
+          <div className="flex gap-2 ml-2 text-xs">
             {exercise.distance > 0 ? (
-              <p>{exercise.distance}m</p>
+              <p className="bg-blue/10 rounded p-1">{exercise.distance}m</p>
             ) : exercise.duration > 0 ? (
-              <p>{formatTime(exercise.duration)}</p>
+              <p className="bg-purple/10 rounded p-1">{formatTime(exercise.duration)}</p>
             ) : null}
-            <p>
+            <p className="bg-green/10 rounded p-1">
               {getZones(
                 exercise,
                 savedSwimTime,
@@ -121,7 +121,7 @@ const Sessions = ({
               <button
                 className={`text-sm rounded-md mr-1 cursor-default ${
                   exercise.imageLink
-                    ? "underline decoration-first decoration-2 underline-offset-4 cursor-pointer"
+                    ? "underline decoration-alert/30 decoration underline-offset-2 cursor-pointer"
                     : ""
                 }`}
                 onClick={() => {
@@ -209,11 +209,12 @@ const Sessions = ({
             </button>
           ) : null}
         </div>
-        <div className="w-full h-auto text-right">
-          <p className="p-1">{activity.activity}</p>
-          <p className="p-1">{activity.description}</p>
+        <div className="w-full h-auto text-s text-right">
+          <p className="px-1">{activity.activity}</p>
+          <p className="px-1">{activity.description}</p>
+          <div className="mt-3">
           {totalDistance > 0 ? (
-            <div className="flex justify-end p-1 -mb-2">
+            <div className="flex justify-end text-xs px-1 -mb-2">
               <div className="flex items-center">
                 <DistanceSvg />
               </div>
@@ -221,14 +222,15 @@ const Sessions = ({
             </div>
           ) : null}
           {totalDistance > 0 && totalDuration > 0 ? (
-            <span className="mr-5">+</span>
+            <span className="mr-5 text-xs">+</span>
           ) : null}
           {totalDuration > 0 ? (
-            <div className="flex justify-end items-center p-1 -mt-1">
+            <div className="flex justify-end text-xs items-center px-1 -mt-1">
               <WatchSvg />
               {formatTime(totalDuration)}
             </div>
           ) : null}
+          </div>
         </div>
       </div>
       <hr

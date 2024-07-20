@@ -18,7 +18,6 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} font-light font-sans `}>
         <RecoilRootWrapper>
-          <Logo />
           <AuthProvider>{children}</AuthProvider>
         </RecoilRootWrapper>
         <Script

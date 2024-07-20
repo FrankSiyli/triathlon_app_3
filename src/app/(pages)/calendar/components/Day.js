@@ -11,7 +11,6 @@ import { useRecoilState } from "recoil";
 const Day = ({ day, activities }) => {
   const { openOverlay, toggleOverlay } = useOpenOverlay();
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
-
   const allDaySessionsDone = () => {
     if (activities.length === 0) return false;
 
@@ -29,17 +28,19 @@ const Day = ({ day, activities }) => {
       case "Laufen":
         return "bg-orange/10";
       case "Schwimmen":
-        return "bg-blue";
+        return "bg-blue/10";
       case "Yoga":
         return "bg-green/10";
       case "Rad":
-        return "bg-third/10";
+        return "bg-yellow/50";
       case "Sonstiges":
-        return "bg-grey/10";
+        return "bg-red/10";
+      case "Faszienrolle":
+        return "bg-purple/10";
       case "Stabi":
         return "bg-alert/10";
       default:
-        return "bg-grey";
+        return "bg-grey/10";
     }
   };
 
@@ -72,14 +73,14 @@ const Day = ({ day, activities }) => {
                       !openOverlay ? () => toggleOverlay(activity._id.$oid) : null
                     }
                   >
-                    <p
-                      className={`text-s my-1 py-1 ${getActivityBgColor(
+                    <div
+                      className={`text-xs my-1 py-1 ${getActivityBgColor(
                         activity.activity
                       )}`}
                     >
-                      {activity.activity}
-                    </p>
-                    <p>{activity.description}</p>
+                      <p className="ml-1">{activity.activity}</p>
+                    </div>
+                    <p className="ml-1 text-s">{activity.description}</p>
 
                     <div className="text-xs my-2">
                       {totalDistance > 0 && (
