@@ -9,7 +9,7 @@ const CheckSvg = () => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6 text-alert  hover:text-first"
+        className="w-7 h-7 text-fifth/80  hover:text-alert"
       >
         <path
           strokeLinecap="round"

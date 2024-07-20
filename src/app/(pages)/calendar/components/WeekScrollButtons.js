@@ -8,7 +8,7 @@ const WeekScrollButtons = ({
   handlePreviousWeekClick,
   handleNextWeekClick,
 }) => (
-  <div className="relative flex justify-between mb-5 items-center mx-10">
+  <div className="relative flex justify-between mb-5 items-center mx-10 border border-alert/30 shadow rounded-sm">
     <button
       onClick={handlePreviousWeekClick}
       className="btn btn-sm btn-outline  border border-transparent w-12 flex justify-center items-center hover:bg-transparent hover:border-transparent"

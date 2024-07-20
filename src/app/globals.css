@@ -15,6 +15,8 @@
   --blue: #3707f5;
   --orange: #e7a420;
   --grey: #eee9e9;
+  --yellow: #FDF6B2;
+  --lightBlue: #dfecee;
 }
 
 * ::-webkit-scrollbar {
@@ -41,9 +43,9 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  color: #0a1120;
-  background:  #f5f4f5;
-  white-space: pre-line;
+  color: #1e1f22;
+  background: rgb(0,163,177);
+  background: linear-gradient(150deg, #dfecee 0%, rgba(245,244,245,1) 60%);  white-space: pre-line;
   vertical-align: bottom;
 }
 
@@ -232,18 +234,5 @@ tr {
   background-color: rgba(255, 0, 0, 0.7);
 }
 
-/*----------------session overlay----------------------*/
 
-.overlay-background {
-  background: #f5f4f5;
-  
-}
-.dark-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 20;
-}
+

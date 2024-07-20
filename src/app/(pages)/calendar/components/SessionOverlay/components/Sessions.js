@@ -8,7 +8,7 @@ import { savedSwimTimeState } from "@/app/recoil/atoms/user/savedSwimTimeState";
 import { savedWattState } from "@/app/recoil/atoms/user/savedWattState";
 
 const Sessions = ({
-  singleActivity,
+  activity,
   openOverlay,
   activityIndex,
   wattIsActive,
@@ -28,7 +28,7 @@ const Sessions = ({
       <div
         key={exerciseIndex}
         className={`flex flex-row justify-between mb-2 ${
-          exerciseIndex === 0 && exercises.length > 1 ? "mt-10" : ""
+          exerciseIndex === 0 && exercises.length > 0 ? "mt-2" : ""
         }`}
       >
         <div className="flex gap-2 ml-2">
@@ -98,16 +98,16 @@ const Sessions = ({
     ));
   };
 
-  if (!Array.isArray(singleActivity.sessionParts)) return null;
+  if (!Array.isArray(activity.sessionParts)) return null;
 
   return (
     <>
-      {openOverlay.includes(activityIndex) &&
-        singleActivity.sessionParts.map((sessionSections, index) => (
-          <div key={index}>
+      { //openOverlay.includes(activityIndex) &&
+        activity.sessionParts.map((sessionSections, index) => (
+          <div key={index} className="text-s">
             {sessionSections.warmUp && sessionSections.warmUp.length > 0 && (
               <div>
-                <p className="text-center text-alert p-2">Warm Up</p>
+                <p className="text-left bg-fourth/10 p-1">Warm Up</p>
                 {renderExercises(
                   sessionSections.warmUp[0]?.exercises,
                   openWarmUpImage,
@@ -117,7 +117,7 @@ const Sessions = ({
             )}
             {sessionSections.main && sessionSections.main.length > 0 && (
               <div>
-                <p className="text-center text-alert p-2">Hauptteil</p>
+               <p className="text-left bg-fourth/10 p-1">Hauptteil</p>
                 {renderExercises(
                   sessionSections.main[0]?.exercises,
                   openMainImage,
@@ -127,7 +127,7 @@ const Sessions = ({
             )}
             {sessionSections.coolDown && sessionSections.coolDown.length > 0 && (
               <div>
-                <p className="text-center text-alert p-2">Cool Down</p>
+                <p className="text-left bg-fourth/10 p-1">Cool Down</p>
                 {renderExercises(
                   sessionSections.coolDown[0]?.exercises,
                   openCoolDownImage,

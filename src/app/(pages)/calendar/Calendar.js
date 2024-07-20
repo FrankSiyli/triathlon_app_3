@@ -39,7 +39,7 @@ function Calendar({ showConsent }) {
         {homepagePlan && showCalendar && (
           <>
             <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
-              <div className="flex mx-auto text-center bg-alert text-first mt-11 mb-10 px-3 py-1 z-20 shadow-lg rounded-sm">
+              <div className="flex mx-auto text-center bg-lightBlue text-fifth/80 mt-5 mb-5 px-3 py-1 z-20 rounded-sm">
                 {homepagePlan?.name}
               </div>
               <WeekScrollButtons

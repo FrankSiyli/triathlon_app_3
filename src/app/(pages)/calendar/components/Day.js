@@ -12,8 +12,6 @@ const Day = ({ day, activities }) => {
   const { openOverlay, toggleOverlay } = useOpenOverlay();
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
 
-
-
   const allDaySessionsDone = () => {
     if (activities.length === 0) return false;
 
@@ -29,21 +27,22 @@ const Day = ({ day, activities }) => {
   const getActivityBgColor = (activityType) => {
     switch (activityType) {
       case "Laufen":
-        return "bg-orange/10"; 
+        return "bg-orange/10";
       case "Schwimmen":
-        return "bg-blue"; 
+        return "bg-blue";
       case "Yoga":
-        return "bg-green/10"; 
+        return "bg-green/10";
       case "Rad":
-        return "bg-third/10"; 
+        return "bg-third/10";
       case "Sonstiges":
-        return "bg-grey/10"; 
+        return "bg-grey/10";
       case "Stabi":
-        return "bg-alert/10"; 
+        return "bg-alert/10";
       default:
-        return "bg-grey"; 
+        return "bg-grey";
     }
   };
+
 
   return (
     <>
@@ -53,60 +52,67 @@ const Day = ({ day, activities }) => {
         }`}
       >
         <div className="ml-1">
-          <div className="font-bold text-fifth/80">{day}</div>
+          <div className="text-s text-fifth/80">{day}</div>
         </div>
       </div>
 
       <div>
-        {activities.length === 0 ? (
-          null
-        ) : (
-          activities.map((activity) => {
-            const totalDistance = calculateTotalDistance(activity);
-            const totalDuration = calculateTotalDuration(activity);
-            const isOpen = openOverlay === activity._id.$oid;
+        {activities.length === 0
+          ? null
+          : activities?.map((activity) => {
+              const totalDistance = calculateTotalDistance(activity);
+              const totalDuration = calculateTotalDuration(activity);
+              const isOpen = openOverlay === activity._id.$oid;
 
-            return (
-              <div
-                key={activity._id.$oid}
-                className={`ml-2 shadow my-1 cursor-pointer`}
-                onClick={() => toggleOverlay(activity._id.$oid)}
-              >
-                <p className={`text-s my-1 py-1 ${getActivityBgColor(activity.activity)}`}>{activity.activity}</p>
-                <p>{activity.description}</p>
+              return (
+                <div key={activity._id.$oid} className="ml-2 shadow my-1">
+                  <div
+                    className="cursor-pointer"
+                    onClick={
+                      !openOverlay ? () => toggleOverlay(activity._id.$oid) : null
+                    }
+                  >
+                    <p
+                      className={`text-s my-1 py-1 ${getActivityBgColor(
+                        activity.activity
+                      )}`}
+                    >
+                      {activity.activity}
+                    </p>
+                    <p>{activity.description}</p>
 
-                <div className="text-xs my-2">
-                  {totalDistance > 0 && (
-                    <div className="flex items-center">
-                      <DistanceSvg />
-                      {totalDistance}m
+                    <div className="text-xs my-2">
+                      {totalDistance > 0 && (
+                        <div className="flex items-center">
+                          <DistanceSvg />
+                          {totalDistance}m
+                        </div>
+                      )}
+                      {totalDistance > 0 && totalDuration > 0 && <span>+</span>}
+                      {totalDuration > 0 && (
+                        <div className="flex items-center">
+                          <WatchSvg />
+                          {formatTime(totalDuration)}
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {totalDistance > 0 && totalDuration > 0 && <span>+</span>}
-                  {totalDuration > 0 && (
-                    <div className="flex items-center">
-                      <WatchSvg />
-                      {formatTime(totalDuration)}
-                    </div>
+                  </div>
+
+                  {isOpen && (
+                    <SessionOverlay
+                      sessionSections={activity.sessionParts}
+                      activity={activity}
+                      activityIndex={activities.id}
+                      openOverlay={openOverlay}
+                      toggleOverlay={toggleOverlay}
+                      homepagePlan={homepagePlan}
+                      //   currentWeek={currentWeek}
+                      initialOpen={isOpen}
+                    />
                   )}
                 </div>
-
-                {isOpen && (
-                  <SessionOverlay
-                    sessionSections={activity.sessionParts}
-                    singleActivity={activity}
-                    activityIndex={activities.id}
-                    openOverlay={openOverlay}
-                    toggleOverlay={toggleOverlay}
-                    homepagePlan={homepagePlan}
-                 //   currentWeek={currentWeek}
-                    initialOpen={isOpen}
-                  />
-                )}
-              </div>
-            );
-          })
-        )}
+              );
+            })}
       </div>
     </>
   );

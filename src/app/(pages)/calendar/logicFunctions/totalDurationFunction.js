@@ -1,9 +1,9 @@
-const calculateTotalDuration = (singleActivity) => {
+const calculateTotalDuration = (activity) => {
   let totalDuration = 0;
 
-  if (!singleActivity.sessionParts) return totalDuration;
+  if (!activity.sessionParts) return totalDuration;
 
-  singleActivity.sessionParts.forEach((sessionSections) => {
+  activity.sessionParts.forEach((sessionSections) => {
     ['warmUp', 'main', 'coolDown'].forEach((partType) => {
       sessionSections[partType]?.forEach((section) => {
         section.exercises?.forEach((exercise) => {

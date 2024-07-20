@@ -1,9 +1,9 @@
-const calculateTotalDistance = (singleActivity) => {
+const calculateTotalDistance = (activity) => {
   let totalDistance = 0;
 
-  if (!singleActivity.sessionParts) return totalDistance;
+  if (!activity.sessionParts) return totalDistance;
 
-  singleActivity.sessionParts.forEach((sessionSections) => {
+  activity.sessionParts.forEach((sessionSections) => {
     ['warmUp', 'main', 'coolDown'].forEach((partType) => {
       sessionSections[partType]?.forEach((section) => {
         section.exercises?.forEach((exercise) => {
