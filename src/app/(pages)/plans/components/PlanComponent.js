@@ -91,7 +91,7 @@ const PlanComponent = ({ setShowPlans, title, apiEndpoint, image }) => {
     <>
       <div className="w-full max-w-xl mx-auto">
         <button
-          className="top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent text-first "
+          className="top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent "
           onClick={handleBackClick}
         >
           <ArrowLeftSvg />
@@ -106,8 +106,8 @@ const PlanComponent = ({ setShowPlans, title, apiEndpoint, image }) => {
         width={80}
         height={80}
       />
-      <div className="h-16 absolute right-0 top-0 w-24  bg-gradient-to-l from-transparent via-transparent via-80% to-fifth z-10"></div>
-      <div className="h-16 absolute right-0 top-0 w-24  bg-gradient-to-b from-transparent via-transparent via-80% to-fifth z-10"></div>
+      <div className="h-16 absolute right-0 top-0 w-24  bg-gradient-to-l from-transparent via-transparent via-80% to-first z-10"></div>
+      <div className="h-16 absolute right-0 top-0 w-24  bg-gradient-to-b from-transparent via-transparent via-80% to-first z-10"></div>
 
       {isLoading || isLoadingPlan ? (
         <Loader error={error} isLoading={isLoading || isLoadingPlan} />

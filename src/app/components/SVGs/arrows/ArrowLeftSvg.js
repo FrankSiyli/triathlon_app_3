@@ -9,7 +9,7 @@ const ArrowLeftSvg = () => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6 hover:text-alert text-sixth"
+        className="w-7 h-7 hover:text-alert/30 text-alert"
       >
         <path
           strokeLinecap="round"

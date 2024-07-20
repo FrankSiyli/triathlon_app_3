@@ -23,24 +23,24 @@ const Day = ({ day, activities, dayIndex }) => {
     );
   };
 
-  const getActivityBgColor = (activityType) => {
+  const getActivityBorderColor = (activityType) => {
     switch (activityType) {
       case "Laufen":
-        return "bg-orange/10";
+        return "border-orange";
       case "Schwimmen":
-        return "bg-blue/10";
+        return "border-blue";
       case "Yoga":
-        return "bg-green/10";
+        return "border-green";
       case "Rad":
-        return "bg-yellow/50";
+        return "border-yellow";
       case "Sonstiges":
-        return "bg-red/10";
+        return "border-red";
       case "Faszienrolle":
-        return "bg-purple/10";
+        return "border-purple";
       case "Stabi":
-        return "bg-alert/10";
+        return "border-alert";
       default:
-        return "bg-grey/10";
+        return "border-grey";
     }
   };
 
@@ -66,17 +66,17 @@ const Day = ({ day, activities, dayIndex }) => {
               const isOpen = openOverlay === activity._id.$oid;
 
               return (
-                <div key={activity._id.$oid} className="ml-2 shadow my-1">
+                <div key={activity._id.$oid} className="ml-1 shadow my-1">
                   <div
-                    className="cursor-pointer"
+                    className={`cursor-pointer border-t-2 ${getActivityBorderColor(
+                      activity.activity
+                    )}`}
                     onClick={
                       !openOverlay ? () => toggleOverlay(activity._id.$oid) : null
                     }
                   >
                     <div
-                      className={`text-xs my-1 py-1 ${getActivityBgColor(
-                        activity.activity
-                      )}`}
+                      className={`text-xs my-1 py-1 `}
                     >
                       <p className="ml-1">{activity.activity}</p>
                     </div>

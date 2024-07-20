@@ -1161,172 +1161,172 @@ export const examplePlan = {
             sessionCategory: "stabiSession",
           },
           {
-            "_id": {
-              "$oid": "64f9c71b08ae0b5fa97014dc"
+            _id: {
+              $oid: "64f9c71b08ae0b5fa97014dc",
             },
-            "activity": "Rad",
-            "description": "MIT 1 (HR)",
-            "sessionParts": [
+            activity: "Rad",
+            description: "MIT 1 (HR)",
+            sessionParts: [
               {
-                "warmUp": [
+                warmUp: [
                   {
-                    "multiplier": 1,
-                    "exercises": [
+                    multiplier: 1,
+                    exercises: [
                       {
-                        "name": "Einrollen",
-                        "distance": 0,
-                        "duration": 600,
-                        "zone": "bikeHrZ2"
-                      }
-                    ]
-                  }
+                        name: "Einrollen",
+                        distance: 0,
+                        duration: 600,
+                        zone: "bikeHrZ2",
+                      },
+                    ],
+                  },
                 ],
-                "main": [
+                main: [
                   {
-                    "multiplier": 1,
-                    "exercises": [
+                    multiplier: 1,
+                    exercises: [
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 120,
-                        "zone": "bikeHrZ3"
+                        name: "",
+                        distance: 0,
+                        duration: 120,
+                        zone: "bikeHrZ3",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 180,
-                        "zone": "bikeHrZ4"
+                        name: "",
+                        distance: 0,
+                        duration: 180,
+                        zone: "bikeHrZ4",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 240,
-                        "zone": "bikeHrZ5"
+                        name: "",
+                        distance: 0,
+                        duration: 240,
+                        zone: "bikeHrZ5",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 30,
-                        "zone": "All Out"
-                      }
-                    ]
+                        name: "",
+                        distance: 0,
+                        duration: 30,
+                        zone: "All Out",
+                      },
+                    ],
                   },
                   {
-                    "multiplier": 1,
-                    "exercises": [
+                    multiplier: 1,
+                    exercises: [
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 300,
-                        "zone": "bikeHrZ2"
-                      }
-                    ]
+                        name: "",
+                        distance: 0,
+                        duration: 300,
+                        zone: "bikeHrZ2",
+                      },
+                    ],
                   },
                   {
-                    "multiplier": 1,
-                    "exercises": [
+                    multiplier: 1,
+                    exercises: [
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 120,
-                        "zone": "bikeHrZ3"
+                        name: "",
+                        distance: 0,
+                        duration: 120,
+                        zone: "bikeHrZ3",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 180,
-                        "zone": "bikeHrZ4"
+                        name: "",
+                        distance: 0,
+                        duration: 180,
+                        zone: "bikeHrZ4",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 240,
-                        "zone": "bikeHrZ5"
+                        name: "",
+                        distance: 0,
+                        duration: 240,
+                        zone: "bikeHrZ5",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 60,
-                        "zone": "All Out"
-                      }
-                    ]
+                        name: "",
+                        distance: 0,
+                        duration: 60,
+                        zone: "All Out",
+                      },
+                    ],
                   },
                   {
-                    "multiplier": 1,
-                    "exercises": [
+                    multiplier: 1,
+                    exercises: [
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 300,
-                        "zone": "bikeHrZ3"
-                      }
-                    ]
+                        name: "",
+                        distance: 0,
+                        duration: 300,
+                        zone: "bikeHrZ3",
+                      },
+                    ],
                   },
                   {
-                    "multiplier": 1,
-                    "exercises": [
+                    multiplier: 1,
+                    exercises: [
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 180,
-                        "zone": "bikeHrZ4"
+                        name: "",
+                        distance: 0,
+                        duration: 180,
+                        zone: "bikeHrZ4",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 240,
-                        "zone": "bikeHrZ5"
+                        name: "",
+                        distance: 0,
+                        duration: 240,
+                        zone: "bikeHrZ5",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 90,
-                        "zone": "All Out"
-                      }
-                    ]
+                        name: "",
+                        distance: 0,
+                        duration: 90,
+                        zone: "All Out",
+                      },
+                    ],
                   },
                   {
-                    "multiplier": 1,
-                    "exercises": [
+                    multiplier: 1,
+                    exercises: [
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 120,
-                        "zone": "bikeHrZ3"
+                        name: "",
+                        distance: 0,
+                        duration: 120,
+                        zone: "bikeHrZ3",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 120,
-                        "zone": "bikeHrZ4"
+                        name: "",
+                        distance: 0,
+                        duration: 120,
+                        zone: "bikeHrZ4",
                       },
                       {
-                        "name": "",
-                        "distance": 0,
-                        "duration": 120,
-                        "zone": "bikeHrZ5"
-                      }
-                    ]
-                  }
+                        name: "",
+                        distance: 0,
+                        duration: 120,
+                        zone: "bikeHrZ5",
+                      },
+                    ],
+                  },
                 ],
-                "coolDown": [
+                coolDown: [
                   {
-                    "multiplier": 1,
-                    "exercises": [
+                    multiplier: 1,
+                    exercises: [
                       {
-                        "name": "ausrollen",
-                        "distance": 0,
-                        "duration": 300,
-                        "zone": "bikeHrZ2"
-                      }
-                    ]
-                  }
-                ]
-              }
+                        name: "ausrollen",
+                        distance: 0,
+                        duration: 300,
+                        zone: "bikeHrZ2",
+                      },
+                    ],
+                  },
+                ],
+              },
             ],
-            "sessionType": "bikeMit",
-            "sessionCategory": "bikeSession"
-          }
+            sessionType: "bikeMit",
+            sessionCategory: "bikeSession",
+          },
         ],
         Sonntag: [
           {
