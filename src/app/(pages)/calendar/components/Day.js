@@ -7,10 +7,17 @@ import { useOpenOverlay } from "../stateHooks/useOpenOverlay";
 import SessionOverlay from "./SessionOverlay/SessionOverlay";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import { useRecoilState } from "recoil";
+import PlusSvg from "@/app/components/SVGs/PlusSvg";
+import NewPlanSessionTypes from "../../plans/components/newPlanBuilder/components/newPlanSessionTypes/newPlanSessionTypes";
+import { useState } from "react";
 
-const Day = ({ day, activities, dayIndex }) => {
+const Day = ({ day, activities, setActiveComponent }) => {
   const { openOverlay, toggleOverlay } = useOpenOverlay();
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
+  const [showAddSessionMenu, setShowAddSessionMenu] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [error, setError] = useState("");
+
   const allDaySessionsDone = () => {
     if (activities.length === 0) return false;
 
@@ -21,6 +28,10 @@ const Day = ({ day, activities, dayIndex }) => {
         )
       )
     );
+  };
+
+  const handleAddSessionClick = () => {
+    setShowAddSessionMenu(!showAddSessionMenu);
   };
 
   const getActivityBorderColor = (activityType) => {
@@ -43,7 +54,6 @@ const Day = ({ day, activities, dayIndex }) => {
         return "border-grey";
     }
   };
-
 
   return (
     <>
@@ -72,12 +82,12 @@ const Day = ({ day, activities, dayIndex }) => {
                       activity.activity
                     )}`}
                     onClick={
-                      !openOverlay ? () => toggleOverlay(activity._id.$oid) : null
+                      !openOverlay
+                        ? () => toggleOverlay(activity._id.$oid)
+                        : null
                     }
                   >
-                    <div
-                      className={`text-xs py-1 `}
-                    >
+                    <div className={`text-xs py-1 `}>
                       <p className="ml-1">{activity.activity}</p>
                     </div>
                     <p className="ml-1 text-s">{activity.description}</p>
@@ -98,7 +108,6 @@ const Day = ({ day, activities, dayIndex }) => {
                       )}
                     </div>
                   </div>
-
                   {isOpen && (
                     <SessionOverlay
                       sessionSections={activity.sessionParts}
@@ -115,6 +124,21 @@ const Day = ({ day, activities, dayIndex }) => {
               );
             })}
       </div>
+
+      <button className="border border-alert/50 w-7 rounded text-alert ml-1">
+        <PlusSvg onClick={handleAddSessionClick} />
+      </button>
+      {showAddSessionMenu && (
+        <div>
+          <NewPlanSessionTypes
+            showAlert={showAlert}
+            setShowAlert={setShowAlert}
+            error={error}
+            setError={setError}
+            setActiveComponent={setActiveComponent}
+          />
+        </div>
+      )}
     </>
   );
 };

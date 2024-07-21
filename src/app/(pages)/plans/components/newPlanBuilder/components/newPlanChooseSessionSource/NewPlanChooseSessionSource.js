@@ -48,7 +48,7 @@ const NewPlanChooseSessionSource = ({
       component: <LibrarySvg />,
       label: "App-Bibliothek",
       subLabel: "",
-      textSize: "text-sm",
+      textSize: "text-xs",
       cursor: "pointer",
       arrow: <ArrowRightSvg />,
       align: "justify-between",

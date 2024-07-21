@@ -2,12 +2,10 @@
 import React, { useState } from "react";
 import Alert from "@/app/components/Alerts/Alert";
 import PlusSvg from "@/app/components/SVGs/PlusSvg";
-import ArrowDownSvg from "@/app/components/SVGs/arrows/ArrowDownSvg";
-import ArrowUpSvg from "@/app/components/SVGs/arrows/ArrowUpSvg";
 import { newPlanState } from "@/app/recoil/atoms/planBuilder/newPlanState";
 import { useRecoilState } from "recoil";
 import { v1 as uuidv1 } from "uuid";
-import NewPlanSessionTypes from "../../newPlanCalendarSessionTypes/NewPlanCalendarSessionTypes";
+import NewPlanSessionTypes from "../../newPlanSessionTypes/newPlanSessionTypes";
 
 const NewPlanWeekSchedule = ({
   currentWeek,
@@ -32,7 +30,7 @@ const NewPlanWeekSchedule = ({
   return (
     <>
       <div>
-        {newPlan?.weeks?.[currentWeek]?.sessions.map((session, dayIndex) => (
+        {newPlan?.weeks?.[currentWeek]?.sessions?.map((session, dayIndex) => (
           <div key={uuidv1()}>
             <div
               key={uuidv1()}
@@ -40,9 +38,6 @@ const NewPlanWeekSchedule = ({
               className="flex justify-between w-full max-w-xl shadow-md py-2 rounded-md my-1 cursor-pointer"
             >
               <div className="ml-5">{session.day}</div>
-              <span className="mr-5">
-                {dayIndex === openDay ? <ArrowUpSvg /> : <ArrowDownSvg />}
-              </span>
             </div>
             <div className="flex flex-col w-full max-w-xl rounded-md">
               {dayIndex === openDay && (

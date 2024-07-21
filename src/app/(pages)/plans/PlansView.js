@@ -6,9 +6,11 @@ import PlanBuilder from "./components/newPlanBuilder/components/NewPlanBuilder";
 import NewPlan from "./components/newPlanBuilder/components/newPlanCalendar/NewPlanCalendar";
 import ArrowRightSvg from "@/app/components/SVGs/arrows/ArrowRightSvg";
 import AppLibrary from "./components/newPlanBuilder/components/newPlanAppLibrary/NewPlanAppLibrary";
+import { useRecoilState } from "recoil";
+import { activeComponentState } from "@/app/recoil/atoms/activeComponentState";
 
 function PlansView() {
-  const [activeComponent, setActiveComponent] = useState("plans");
+  const [activeComponent, setActiveComponent] = useRecoilState(activeComponentState);
 
   const handlePlanTypeClick = (planType) => {
     setActiveComponent(planType);
@@ -106,7 +108,6 @@ function PlansView() {
           title="Plan erstellen"
           setShowPlans={() => handlePlanTypeClick("plans")}
           image="/images/planBuilderImage.jpg"
-          setActiveComponent={setActiveComponent}
         />
       )}
       {activeComponent === "newPlan" && (
@@ -114,7 +115,6 @@ function PlansView() {
           title="Plan erstellen"
           setShowPlans={() => handlePlanTypeClick("planBuilder")}
           image="/images/planBuilderImage.jpg"
-          setActiveComponent={setActiveComponent}
         />
       )}
       {activeComponent === "appLibrary" && (

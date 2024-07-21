@@ -127,7 +127,7 @@ const PlanComponent = ({ setShowPlans, title, apiEndpoint, image }) => {
             return (
               <div
                 key={plan._id}
-                className="w-full max-w-xl shadow-md p-2 rounded-md my-1"
+                className="w-full max-w-xl shadow p-2 rounded-md my-1 border border-alert/30"
               >
                 <button
                   onClick={() => handleInfoClick(plan)}
@@ -159,7 +159,7 @@ const PlanComponent = ({ setShowPlans, title, apiEndpoint, image }) => {
                     <div className="font-light text-left">{plan.info}</div>
                     <button
                       onClick={handleLoadPlanClick}
-                      className="btn btn-sm m-5 mx-auto btn-outline border border-alert text-first hover:text-alert"
+                      className="btn btn-sm m-5 mx-auto btn-outline border border-alert text-alert hover:text-alert/30 shadow"
                     >
                       Laden
                     </button>

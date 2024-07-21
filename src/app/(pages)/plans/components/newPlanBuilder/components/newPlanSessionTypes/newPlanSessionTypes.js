@@ -85,7 +85,7 @@ const NewPlanSessionTypes = ({
   };
 
   return (
-    <>
+    <div className="fixed top-0 left-0 z-40 h-screen m-1 bg-lightBlue shadow-xl flex flex-col justify-center">
       {sessionTypes.map((sessionType, sessionTypeIndex) => (
         <div
           key={sessionTypeIndex}
@@ -96,9 +96,9 @@ const NewPlanSessionTypes = ({
               sessionType.api
             )
           }
-          className="flex flex-col shadow-md p-1 my-0.5 rounded-md  bg-fourth/5"
+          className="flex flex-col shadow-md p-1 m-1 border border-alert/30 rounded-md bg-first"
         >
-          <div className="flex min-h-8 w-full items-center justify-between cursor-pointer">
+          <div className="flex min-h-8 w-full items-center justify-between cursor-pointer text-s">
             <span className="ml-2">{sessionType.component}</span>
             <p className="ml-4 text-sm">{sessionType.label}</p>
             {sessionTypeClicked[sessionTypeIndex] ? (
@@ -117,12 +117,12 @@ const NewPlanSessionTypes = ({
                 setError={setError}
                 setActiveComponent={setActiveComponent}
               />
-              {/* to NewPlanAppLibrary ||  NewPlanNewSession || NewPlanMyTemplates*/}
+              {/* to NewPlanAppLibrary || NewPlanNewSession || NewPlanMyTemplates*/}
             </div>
           )}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

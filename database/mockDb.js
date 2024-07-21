@@ -1,6 +1,6 @@
 export const examplePlan = {
   _id: {
-    $oid: "64fae13efe51afbb2f421585",
+    $oid: "64fae13efe52afbb2f421585",
   },
   category: "homepage",
   name: "Beispielplan",
