@@ -48,7 +48,7 @@ const Day = ({ day, activities, dayIndex }) => {
   return (
     <>
       <div
-        className={`shadow-md bg-fourth/10 py-2 ${
+        className={`shadow-md bg-fourth/10 py-1 ${
           allDaySessionsDone() ? "border-l-2 border-r-2 border-green" : ""
         }`}
       >
@@ -68,7 +68,7 @@ const Day = ({ day, activities, dayIndex }) => {
               return (
                 <div key={activity._id.$oid} className="ml-1 shadow my-1">
                   <div
-                    className={`cursor-pointer border-t-2 ${getActivityBorderColor(
+                    className={`cursor-pointer shadow border-t-2 ${getActivityBorderColor(
                       activity.activity
                     )}`}
                     onClick={
@@ -76,7 +76,7 @@ const Day = ({ day, activities, dayIndex }) => {
                     }
                   >
                     <div
-                      className={`text-xs my-1 py-1 `}
+                      className={`text-xs py-1 `}
                     >
                       <p className="ml-1">{activity.activity}</p>
                     </div>

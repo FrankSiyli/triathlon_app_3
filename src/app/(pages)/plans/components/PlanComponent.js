@@ -87,6 +87,8 @@ const PlanComponent = ({ setShowPlans, title, apiEndpoint, image }) => {
     setShowPlans();
   };
 
+  console.log("plans", plans)
+
   return (
     <>
       <div className="w-full max-w-xl mx-auto">

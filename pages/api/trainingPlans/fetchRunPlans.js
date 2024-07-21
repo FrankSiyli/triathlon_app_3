@@ -4,6 +4,8 @@ import { Plans } from "../../../database/models/Plans";
 export default async function handler(request, response) {
   await dbConnect();
 
+  
+
   if (request.method === "GET") {
     try {
       const plans = await Plans.find({ category: "run" });
