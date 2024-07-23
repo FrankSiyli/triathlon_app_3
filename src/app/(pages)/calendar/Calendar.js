@@ -7,12 +7,15 @@ import { useRecoilState } from "recoil";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import PlansView from "../plans/PlansView";
 import ProfilView from "../profil/ProfilView";
+import NewPlanSessionTypes from "../plans/components/newPlanBuilder/components/newPlanSessionTypes/newPlanSessionTypes";
 
 function Calendar({ showConsent }) {
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [showCalendar, setShowCalendar] = useState(true);
   const [showPlans, setShowPlans] = useState(false);
   const [showProfil, setShowProfil] = useState(false);
+  const [activeDay, setActiveDay] = useState(null);
+  const [showSessionTypes, setShowSessionTypes] = useState(false);
 
   const numberOfPlanWeeks = homepagePlan?.duration;
 
@@ -21,55 +24,75 @@ function Calendar({ showConsent }) {
 
   const currentWeekDays = homepagePlan?.weeks?.[currentWeek]?.days;
 
-
   return (
-    <div className="w-full">
-      <>
-        {showPlans && (
-          <div className="flex flex-col mx-auto max-w-xl relative w-full overflow-y-auto max-h-screen">
-            <PlansView />
-            <span className="mb-40"></span>
+    <>
+      {showSessionTypes && (
+        <div // close add session menu on outside click
+          onClick={() => setShowSessionTypes(false)}
+          className="fixed top-0 left-0 w-screen h-screen bg-second/10 z-20"
+        ></div>
+      )}
+
+      {showPlans && (
+        <div className="flex flex-col mx-auto max-w-xl relative w-full overflow-y-auto max-h-screen">
+          <PlansView />
+          <span className="mb-40"></span>
+        </div>
+      )}
+
+      {homepagePlan && showCalendar && (
+        <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
+          <div className="flex mx-auto text-center bg-lightBlue text-fifth/80 mt-5 mb-5 px-3 py-1 rounded-sm">
+            {homepagePlan?.name}
           </div>
-        )}
+          <WeekScrollButtons
+            currentWeek={currentWeek}
+            numberOfPlanWeeks={numberOfPlanWeeks}
+            handlePreviousWeekClick={handlePreviousWeekClick}
+            handleNextWeekClick={handleNextWeekClick}
+          />
 
-        {homepagePlan && showCalendar && (
-          <>
-            <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
-              <div className="flex mx-auto text-center bg-lightBlue text-fifth/80 mt-5 mb-5 px-3 py-1 z-20 rounded-sm">
-                {homepagePlan?.name}
-              </div>
-              <WeekScrollButtons
-                currentWeek={currentWeek}
-                numberOfPlanWeeks={numberOfPlanWeeks}
-                handlePreviousWeekClick={handlePreviousWeekClick}
-                handleNextWeekClick={handleNextWeekClick}
-              />
-
-              <div className="flex flex-col sm:flex-row w-full">
-                {currentWeekDays &&
-                  Object.entries(currentWeekDays).map(([day, activities], dayIndex) => (
-                    <div key={day} className="flex flex-col w-full">
-                      <Day
-                        day={day}
-                        dayIndex={dayIndex}
-                        activities={activities}
-                      />
-                    </div>
-                  ))}
-              </div>
-
-              <span className="mb-40"></span>
-            </div>
-          </>
-        )}
-
-        {showProfil && (
-          <div className="flex flex-col mx-auto max-w-xl relative w-full overflow-y-auto max-h-screen">
-            <ProfilView />
-            <span className="mb-40"></span>
+          <div className="flex flex-col sm:flex-row w-full">
+            {currentWeekDays &&
+              Object.entries(currentWeekDays).map(
+                ([day, activities], dayIndex) => (
+                  <div key={day} className="flex flex-col w-full">
+                    <Day
+                      day={day}
+                      currentWeek={currentWeek}
+                      dayIndex={dayIndex}
+                      activities={activities}
+                      activeDay={activeDay}
+                      setActiveDay={setActiveDay}
+                      showSessionTypes={showSessionTypes}
+                      setShowSessionTypes={setShowSessionTypes}
+                    />
+                  </div>
+                )
+              )}
           </div>
-        )}
-      </>
+
+          <span className="mb-40"></span>
+        </div>
+      )}
+
+      {showSessionTypes && (
+        <NewPlanSessionTypes
+          showAlert={false}
+          setShowAlert={() => {}}
+          error={""}
+          setError={() => {}}
+          setActiveComponent={() => {}}
+          setShowSessionTypes={setShowSessionTypes}
+        />
+      )}
+
+      {showProfil && (
+        <div className="flex flex-col mx-auto max-w-xl relative w-full overflow-y-auto max-h-screen">
+          <ProfilView />
+          <span className="mb-40"></span>
+        </div>
+      )}
 
       <NavBar
         showCalendar={showCalendar}
@@ -79,7 +102,7 @@ function Calendar({ showConsent }) {
         showProfil={showProfil}
         setShowProfil={setShowProfil}
       />
-    </div>
+    </>
   );
 }
 

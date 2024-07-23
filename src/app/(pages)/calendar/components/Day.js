@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import WatchSvg from "@/app/components/SVGs/WatchSvg";
 import calculateTotalDistance from "../logicFunctions/totalDistanceFunction";
 import calculateTotalDuration from "../logicFunctions/totalDurationFunction";
@@ -9,12 +10,10 @@ import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import { useRecoilState } from "recoil";
 import PlusSvg from "@/app/components/SVGs/PlusSvg";
 import NewPlanSessionTypes from "../../plans/components/newPlanBuilder/components/newPlanSessionTypes/newPlanSessionTypes";
-import { useState } from "react";
 
-const Day = ({ day, activities, setActiveComponent }) => {
+const Day = ({ day, activities, setActiveComponent, currentWeek, activeDay, setActiveDay, showSessionTypes, setShowSessionTypes }) => {
   const { openOverlay, toggleOverlay } = useOpenOverlay();
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
-  const [showAddSessionMenu, setShowAddSessionMenu] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
 
@@ -31,7 +30,8 @@ const Day = ({ day, activities, setActiveComponent }) => {
   };
 
   const handleAddSessionClick = () => {
-    setShowAddSessionMenu(!showAddSessionMenu);
+    setActiveDay(activeDay === day ? null : day);
+    setShowSessionTypes(true);
   };
 
   const getActivityBorderColor = (activityType) => {
@@ -55,10 +55,12 @@ const Day = ({ day, activities, setActiveComponent }) => {
     }
   };
 
+  
+
   return (
     <>
       <div
-        className={`shadow-md bg-fourth/10 py-1 ${
+        className={`shadow-md bg-fourth/10 py-1 mb-1 ${
           allDaySessionsDone() ? "border-l-2 border-r-2 border-green" : ""
         }`}
       >
@@ -76,7 +78,7 @@ const Day = ({ day, activities, setActiveComponent }) => {
               const isOpen = openOverlay === activity._id.$oid;
 
               return (
-                <div key={activity._id.$oid} className="ml-1 shadow my-1">
+                <div key={activity._id.$oid} className="ml-1 shadow m-1">
                   <div
                     className={`cursor-pointer shadow border-t-2 ${getActivityBorderColor(
                       activity.activity
@@ -116,7 +118,6 @@ const Day = ({ day, activities, setActiveComponent }) => {
                       openOverlay={openOverlay}
                       toggleOverlay={toggleOverlay}
                       homepagePlan={homepagePlan}
-                      //   currentWeek={currentWeek}
                       initialOpen={isOpen}
                     />
                   )}
@@ -125,17 +126,18 @@ const Day = ({ day, activities, setActiveComponent }) => {
             })}
       </div>
 
-      <button className="border border-alert/50 w-7 rounded text-alert ml-1">
-        <PlusSvg onClick={handleAddSessionClick} />
+      <button className="border border-alert/50 w-7 rounded text-alert ml-1" onClick={handleAddSessionClick}>
+        <PlusSvg />
       </button>
-      {showAddSessionMenu && (
-        <div>
+      {showSessionTypes && activeDay === day && (
+        <div >
           <NewPlanSessionTypes
             showAlert={showAlert}
             setShowAlert={setShowAlert}
             error={error}
             setError={setError}
             setActiveComponent={setActiveComponent}
+            setShowSessionTypes={setShowSessionTypes}
           />
         </div>
       )}

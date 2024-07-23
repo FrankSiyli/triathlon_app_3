@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import NewPlanSessionBuildTypes from "../newPlanChooseSessionSource/NewPlanChooseSessionSource";
 import ArrowUpSvg from "@/app/components/SVGs/arrows/ArrowUpSvg";
@@ -13,6 +12,7 @@ import OthersSvg from "@/app/components/SVGs/OthersSvg";
 import { newPlanClickedSessionTypeState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeState";
 import { useRecoilState } from "recoil";
 import { newPlanClickedSessionTypeApiState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeApiState";
+import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 
 const sessionTypes = [
   {
@@ -65,6 +65,7 @@ const NewPlanSessionTypes = ({
   error,
   setError,
   setActiveComponent,
+  setShowSessionTypes,
 }) => {
   const [newPlanClickedSessionType, setNewPlanClickedSessionType] =
     useRecoilState(newPlanClickedSessionTypeState);
@@ -86,6 +87,13 @@ const NewPlanSessionTypes = ({
 
   return (
     <div className="fixed top-0 left-0 z-40 h-screen m-1 bg-lightBlue shadow-xl flex flex-col justify-center">
+      <button
+        onClick={() => setShowSessionTypes(false)}
+        className="absolute top-2 right-2 border border-alert shadow rounded-md mb-20"
+      >
+        <UncheckSvg />
+      </button>
+
       {sessionTypes.map((sessionType, sessionTypeIndex) => (
         <div
           key={sessionTypeIndex}
