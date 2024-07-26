@@ -3,15 +3,15 @@ import ArrowLeftSvg from "@/app/components/SVGs/arrows/ArrowLeftSvg";
 import { newPlanClickedSessionTypeState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeState";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import NewPlanAppLibrarySessionTypes from "./components/NewPlanAppLibrarySessionTypes";
 import { newPlanClickedSessionTypeApiState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeApiState";
 import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
 import NewPlanSessionTypes from "../newPlanCalendarSessionTypes/NewPlanCalendarSessionTypes";
 
 const AppLibrary = ({ setShowPlans }) => {
-  const [showAddSessionMenu, setShowAddSessionMenu] =
-  useRecoilState(showAddSessionMenuState);
+  const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(
+    showAddSessionMenuState
+  );
 
   const [singleSessions, setSingleSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,29 +48,18 @@ const AppLibrary = ({ setShowPlans }) => {
     setShowPlans();
   };
 
-
-  console.log("applibrary singleSessions", singleSessions)
-  console.log("applibrary newPlanClickedSessionTypeApi", newPlanClickedSessionTypeApi)
-
-
   return (
-    <div className="fixed top-0 left-0 z-40 h-screen w-screen overflow-y-scroll sm:w-1/3 bg-lightBlue shadow-xl flex flex-col justify-center">
+    <div className="fixed top-0 left-0 z-40 h-screen w-full max-w-3xl overflow-y-scroll overflow-x-hidden sm:w-1/2 bg-lightBlue shadow-xl flex flex-col justify-center">
       <button
         onClick={() => setShowAddSessionMenu(false)}
-        className="absolute top-2 right-2 border border-alert shadow rounded-md mb-20"
+        className="absolute top-2 right-2 border border-alert bg-first shadow rounded-md mb-20"
       >
         <UncheckSvg />
       </button>
 
+      <NewPlanSessionTypes isLoading={isLoading} singleSessions={singleSessions} />
 
-      <NewPlanSessionTypes/>
       
-      {newPlanClickedSessionType && (
-        <NewPlanAppLibrarySessionTypes
-          isLoading={isLoading}
-          singleSessions={singleSessions}
-        />
-      )}
     </div>
   );
 };

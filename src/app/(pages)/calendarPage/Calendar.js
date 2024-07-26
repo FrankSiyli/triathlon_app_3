@@ -7,13 +7,13 @@ import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import PlansView from "../plansPage/PlansView";
 import ProfilView from "../profilPage/ProfilView";
 import Day from "./components/calendar/components/Day";
-import AddSessionMenu from "./components/addSessionMenu/AddSessionMenu";
 import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
 import AppLibrary from "./components/addSessionMenu/newPlanAppLibrary/NewPlanAppLibrary";
 
 function Calendar() {
-  const [showAddSessionMenu, setShowAddSessionMenu] =
-  useRecoilState(showAddSessionMenuState);
+  const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(
+    showAddSessionMenuState
+  );
 
   const [homepagePlan] = useRecoilState(homepagePlanState);
   const [activeView, setActiveView] = useState("calendar"); // "calendar", "plans", "profil"
@@ -76,9 +76,7 @@ function Calendar() {
         </div>
       )}
 
-      {showAddSessionMenu && (
-        <AppLibrary />
-      )}
+      {showAddSessionMenu && <AppLibrary />}
 
       {activeView === "profil" && (
         <div className="flex flex-col mx-auto max-w-xl relative w-full overflow-y-auto max-h-screen">
