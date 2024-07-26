@@ -6,6 +6,7 @@ import calculateTotalDistance from "../../logicFunctions/totalDistanceFunction";
 import calculateTotalDuration from "../../logicFunctions/totalDurationFunction";
 import NavBar from "@/app/components/NavBar/NavBar";
 import Alert from "@/app/components/Alerts/Alert";
+import getActivityBorderColor from "@/app/helperFunctions/getActivityBorderColor";
 
 const SessionOverlay = ({
   sessionSections,
@@ -26,26 +27,6 @@ const SessionOverlay = ({
     setOverlayView(!overlayView);
   };
 
-  const getActivityBorderColor = (activityType) => {
-   switch (activityType) {
-      case "Laufen":
-        return "border-orange/10";
-      case "Schwimmen":
-        return "border-blue/10";
-      case "Yoga":
-        return "border-green/10";
-      case "Rad":
-        return "border-yellow/50";
-      case "Sonstiges":
-        return "border-red/10";
-      case "Faszienrolle":
-        return "border-purple/10";
-      case "Stabi":
-        return "border-alert/10";
-      default:
-        return "border-grey/10";
-    }
-  };
 
   return (
     <div>

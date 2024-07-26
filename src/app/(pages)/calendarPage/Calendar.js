@@ -1,46 +1,48 @@
 import React, { useState } from "react";
 import NavBar from "@/app/components/NavBar/NavBar";
-import WeekScrollButtons from "./components/WeekScrollButtons";
-import Day from "./components/Day";
+import WeekScrollButtons from "./components/calendar/components/WeekScrollButtons";
 import { useCurrentWeek } from "./stateHooks/useCurrentWeek";
 import { useRecoilState } from "recoil";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
-import PlansView from "../plans/PlansView";
-import ProfilView from "../profil/ProfilView";
-import NewPlanSessionTypes from "../plans/components/newPlanBuilder/components/newPlanSessionTypes/newPlanSessionTypes";
+import PlansView from "../plansPage/PlansView";
+import ProfilView from "../profilPage/ProfilView";
+import Day from "./components/calendar/components/Day";
+import AddSessionMenu from "./components/addSessionMenu/AddSessionMenu";
+import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
+import AppLibrary from "./components/addSessionMenu/newPlanAppLibrary/NewPlanAppLibrary";
 
-function Calendar({ showConsent }) {
-  const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
-  const [showCalendar, setShowCalendar] = useState(true);
-  const [showPlans, setShowPlans] = useState(false);
-  const [showProfil, setShowProfil] = useState(false);
+function Calendar() {
+  const [showAddSessionMenu, setShowAddSessionMenu] =
+  useRecoilState(showAddSessionMenuState);
+
+  const [homepagePlan] = useRecoilState(homepagePlanState);
+  const [activeView, setActiveView] = useState("calendar"); // "calendar", "plans", "profil"
   const [activeDay, setActiveDay] = useState(null);
-  const [showSessionTypes, setShowSessionTypes] = useState(false);
 
   const numberOfPlanWeeks = homepagePlan?.duration;
-
   const { currentWeek, handlePreviousWeekClick, handleNextWeekClick } =
     useCurrentWeek(homepagePlan, numberOfPlanWeeks);
-
   const currentWeekDays = homepagePlan?.weeks?.[currentWeek]?.days;
+
+  const handleBackgroundClick = () => setShowAddSessionMenu(false);
 
   return (
     <>
-      {showSessionTypes && (
-        <div // close add session menu on outside click
-          onClick={() => setShowSessionTypes(false)}
+      {showAddSessionMenu && (
+        <div
+          onClick={handleBackgroundClick}
           className="fixed top-0 left-0 w-screen h-screen bg-second/10 z-20"
         ></div>
       )}
 
-      {showPlans && (
+      {activeView === "plans" && (
         <div className="flex flex-col mx-auto max-w-xl relative w-full overflow-y-auto max-h-screen">
           <PlansView />
           <span className="mb-40"></span>
         </div>
       )}
 
-      {homepagePlan && showCalendar && (
+      {activeView === "calendar" && homepagePlan && (
         <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
           <div className="flex mx-auto text-center bg-lightBlue text-fifth/80 mt-5 mb-5 px-3 py-1 rounded-sm">
             {homepagePlan?.name}
@@ -64,8 +66,6 @@ function Calendar({ showConsent }) {
                       activities={activities}
                       activeDay={activeDay}
                       setActiveDay={setActiveDay}
-                      showSessionTypes={showSessionTypes}
-                      setShowSessionTypes={setShowSessionTypes}
                     />
                   </div>
                 )
@@ -76,18 +76,11 @@ function Calendar({ showConsent }) {
         </div>
       )}
 
-      {showSessionTypes && (
-        <NewPlanSessionTypes
-          showAlert={false}
-          setShowAlert={() => {}}
-          error={""}
-          setError={() => {}}
-          setActiveComponent={() => {}}
-          setShowSessionTypes={setShowSessionTypes}
-        />
+      {showAddSessionMenu && (
+        <AppLibrary />
       )}
 
-      {showProfil && (
+      {activeView === "profil" && (
         <div className="flex flex-col mx-auto max-w-xl relative w-full overflow-y-auto max-h-screen">
           <ProfilView />
           <span className="mb-40"></span>
@@ -95,12 +88,12 @@ function Calendar({ showConsent }) {
       )}
 
       <NavBar
-        showCalendar={showCalendar}
-        setShowCalendar={setShowCalendar}
-        showPlans={showPlans}
-        setShowPlans={setShowPlans}
-        showProfil={showProfil}
-        setShowProfil={setShowProfil}
+        showCalendar={activeView === "calendar"}
+        setShowCalendar={() => setActiveView("calendar")}
+        showPlans={activeView === "plans"}
+        setShowPlans={() => setActiveView("plans")}
+        showProfil={activeView === "profil"}
+        setShowProfil={() => setActiveView("profil")}
       />
     </>
   );

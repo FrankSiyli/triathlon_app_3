@@ -9,7 +9,7 @@ const UncheckSvg = () => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-7 h-7 text-fifth/70 hover:text-alert"
+        className="w-7 h-7 text-alert hover:text-alert/30 shadow"
       >
         <path
           strokeLinecap="round"

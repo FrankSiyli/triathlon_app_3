@@ -1,5 +1,5 @@
+"use client";
 import React, { useState } from "react";
-import NewPlanSessionBuildTypes from "../newPlanChooseSessionSource/NewPlanChooseSessionSource";
 import ArrowUpSvg from "@/app/components/SVGs/arrows/ArrowUpSvg";
 import ArrowDownSvg from "@/app/components/SVGs/arrows/ArrowDownSvg";
 import SwimSvg from "@/app/components/SVGs/SwimSvg";
@@ -12,7 +12,6 @@ import OthersSvg from "@/app/components/SVGs/OthersSvg";
 import { newPlanClickedSessionTypeState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeState";
 import { useRecoilState } from "recoil";
 import { newPlanClickedSessionTypeApiState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeApiState";
-import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 
 const sessionTypes = [
   {
@@ -65,7 +64,6 @@ const NewPlanSessionTypes = ({
   error,
   setError,
   setActiveComponent,
-  setShowSessionTypes,
 }) => {
   const [newPlanClickedSessionType, setNewPlanClickedSessionType] =
     useRecoilState(newPlanClickedSessionTypeState);
@@ -86,14 +84,7 @@ const NewPlanSessionTypes = ({
   };
 
   return (
-    <div className="fixed top-0 left-0 z-40 h-screen m-1 bg-lightBlue shadow-xl flex flex-col justify-center">
-      <button
-        onClick={() => setShowSessionTypes(false)}
-        className="absolute top-2 right-2 border border-alert shadow rounded-md mb-20"
-      >
-        <UncheckSvg />
-      </button>
-
+    <>
       {sessionTypes.map((sessionType, sessionTypeIndex) => (
         <div
           key={sessionTypeIndex}
@@ -104,9 +95,9 @@ const NewPlanSessionTypes = ({
               sessionType.api
             )
           }
-          className="flex flex-col shadow-md p-1 m-1 border border-alert/30 rounded-md bg-first"
+          className="flex flex-col shadow-md p-1 my-0.5 rounded-md  bg-fourth/5"
         >
-          <div className="flex min-h-8 w-full items-center justify-between cursor-pointer text-s">
+          <div className="flex min-h-8 w-full items-center justify-between cursor-pointer">
             <span className="ml-2">{sessionType.component}</span>
             <p className="ml-4 text-sm">{sessionType.label}</p>
             {sessionTypeClicked[sessionTypeIndex] ? (
@@ -115,22 +106,10 @@ const NewPlanSessionTypes = ({
               <ArrowDownSvg />
             )}
           </div>
-          {sessionTypeClicked[sessionTypeIndex] && (
-            <div className="w-full mx-auto mt-2 text-sm">
-              <hr className="opacity-10 mx-1" />
-              <NewPlanSessionBuildTypes
-                showAlert={showAlert}
-                setShowAlert={setShowAlert}
-                error={error}
-                setError={setError}
-                setActiveComponent={setActiveComponent}
-              />
-              {/* to NewPlanAppLibrary || NewPlanNewSession || NewPlanMyTemplates*/}
-            </div>
-          )}
+         
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

@@ -13,8 +13,8 @@ import { loggedInUserLastLoadedPlanState } from "./recoil/atoms/user/loggedInUse
 import { getSession } from "next-auth/react";
 import { examplePlan } from "../../database/mockDb";
 import { hasCookie, setCookie } from "cookies-next";
-import PrivacyPolicy from "./(pages)/profil/components/legal/PrivacyPolicy";
-import Calendar from "./(pages)/calendar/Calendar";
+import PrivacyPolicy from "./(pages)/profilPage/components/legal/PrivacyPolicy";
+import Calendar from "./(pages)/calendarPage/Calendar";
 
 export default function Home() {
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
@@ -134,9 +134,7 @@ export default function Home() {
     return (
       <div className="fixed mx-auto z-50 bottom-0 left-0 right-0 flex flex-col gap-3 items-center text-center backdrop-blur-lg px-2 py-2 border border-alert rounded-md max-w-2xl shadow-xl">
         <p className="mt-5">Einfach trainieren mit der Siyli-App</p>
-        <p >
-          Finde deinen Trainingsplan und erreiche deine Ziele 🚀
-        </p>
+        <p>Finde deinen Trainingsplan und erreiche deine Ziele 🚀</p>
         <Image
           priority
           src={logo}

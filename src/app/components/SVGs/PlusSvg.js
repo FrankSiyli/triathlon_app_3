@@ -10,7 +10,7 @@ const PlusSvg = ({ onClick }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6 hover:text-first"
+        className="w-6 h-6 hover:text-alert/30"
       >
         <path
           strokeLinecap="round"

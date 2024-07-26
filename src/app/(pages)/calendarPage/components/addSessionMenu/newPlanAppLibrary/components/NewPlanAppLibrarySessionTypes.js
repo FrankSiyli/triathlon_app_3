@@ -12,6 +12,7 @@ import OthersSvg from "@/app/components/SVGs/OthersSvg";
 import FasciaRollSvg from "@/app/components/SVGs/FasciaRollSvg";
 import YogaSvg from "@/app/components/SVGs/YogaSvg";
 import StabiSvg from "@/app/components/SVGs/StabiSvg";
+import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
 
 const SessionType = ({
   sessionTypes,
@@ -19,6 +20,12 @@ const SessionType = ({
   iconComponent,
   isLoading,
 }) => {
+
+console.log("librarysessiontypes singleSessions", singleSessions)
+
+  const [showAddSessionMenu, setShowAddSessionMenu] =
+  useRecoilState(showAddSessionMenuState);
+
   const [showSingleSessions, setShowSingleSessions] = useState(false);
   const [clickedSessionType, setClickedSessionType] = useState(null);
   const [clickedSingleSession, setClickedSingleSession] = useState(-1);
