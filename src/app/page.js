@@ -14,7 +14,7 @@ import { getSession } from "next-auth/react";
 import { examplePlan } from "../../database/mockDb";
 import { hasCookie, setCookie } from "cookies-next";
 import PrivacyPolicy from "./(pages)/profilPage/components/legal/PrivacyPolicy";
-import Calendar from "./(pages)/calendarPage/Calendar";
+import Calendar from "./(pages)/calendarPage/CalendarPage";
 
 export default function Home() {
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);

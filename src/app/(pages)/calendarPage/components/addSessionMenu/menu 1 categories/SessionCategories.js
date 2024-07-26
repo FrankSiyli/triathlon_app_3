@@ -10,12 +10,12 @@ import StabiSvg from "@/app/components/SVGs/StabiSvg";
 import FasciaRollSvg from "@/app/components/SVGs/FasciaRollSvg";
 import OthersSvg from "@/app/components/SVGs/OthersSvg";
 import { useRecoilState } from "recoil";
-import { newPlanClickedSessionTypeState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeState";
-import { newPlanClickedSessionTypeApiState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeApiState";
 import getActivityBorderColor from "@/app/helperFunctions/getActivityBorderColor";
-import SessionUnderCategories from "./SessionUnderCategories";
+import SessionUnderCategories from "../menu 2 underCategories/SessionUnderCategories";
+import { clickedSessionCategoryState } from "@/app/recoil/atoms/addSession/clickedSessionCategoryState";
+import { clickedSessionCategoryApiState } from "@/app/recoil/atoms/addSession/clickedSessionCategoryApiState";
 
-const sessionTypes = [
+const sessionCategories = [
   {
     type: "swim",
     component: <SwimSvg />,
@@ -60,20 +60,13 @@ const sessionTypes = [
   },
 ];
 
-const NewPlanSessionTypes = ({
-  isLoading,
-  singleSessions,
-  showAlert,
-  setShowAlert,
-  error,
-  setError,
-  setActiveComponent,
-}) => {
-  const [newPlanClickedSessionType, setNewPlanClickedSessionType] =
-    useRecoilState(newPlanClickedSessionTypeState);
-  const [newPlanClickedSessionTypeApi, setNewPlanClickedSessionTypeApi] =
-    useRecoilState(newPlanClickedSessionTypeApiState);
-
+const SessionCategories = ({ isLoading, singleSessions }) => {
+  const [, setNewPlanClickedSessionType] = useRecoilState(
+    clickedSessionCategoryState
+  );
+  const [, setNewPlanClickedSessionTypeApi] = useRecoilState(
+    clickedSessionCategoryApiState
+  );
   const [activeIndex, setActiveIndex] = useState(null);
 
   const handleSessionTypeClick = (index, type, api) => {
@@ -83,17 +76,17 @@ const NewPlanSessionTypes = ({
   };
 
   return (
-    <>
-      {sessionTypes.map((sessionType, index) => (
+    <div>
+      {sessionCategories.map((sessionType, index) => (
         <div
           key={index}
-          className="flex flex-col justify-center items-center p-0.5 w-full"
+          className={`flex flex-col justify-center items-center p-1 w-full ${index === 0 ? 'mt-16' : ''}`}
         >
           <div
             onClick={() =>
               handleSessionTypeClick(index, sessionType.type, sessionType.api)
             }
-            className={`flex w-full items-center justify-between cursor-pointer text-s shadow p-1 m-1 border-alert/30 rounded bg-first border-t-2 ${getActivityBorderColor(
+            className={`flex w-full items-center justify-between cursor-pointer text-s shadow p-1 border-alert/30 rounded bg-first border-t-2 ${getActivityBorderColor(
               sessionType.label
             )}`}
           >
@@ -109,8 +102,8 @@ const NewPlanSessionTypes = ({
           )}
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
-export default NewPlanSessionTypes;
+export default SessionCategories;

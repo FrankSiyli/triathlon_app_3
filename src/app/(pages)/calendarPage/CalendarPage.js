@@ -8,9 +8,9 @@ import PlansView from "../plansPage/PlansView";
 import ProfilView from "../profilPage/ProfilView";
 import Day from "./components/calendar/components/Day";
 import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
-import AppLibrary from "./components/addSessionMenu/NewPlanAppLibrary";
+import Sessions from "./components/addSessionMenu/AddSessionMenu";
 
-function Calendar() {
+function CalendarPage() {
   const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(showAddSessionMenuState);
   const [showCalendar, setShowCalendar] = useState(true);
   const [showPlans, setShowPlans] = useState(false);
@@ -25,40 +25,34 @@ function Calendar() {
 
   const handleBackgroundClick = () => setShowAddSessionMenu(false);
 
-  const renderContent = () => {
-    if (showPlans) return <PlansView />;
-    if (showCalendar && homepagePlan) {
-      return (
-        <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
-          <div className="flex mx-auto text-center bg-lightBlue text-fifth/80 mt-5 mb-5 px-3 py-1 rounded-sm">
-            {homepagePlan?.name}
-          </div>
-          <WeekScrollButtons
-            currentWeek={currentWeek}
-            numberOfPlanWeeks={numberOfPlanWeeks}
-            handlePreviousWeekClick={handlePreviousWeekClick}
-            handleNextWeekClick={handleNextWeekClick}
-          />
-          <div className="flex flex-col sm:flex-row w-full">
-            {currentWeekDays &&
-              Object.entries(currentWeekDays).map(([day, activities], dayIndex) => (
-                <div key={day} className="flex flex-col w-full">
-                  <Day
-                    day={day}
-                    currentWeek={currentWeek}
-                    dayIndex={dayIndex}
-                    activities={activities}
-                    activeDay={activeDay}
-                    setActiveDay={setActiveDay}
-                  />
-                </div>
-              ))}
-          </div>
-        </div>
-      );
-    }
-    if (showProfil) return <ProfilView />;
-  };
+  const renderCalendar = () => (
+    <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
+      <div className="flex mx-auto text-center bg-lightBlue text-fifth/80 mt-5 mb-5 px-3 py-1 rounded-sm">
+        {homepagePlan?.name}
+      </div>
+      <WeekScrollButtons
+        currentWeek={currentWeek}
+        numberOfPlanWeeks={numberOfPlanWeeks}
+        handlePreviousWeekClick={handlePreviousWeekClick}
+        handleNextWeekClick={handleNextWeekClick}
+      />
+      <div className="flex flex-col sm:flex-row w-full">
+        {currentWeekDays &&
+          Object.entries(currentWeekDays).map(([day, activities], dayIndex) => (
+            <div key={day} className="flex flex-col w-full">
+              <Day
+                day={day}
+                currentWeek={currentWeek}
+                dayIndex={dayIndex}
+                activities={activities}
+                activeDay={activeDay}
+                setActiveDay={setActiveDay}
+              />
+            </div>
+          ))}
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -69,9 +63,9 @@ function Calendar() {
         ></div>
       )}
 
-      {renderContent()}
+      {showPlans ? <PlansView /> : showCalendar && homepagePlan ? renderCalendar() : showProfil && <ProfilView />}
 
-      {showAddSessionMenu && <AppLibrary />}
+      {showAddSessionMenu && <Sessions />}
 
       <NavBar
         showCalendar={showCalendar}
@@ -85,4 +79,4 @@ function Calendar() {
   );
 }
 
-export default Calendar;
+export default CalendarPage;

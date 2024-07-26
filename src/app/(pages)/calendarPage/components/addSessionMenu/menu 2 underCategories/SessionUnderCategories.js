@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import BicycleSvg from "@/app/components/SVGs/BicycleSvg";
 import ArrowUpSvg from "@/app/components/SVGs/arrows/ArrowUpSvg";
 import ArrowDownSvg from "@/app/components/SVGs/arrows/ArrowDownSvg";
-import NewPlanAppLibrarySingleSessions from "./NewPlanAppLibrarySingleSessions";
 import ShoeSvg from "@/app/components/SVGs/ShoeSvg";
 import SwimSvg from "@/app/components/SVGs/SwimSvg";
 import OthersSvg from "@/app/components/SVGs/OthersSvg";
 import FasciaRollSvg from "@/app/components/SVGs/FasciaRollSvg";
 import YogaSvg from "@/app/components/SVGs/YogaSvg";
 import StabiSvg from "@/app/components/SVGs/StabiSvg";
-import { newPlanClickedSessionTypeState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeState";
 import { useRecoilState } from "recoil";
+import SingleSessions from "../menu 3 singleSessions/SingleSessions";
+import { clickedSessionCategoryState } from "@/app/recoil/atoms/addSession/clickedSessionCategoryState";
 
 const swimSessionTypes = [
   { name: "500er", sessionType: "swim500er" },
@@ -69,45 +69,49 @@ const sessionTypeData = {
   stabi: { types: StabiSessionTypes, icon: <StabiSvg /> },
 };
 
-const SessionType = ({ sessionTypes, singleSessions, isLoading }) => {
+const SessionType = ({ sessionUnderCategories, singleSessions, isLoading }) => {
   const [showSingleSessions, setShowSingleSessions] = useState(false);
-  const [clickedSessionType, setClickedSessionType] = useState(null);
+  const [clickedSessionUnderCategory, setClickedSessionUnderCategory] = useState(null);
 
-  const handleSessionTypeClick = (index) => {
-    if (clickedSessionType === index) {
-      setShowSingleSessions(!showSingleSessions);
-    } else {
-      setShowSingleSessions(true);
-      setClickedSessionType(index);
-    }
+  const handleSessionUnderCategoryClick = (index) => {
+    setClickedSessionUnderCategory(prevIndex => {
+      if (prevIndex === index) {
+        setShowSingleSessions(prevShow => !prevShow);
+        return index;
+      } else {
+        setShowSingleSessions(true);
+        return index;
+      }
+    });
   };
 
   return (
-    <div className="flex flex-col items-center w-full rounded text-s">
-      {sessionTypes.map((sessionType, index) => (
+    <div className="flex flex-col items-center justify-center w-full rounded text-s">
+      {sessionUnderCategories.map((sessionUnderCategory, index) => (
         <div
           key={index}
-          className="flex flex-col w-full rounded cursor-pointer shadow m-0.5 first:mt-2 last:mb-2"
+          className={`flex flex-col w-full rounded cursor-pointer shadow m-0.5 first:mt-2 last:mb-2 bg-first/60 ${clickedSessionUnderCategory === index && showSingleSessions ? 'border border-alert' : ''}`}
         >
           <div
-            onClick={() => handleSessionTypeClick(index)}
+            onClick={() => handleSessionUnderCategoryClick(index)}
             className="flex justify-between p-1 items-center rounded bg-first/70"
           >
             <span className="border border-alert rounded-full p-0.5 bg-alert"></span>
-            <p>{sessionType.name}</p>
-            {clickedSessionType === index && showSingleSessions ? (
-              <ArrowUpSvg />
+            <p>{sessionUnderCategory.name}</p>
+            {clickedSessionUnderCategory === index && showSingleSessions ? (
+              <span className="mr-1 scale-95"><ArrowUpSvg /></span>
             ) : (
-              <ArrowDownSvg />
+              <span className="mr-1 scale-95"><ArrowDownSvg /></span>
             )}
           </div>
-          {clickedSessionType === index && showSingleSessions && (
+          {clickedSessionUnderCategory === index && showSingleSessions && (
             isLoading ? (
               <span className="loading loading-ring loading-sm m-5"></span>
             ) : (
-              <NewPlanAppLibrarySingleSessions
+              <SingleSessions
                 singleSessions={singleSessions}
-                sessionType={sessionType}
+                sessionUnderCategory={sessionUnderCategory}
+                showSingleSessions={showSingleSessions}
               />
             )
           )}
@@ -118,16 +122,15 @@ const SessionType = ({ sessionTypes, singleSessions, isLoading }) => {
 };
 
 const SessionUnderCategories = ({ singleSessions, isLoading }) => {
-  const [newPlanClickedSessionType] = useRecoilState(newPlanClickedSessionTypeState);
-  const { types, icon } = sessionTypeData[newPlanClickedSessionType] || { types: [], icon: null };
+  const [newPlanClickedSessionUnderCategory] = useRecoilState(clickedSessionCategoryState);
+  const { types, icon } = sessionTypeData[newPlanClickedSessionUnderCategory] || { types: [], icon: null };
 
   return (
     <>
       {icon && (
         <>
-        
           <SessionType
-            sessionTypes={types}
+            sessionUnderCategories={types}
             singleSessions={singleSessions}
             isLoading={isLoading}
           />
