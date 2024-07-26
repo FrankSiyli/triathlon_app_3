@@ -1,29 +1,30 @@
-"use client";
 import React from "react";
-import { userNameState } from "@/app/recoil/atoms/user/userNameState";
 import { useRecoilState } from "recoil";
+import { userNameState } from "@/app/recoil/atoms/user/userNameState";
 
 function NavBar({ setShowCalendar, setShowPlans, setShowProfil, showCalendar, showPlans, showProfil }) {
   const [userName] = useRecoilState(userNameState);
-  const activeStyle = "text-alert shadow border-t scale-105";
-  const nonActiveStyle = "text-fifth/40";
-
-  const handleClick = (calendar, plans, profil) => {
-    setShowCalendar(calendar);
-    setShowPlans(plans);
-    setShowProfil(profil);
-  };
 
   const navItems = [
-    { label: "Kalender", icon: CalendarIcon, isActive: showCalendar, onClick: () => handleClick(true, false, false) },
-    { label: "Pläne", icon: PlansIcon, isActive: showPlans, onClick: () => handleClick(false, true, false) },
-    { label: userName || "Profil", icon: ProfileIcon, isActive: showProfil, onClick: () => handleClick(false, false, true) }
+    { label: "Kalender", Icon: CalendarIcon, isActive: showCalendar, onClick: () => handleClick('calendar') },
+    { label: "Pläne", Icon: PlansIcon, isActive: showPlans, onClick: () => handleClick('plans') },
+    { label: userName || "Profil", Icon: ProfileIcon, isActive: showProfil, onClick: () => handleClick('profile') }
   ];
+
+  const handleClick = (view) => {
+    setShowCalendar(view === 'calendar');
+    setShowPlans(view === 'plans');
+    setShowProfil(view === 'profile');
+  };
 
   return (
     <div className="fixed bottom-0 left-0 w-full flex justify-between h-12 text-xs bg-lightBlue z-30">
-      {navItems.map(({ label, icon: Icon, isActive, onClick }, index) => (
-        <button key={index} onClick={onClick} className={`flex flex-col items-center justify-center w-1/3 ${isActive ? activeStyle : nonActiveStyle}`}>
+      {navItems.map(({ label, Icon, isActive, onClick }, index) => (
+        <button
+          key={index}
+          onClick={onClick}
+          className={`flex flex-col items-center justify-center w-1/3 ${isActive ? "text-alert shadow border-t scale-105" : "text-fifth/40"}`}
+        >
           <Icon className="h-5 w-5" />
           <span className="text-alert">{label}</span>
         </button>

@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import ArrowUpSvg from "@/app/components/SVGs/arrows/ArrowUpSvg";
 import ArrowDownSvg from "@/app/components/SVGs/arrows/ArrowDownSvg";
-import NewPlanAppLibrarySingleSessionParts from "./NewPlanAppLibrarySingleSessionParts";
 import WatchSvg from "@/app/components/SVGs/WatchSvg";
 import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
 import { formatTime } from "@/app/helperFunctions/formatTime";
@@ -13,6 +12,7 @@ import { useRecoilState } from "recoil";
 import { newPlanClickedWeekState } from "@/app/recoil/atoms/planBuilder/newPlanClickedWeekState";
 import { newPlanNumberOfPlanWeeksState } from "@/app/recoil/atoms/planBuilder/newPlanNumberOfPlanWeeks";
 import { newPlanState } from "@/app/recoil/atoms/planBuilder/newPlanState";
+import NewPlanAppLibrarySingleSessionParts from "./NewPlanAppLibrarySingleSessionParts";
 
 const NewPlanAppLibrarySingleSessions = ({ singleSessions, sessionType }) => {
   const [showSessionParts, setShowSessionParts] = useState({});

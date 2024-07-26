@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { newPlanClickedSessionTypeApiState } from "@/app/recoil/atoms/planBuilder/newPlanClickedSessionTypeApiState";
 import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
-import NewPlanSessionTypes from "../newPlanCalendarSessionTypes/NewPlanCalendarSessionTypes";
+import NewPlanSessionTypes from "./NewPlanCalendarSessionTypes";
 
 const AppLibrary = ({ setShowPlans }) => {
   const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(
@@ -57,9 +57,10 @@ const AppLibrary = ({ setShowPlans }) => {
         <UncheckSvg />
       </button>
 
-      <NewPlanSessionTypes isLoading={isLoading} singleSessions={singleSessions} />
-
-      
+      <NewPlanSessionTypes
+        isLoading={isLoading}
+        singleSessions={singleSessions}
+      />
     </div>
   );
 };
