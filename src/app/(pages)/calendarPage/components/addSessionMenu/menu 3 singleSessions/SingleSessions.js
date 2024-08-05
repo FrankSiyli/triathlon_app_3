@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import ArrowUpSvg from "@/app/components/SVGs/arrows/ArrowUpSvg";
 import ArrowDownSvg from "@/app/components/SVGs/arrows/ArrowDownSvg";
@@ -12,14 +11,17 @@ import { useRecoilState } from "recoil";
 import { newPlanNumberOfPlanWeeksState } from "@/app/recoil/atoms/planBuilder/newPlanNumberOfPlanWeeks";
 import { newPlanState } from "@/app/recoil/atoms/planBuilder/newPlanState";
 import SingleSessionParts from "../menu 4 singleSessionParts/SingleSessionParts";
+import { currentHomepagePlanWeekState } from "@/app/recoil/atoms/plans/currentHomepagePlanWeekState";
+import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
 
 const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
   const [showSessionParts, setShowSessionParts] = useState({});
-  const [, setHomepagePlan] = useRecoilState(homepagePlanState);
+  const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [newPlan, setNewPlan] = useRecoilState(newPlanState);
-  const [newPlanNumberOfPlanWeeks] = useRecoilState(
-    newPlanNumberOfPlanWeeksState
-  );
+  const [newPlanNumberOfPlanWeeks] = useRecoilState(newPlanNumberOfPlanWeeksState);
+  const [currentWeek, setCurrentWeek] = useRecoilState(currentHomepagePlanWeekState);
+  const [homepagePlanClickedDay, setHomepagePlanClickedDay] = useRecoilState(homepagePlanClickedDayState);
+
 
   const toggleSessionParts = (index) => {
     setShowSessionParts((prev) => ({
@@ -28,16 +30,44 @@ const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
     }));
   };
 
-  const addSessionToPlan = () => {
-    setNewPlan((prevPlan) => ({
+  const addSessionToPlan = (session) => {
+    if (!homepagePlan || !homepagePlan.weeks || !homepagePlan.weeks[currentWeek]) {
+      console.error("Plan or week structure is not defined properly.");
+      console.error("homepagePlan:", homepagePlan);
+      console.error("currentWeek:", currentWeek);
+      return;
+    }
+  
+    // Get the current week object
+    const currentWeekObj = homepagePlan.weeks[currentWeek];
+    if (!currentWeekObj) {
+      console.error("Current week object is not defined.");
+      return;
+    }
+  
+    // Ensure the day exists in the current week's days
+    const updatedDays = {
+      ...currentWeekObj.days,
+      [homepagePlanClickedDay]: [...(currentWeekObj.days[homepagePlanClickedDay] || []), session],
+    };
+  
+    // Update the week object with the new days
+    const updatedWeek = {
+      ...currentWeekObj,
+      days: updatedDays,
+    };
+  
+    // Return the updated plan with the modified week
+    setHomepagePlan((prevPlan) => ({
       ...prevPlan,
-      weeks: Array.from({ length: newPlanNumberOfPlanWeeks }, () => []),
+      weeks: prevPlan.weeks.map((week, index) =>
+        index === currentWeek ? updatedWeek : week
+      ),
     }));
-    setHomepagePlan({});
   };
-
+  
   return (
-    <div className={`mt-2 flex flex-col items-center `}>
+    <div className={`mt-2 flex flex-col items-center`}>
       {singleSessions
         .filter(
           (session) => session.sessionType === sessionUnderCategory.sessionType
@@ -52,7 +82,6 @@ const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
               <div className="flex justify-between items-center w-full ml-1">
                 <p className="text-s ml-1">{session.description}</p>
                 <span className="mr-3 scale-90">
-                  {" "}
                   {showSessionParts[index] ? <ArrowUpSvg /> : <ArrowDownSvg />}
                 </span>
               </div>
@@ -80,7 +109,7 @@ const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    addSessionToPlan();
+                    addSessionToPlan(session);  // Pass the session to the function
                   }}
                   className="btn btn-sm m-5 mx-auto btn-outline border border-alert text-alert hover:text-alert/30 bg-first"
                 >

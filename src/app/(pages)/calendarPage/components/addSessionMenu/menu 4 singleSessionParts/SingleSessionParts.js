@@ -41,7 +41,7 @@ const SessionPart = ({ sessionPart, title }) => (
 const SingleSessionParts = ({ singleSession }) => (
   <>
     {singleSession.sessionParts.map((sessionPart, index) => (
-      <div key={index}>
+      <div key={index} className="m-5 border border-alert/30 bg-first/60 rounded">
         <SessionPart sessionPart={sessionPart.warmUp} title="Warm Up" />
         <SessionPart sessionPart={sessionPart.main} title="Main" />
         <SessionPart sessionPart={sessionPart.coolDown} title="Cool Down" />

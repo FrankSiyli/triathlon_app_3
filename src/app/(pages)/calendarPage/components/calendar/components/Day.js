@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import WatchSvg from "@/app/components/SVGs/WatchSvg";
 import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
 import PlusSvg from "@/app/components/SVGs/PlusSvg";
 import { formatTime } from "@/app/helperFunctions/formatTime";
 import { calculateTotalDistance } from "@/app/helperFunctions/calculateTotalDistance";
 import { calculateTotalDuration } from "@/app/helperFunctions/calculateTotalDuration";
-import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
-import { useRecoilState } from "recoil";
 import getActivityBorderColor from "@/app/helperFunctions/getActivityBorderColor";
+import { useRecoilState } from "recoil";
+import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import { useOpenOverlay } from "../../../stateHooks/useOpenOverlay";
 import SessionOverlay from "../../sessionOverlay/SessionOverlay";
 import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
+import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
 
-const Day = ({ day, activities, activeDay, setActiveDay }) => {
+const Day = ({ day, activities }) => {
   const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(showAddSessionMenuState);
   const { openOverlay, toggleOverlay } = useOpenOverlay();
-  const [homepagePlan] = useRecoilState(homepagePlanState);
+  const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
+  const [homepagePlanClickedDay, setHomepagePlanClickedDay] = useRecoilState(homepagePlanClickedDayState);
 
   const allDaySessionsDone = activities.every(activity =>
     activity.sessionParts?.every(part =>
@@ -25,7 +27,10 @@ const Day = ({ day, activities, activeDay, setActiveDay }) => {
     )
   );
 
-  const handleAddSessionClick = () => setShowAddSessionMenu(true);
+  const handleAddSessionClick = () => {
+    setHomepagePlanClickedDay(day);
+    setShowAddSessionMenu(true);
+  };
 
   return (
     <>
@@ -35,13 +40,16 @@ const Day = ({ day, activities, activeDay, setActiveDay }) => {
         <div className="ml-1 text-s text-fifth/80">{day}</div>
       </div>
 
-      {activities.length > 0 && activities.map(activity => {
+      {activities.map((activity, index) => {
         const totalDistance = calculateTotalDistance(activity);
         const totalDuration = calculateTotalDuration(activity);
         const isOpen = openOverlay === activity._id.$oid;
 
         return (
-          <div key={activity._id.$oid} className="ml-1  m-1">
+          <div
+            key={`${activity._id.$oid}-${index}`} // Use a combination of activity ID and index for uniqueness
+            className="ml-1 m-1"
+          >
             <div
               className={`cursor-pointer shadow border-t-2 ${getActivityBorderColor(activity.activity)}`}
               onClick={() => !isOpen && toggleOverlay(activity._id.$oid)}
@@ -68,9 +76,10 @@ const Day = ({ day, activities, activeDay, setActiveDay }) => {
             </div>
             {isOpen && (
               <SessionOverlay
+                key={`session-overlay-${activity._id.$oid}-${index}`} // Unique key for SessionOverlay
                 sessionSections={activity.sessionParts}
                 activity={activity}
-                activityIndex={activities.indexOf(activity)}
+                activityIndex={index}
                 openOverlay={openOverlay}
                 toggleOverlay={toggleOverlay}
                 homepagePlan={homepagePlan}

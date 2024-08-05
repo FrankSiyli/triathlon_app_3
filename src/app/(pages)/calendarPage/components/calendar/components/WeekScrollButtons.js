@@ -1,28 +1,34 @@
+import React from "react";
 import ArrowDoubleLeftSvg from "@/app/components/SVGs/arrows/ArrowDoubleLeftSvg";
 import ArrowDoubleRightSvg from "@/app/components/SVGs/arrows/ArrowDoubleRightSvg";
-import React from "react";
 
 const WeekScrollButtons = ({
   currentWeek,
   numberOfPlanWeeks,
   handlePreviousWeekClick,
   handleNextWeekClick,
-}) => (
-  <div className="relative flex justify-between mb-5 items-center mx-10 border border-alert/30 shadow rounded-sm">
-    <button
-      onClick={handlePreviousWeekClick}
-      className="btn btn-sm btn-outline  border border-transparent w-12 flex justify-center items-center hover:bg-transparent hover:border-transparent"
-    >
-      {currentWeek > 0 ? <ArrowDoubleLeftSvg /> : null}
-    </button>
+}) => {
+  return (
+    <div className="relative flex justify-between p-1 mb-5 items-center border border-alert/30 shadow rounded-sm">
+      <button
+        onClick={handlePreviousWeekClick}
+        disabled={currentWeek === 0}
+        className="w-12 flex justify-center items-center"
+      >
+        <ArrowDoubleLeftSvg />
+      </button>
 
-    <p>{`Woche ${currentWeek + 1} | ${numberOfPlanWeeks}`}</p>
-    <button
-      onClick={handleNextWeekClick}
-      className="btn btn-sm btn-outline border border-transparent w-12 flex justify-center items-center hover:bg-transparent hover:border-transparent"
-    >
-      {currentWeek + 1 < numberOfPlanWeeks ? <ArrowDoubleRightSvg /> : null}
-    </button>
-  </div>
-);
+      <p>{`Woche ${currentWeek + 1} | ${numberOfPlanWeeks}`}</p>
+
+      <button
+        onClick={handleNextWeekClick}
+        disabled={currentWeek >= numberOfPlanWeeks - 1}
+        className="w-12 flex justify-center items-center"
+      >
+        <ArrowDoubleRightSvg />
+      </button>
+    </div>
+  );
+};
+
 export default WeekScrollButtons;
