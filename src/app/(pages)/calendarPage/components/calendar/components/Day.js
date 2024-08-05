@@ -47,7 +47,7 @@ const Day = ({ day, activities }) => {
 
         return (
           <div
-            key={`${activity._id.$oid}-${index}`} // Use a combination of activity ID and index for uniqueness
+            key={`${activity._id.$oid}-${index}`} 
             className="ml-1 m-1"
           >
             <div
@@ -76,7 +76,7 @@ const Day = ({ day, activities }) => {
             </div>
             {isOpen && (
               <SessionOverlay
-                key={`session-overlay-${activity._id.$oid}-${index}`} // Unique key for SessionOverlay
+                key={`session-overlay-${activity._id.$oid}-${index}`} 
                 sessionSections={activity.sessionParts}
                 activity={activity}
                 activityIndex={index}
@@ -91,8 +91,8 @@ const Day = ({ day, activities }) => {
       })}
 
       <button
-        className="border border-alert/50 w-7 rounded text-alert ml-1 mb-5 shadow"
-        onClick={handleAddSessionClick}
+        className="border border-alert/50 w-7 rounded text-alert ml-1 -mt-1 mb-5 shadow"
+        onClick={handleAddSessionClick} // to AddSessionMenu
       >
         <PlusSvg />
       </button>

@@ -81,7 +81,6 @@ function CalendarPage() {
     }
   };
 
-  // Add these two functions
   const handlePreviousWeekClick = () => {
     if (currentWeek > 0) {
       setCurrentWeek(currentWeek - 1);

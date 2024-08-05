@@ -16,89 +16,40 @@ import { clickedSessionCategoryState } from "@/app/recoil/atoms/addSession/click
 import { clickedSessionCategoryApiState } from "@/app/recoil/atoms/addSession/clickedSessionCategoryApiState";
 
 const sessionCategories = [
-  {
-    type: "swim",
-    component: <SwimSvg />,
-    label: "Schwimmen",
-    api: "/api/planBuilder/fetchAllSwimSessions",
-  },
-  {
-    type: "bike",
-    component: <BicycleSvg />,
-    label: "Rad",
-    api: "/api/planBuilder/fetchAllBikeSessions",
-  },
-  {
-    type: "run",
-    component: <ShoeSvg />,
-    label: "Laufen",
-    api: "/api/planBuilder/fetchAllRunSessions",
-  },
-  {
-    type: "yoga",
-    component: <YogaSvg />,
-    label: "Yoga",
-    api: "/api/planBuilder/fetchAllYogaSessions",
-  },
-  {
-    type: "stabi",
-    component: <StabiSvg />,
-    label: "Stabi",
-    api: "/api/planBuilder/fetchAllStabiSessions",
-  },
-  {
-    type: "fascia",
-    component: <FasciaRollSvg />,
-    label: "Faszienrolle",
-    api: "/api/planBuilder/fetchAllFasciaSessions",
-  },
-  {
-    type: "others",
-    component: <OthersSvg />,
-    label: "Andere",
-    api: "/api/planBuilder/fetchAllOthersSessions",
-  },
+  { type: "swim", component: <SwimSvg />, label: "Schwimmen", api: "/api/planBuilder/fetchAllSwimSessions" },
+  { type: "bike", component: <BicycleSvg />, label: "Rad", api: "/api/planBuilder/fetchAllBikeSessions" },
+  { type: "run", component: <ShoeSvg />, label: "Laufen", api: "/api/planBuilder/fetchAllRunSessions" },
+  { type: "yoga", component: <YogaSvg />, label: "Yoga", api: "/api/planBuilder/fetchAllYogaSessions" },
+  { type: "stabi", component: <StabiSvg />, label: "Stabi", api: "/api/planBuilder/fetchAllStabiSessions" },
+  { type: "fascia", component: <FasciaRollSvg />, label: "Faszienrolle", api: "/api/planBuilder/fetchAllFasciaSessions" },
+  { type: "others", component: <OthersSvg />, label: "Andere", api: "/api/planBuilder/fetchAllOthersSessions" },
 ];
 
 const SessionCategories = ({ isLoading, singleSessions }) => {
-  const [, setNewPlanClickedSessionType] = useRecoilState(
-    clickedSessionCategoryState
-  );
-  const [, setNewPlanClickedSessionTypeApi] = useRecoilState(
-    clickedSessionCategoryApiState
-  );
+  const [, setClickedSessionType] = useRecoilState(clickedSessionCategoryState);
+  const [, setClickedSessionTypeApi] = useRecoilState(clickedSessionCategoryApiState);
   const [activeIndex, setActiveIndex] = useState(null);
 
-  const handleSessionTypeClick = (index, type, api) => {
-    setActiveIndex((prevIndex) => (prevIndex === index ? null : index));
-    setNewPlanClickedSessionType(type);
-    setNewPlanClickedSessionTypeApi(api);
+  const handleClick = (index, type, api) => {
+    setActiveIndex(prevIndex => (prevIndex === index ? null : index));
+    setClickedSessionType(type);
+    setClickedSessionTypeApi(api);
   };
 
   return (
     <div>
       {sessionCategories.map((sessionType, index) => (
-        <div
-          key={index}
-          className={`flex flex-col justify-center items-center p-1 w-full ${index === 0 ? 'mt-16' : ''}`}
-        >
+        <div key={index} className={`flex flex-col justify-center items-center p-1 w-full ${index === 0 ? 'mt-16' : ''}`}>
           <div
-            onClick={() =>
-              handleSessionTypeClick(index, sessionType.type, sessionType.api)
-            }
-            className={`flex w-full items-center justify-between cursor-pointer text-s shadow p-1 border-alert/30 rounded bg-first border-t-2 ${getActivityBorderColor(
-              sessionType.label
-            )}`}
+            onClick={() => handleClick(index, sessionType.type, sessionType.api)}
+            className={`flex w-full items-center justify-between cursor-pointer text-s shadow p-1 border-alert/30 rounded bg-first border-t-2 ${getActivityBorderColor(sessionType.label)}`}
           >
             <span>{sessionType.component}</span>
             <p>{sessionType.label}</p>
             {activeIndex === index ? <ArrowUpSvg /> : <ArrowDownSvg />}
           </div>
           {activeIndex === index && (
-            <SessionUnderCategories
-              isLoading={isLoading}
-              singleSessions={singleSessions}
-            />
+            <SessionUnderCategories isLoading={isLoading} singleSessions={singleSessions} />
           )}
         </div>
       ))}
