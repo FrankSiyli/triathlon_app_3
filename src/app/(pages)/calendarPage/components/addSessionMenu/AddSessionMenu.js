@@ -9,7 +9,7 @@ const AddSessionMenu = () => {
   const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(showAddSessionMenuState);
   const [singleSessions, setSingleSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [newPlanClickedSessionTypeApi] = useRecoilState(clickedSessionCategoryApiState);
+  const [clickedSessionCategoryApi] = useRecoilState(clickedSessionCategoryApiState);
 
   const menuRef = React.createRef();
 
@@ -17,27 +17,35 @@ const AddSessionMenu = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(newPlanClickedSessionTypeApi);
-        if (response.ok) {
+        const response = await fetch(clickedSessionCategoryApi);
+        const contentType = response.headers.get("content-type");
+  
+        if (response.ok && contentType && contentType.includes("application/json")) {
           const data = await response.json();
           setSingleSessions(data.sessions);
         } else {
           console.error("Failed to fetch sessions. Status:", response.status);
+          const errorText = await response.text(); 
+          console.error("Received response:", errorText);
         }
       } catch (error) {
         console.error("An error occurred:", error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
-
-    fetchData();
-  }, [newPlanClickedSessionTypeApi]);
+  
+    if (clickedSessionCategoryApi) {
+      fetchData();
+    }
+  }, [clickedSessionCategoryApi]);
+  
 
   useEffect(() => {
     if (menuRef.current) {
       menuRef.current.scrollTo(0, 0);
     }
-  }, [newPlanClickedSessionTypeApi]);
+  }, [clickedSessionCategoryApi]);
 
   return (
     <div

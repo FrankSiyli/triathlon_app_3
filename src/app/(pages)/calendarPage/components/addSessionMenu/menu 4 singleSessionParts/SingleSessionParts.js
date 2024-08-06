@@ -24,27 +24,39 @@ const Exercise = ({ exercise }) => (
   </div>
 );
 
-const SessionPart = ({ sessionPart, title }) => (
-  <div className="w-full text-s mt-3 p-1 rounded">
-    <h3 className="text-alert">{title}</h3>
-    {sessionPart.map((partItem, index) => (
-      <div key={index} className="mb-2">
-        <h4 className="mt-2">{partItem.multiplier}x</h4>
-        {partItem.exercises.map((exercise, i) => (
-          <Exercise key={i} exercise={exercise} />
-        ))}
-      </div>
-    ))}
-  </div>
-);
+const SessionPart = ({ sessionPart, title }) => {
+  if (!sessionPart || sessionPart.length === 0) return null;
+
+  return (
+    <div className="w-full text-s mt-3 p-1 rounded">
+      <h3 className="text-alert">{title}</h3>
+      {sessionPart.map((partItem, index) => (
+        <div key={index} className="mb-2">
+          {partItem.multiplier > 1 && (
+            <h4 className="mt-2 text-alert">{partItem.multiplier}x</h4>
+          )}
+          {partItem.exercises.map((exercise, i) => (
+            <Exercise key={i} exercise={exercise} />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const SingleSessionParts = ({ singleSession }) => (
   <>
     {singleSession.sessionParts.map((sessionPart, index) => (
       <div key={index} className="m-5 border border-alert/30 bg-first/60 rounded">
-        <SessionPart sessionPart={sessionPart.warmUp} title="Warm Up" />
-        <SessionPart sessionPart={sessionPart.main} title="Main" />
-        <SessionPart sessionPart={sessionPart.coolDown} title="Cool Down" />
+        {sessionPart.warmUp && sessionPart.warmUp.length > 0 && (
+          <SessionPart sessionPart={sessionPart.warmUp} title="Warm Up" />
+        )}
+        {sessionPart.main && sessionPart.main.length > 0 && (
+          <SessionPart sessionPart={sessionPart.main} title="Main" />
+        )}
+        {sessionPart.coolDown && sessionPart.coolDown.length > 0 && (
+          <SessionPart sessionPart={sessionPart.coolDown} title="Cool Down" />
+        )}
       </div>
     ))}
   </>

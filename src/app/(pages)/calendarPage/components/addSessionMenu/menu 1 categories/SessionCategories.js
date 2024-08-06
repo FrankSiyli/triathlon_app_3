@@ -15,7 +15,7 @@ import SessionUnderCategories from "../menu 2 underCategories/SessionUnderCatego
 import { clickedSessionCategoryState } from "@/app/recoil/atoms/addSession/clickedSessionCategoryState";
 import { clickedSessionCategoryApiState } from "@/app/recoil/atoms/addSession/clickedSessionCategoryApiState";
 
-const sessionCategories = [
+const sessionCategoriesArray = [
   { type: "swim", component: <SwimSvg />, label: "Schwimmen", api: "/api/planBuilder/fetchAllSwimSessions" },
   { type: "bike", component: <BicycleSvg />, label: "Rad", api: "/api/planBuilder/fetchAllBikeSessions" },
   { type: "run", component: <ShoeSvg />, label: "Laufen", api: "/api/planBuilder/fetchAllRunSessions" },
@@ -38,7 +38,7 @@ const SessionCategories = ({ isLoading, singleSessions }) => {
 
   return (
     <div>
-      {sessionCategories.map((sessionType, index) => (
+      {sessionCategoriesArray.map((sessionType, index) => (
         <div key={index} className={`flex flex-col justify-center items-center p-1 w-full ${index === 0 ? 'mt-16' : ''}`}>
           <div
             onClick={() => handleClick(index, sessionType.type, sessionType.api)}
