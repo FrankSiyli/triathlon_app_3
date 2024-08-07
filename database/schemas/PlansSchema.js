@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 mongoose.Promise = global.Promise;
 
-// Define exercise schema
 const exerciseSchema = new Schema({
   name: { type: String, required: true },
   distance: { type: Number, default: 0 },
@@ -12,9 +11,8 @@ const exerciseSchema = new Schema({
   imageLink: { type: String },
 });
 
-// Define session schema
 const sessionSchema = new Schema({
-  _id: { type: Schema.Types.ObjectId, auto: true }, // Automatically generate ID
+  _id: { type: Schema.Types.ObjectId, auto: true },
   activity: { type: String, required: true },
   description: { type: String },
   isDone: { type: Boolean, default: false },
@@ -36,14 +34,13 @@ const sessionSchema = new Schema({
   sessionCategory: { type: String },
 });
 
-// Define plan schema
-const plansSchema = new Schema({
-  _id: { type: Schema.Types.ObjectId, auto: true }, // Automatically generate ID
+const PlansSchema = new Schema({
+  _id: { type: Schema.Types.ObjectId, auto: true }, 
   category: { type: String, required: true },
   name: { type: String, required: true },
   info: { type: String },
   wishFrom: { type: String },
-  duration: { type: Number, required: true }, // Duration in weeks
+  duration: { type: Number, required: true }, 
   weeks: [{
     week: { type: Number, required: true },
     days: {
@@ -58,4 +55,4 @@ const plansSchema = new Schema({
   }],
 });
 
-export { plansSchema };
+export { PlansSchema };

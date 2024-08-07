@@ -23,207 +23,131 @@ import ArrowRightSvg from "@/app/components/SVGs/arrows/ArrowRightSvg";
 
 function ProfilView() {
   const [activeComponent, setActiveComponent] = useState("profil");
-  const [showLogin, setShowLogin] = useState(false);
   const { data: session } = useSession();
+  const currentYear = new Date().getFullYear();
 
-  const handleComponentChange = (component) => {
-    setActiveComponent(component);
-    setShowLogin(false);
+  const renderButton = (label, component, icon) => (
+    <button
+      onClick={() => setActiveComponent(component)}
+      className="flex justify-between w-full max-w-xl shadow hover:shadow-md p-2 rounded-md my-1 transform transition-all duration-300"
+    >
+      <div className="ml-2">{label}</div>
+      {icon || <ArrowRightSvg />}
+    </button>
+  );
+
+  const renderContent = () => {
+    switch (activeComponent) {
+      case "login":
+        return (
+          <Login
+            setShowProfil={() => setActiveComponent("profil")}
+            setShowRegisterForm={() => setActiveComponent("registerForm")}
+          />
+        );
+      case "zones":
+        return <Zones setShowProfil={() => setActiveComponent("profil")} />;
+      case "infos":
+        return (
+          <Infos
+            setShowProfil={() => setActiveComponent("profil")}
+            setShowHeartrateByAge={() => setActiveComponent("heartrateByAge")}
+            setShowHeartrateMax={() => setActiveComponent("heartrateMax")}
+            setShowPowerWatt={() => setActiveComponent("powerWatt")}
+          />
+        );
+      case "wishYouWhat":
+        return (
+          <WishYouWhat setShowProfil={() => setActiveComponent("profil")} />
+        );
+      case "trainingpeaks":
+        return (
+          <Trainingpeaks setShowProfil={() => setActiveComponent("profil")} />
+        );
+      case "myPlans":
+        return <MyPlans setShowProfil={() => setActiveComponent("profil")} />;
+      case "userInfo":
+        return <UserInfo setShowProfil={() => setActiveComponent("profil")} />;
+      case "registerForm":
+        return (
+          <RegisterForm
+            setShowProfil={() => setActiveComponent("profil")}
+            setShowRegisterForm={() => setActiveComponent("login")}
+          />
+        );
+      case "agb":
+        return <Agb setShowProfil={() => setActiveComponent("profil")} />;
+      case "privacyPolicy":
+        return (
+          <PrivacyPolicy setShowProfil={() => setActiveComponent("profil")} />
+        );
+      case "impressum":
+        return <Impressum setShowProfil={() => setActiveComponent("profil")} />;
+      case "heartrateByAge":
+        return (
+          <HeartrateByAge setShowInfos={() => setActiveComponent("infos")} />
+        );
+      case "heartrateMax":
+        return (
+          <HeartrateMax setShowInfos={() => setActiveComponent("infos")} />
+        );
+      case "powerWatt":
+        return <PowerWatt setShowInfos={() => setActiveComponent("infos")} />;
+      default:
+        return renderProfileView();
+    }
   };
 
-  const date = new Date();
-  const currentYear = date.getFullYear();
+  const renderProfileView = () => (
+    <>
+      <div className="flex justify-center mx-auto bg-fourth/10 text-fifth/80 mt-5 mb-5 px-3 py-1 rounded-sm">
+        <span>Willkommen {session?.user.name}</span>
+      </div>
+      <div className="w-full">
+        {!session && renderButton("Anmelden", "login")}
+        {renderButton("Persönliche Kalenderwerte", "zones")}
+        {renderButton("Informationen", "infos")}
+        {renderButton("Wünsch dir was", "wishYouWhat")}
+        {session && renderButton("Meine Pläne", "myPlans")}
+        {session && renderButton("Konto", "userInfo")}
+        {renderButton(
+          "Trainingpeaks",
+          "trainingpeaks",
+          <Image
+            alt="trainingpeaks"
+            className="w-auto h-7"
+            src={trainingpeaksLogo}
+          />
+        )}
+        <Image
+          priority
+          src={logo}
+          alt="logo"
+          className="mx-auto w-40 mt-20"
+          width={200}
+          height={200}
+        />
+        <Link
+          target="_blank"
+          href="https://www.instagram.com/siyli_app.de"
+          className="relative flex text-center justify-center items-center m-10 border border-first w-8 h-8 rounded-md cursor-pointer shadow-sm"
+        >
+          <span className="absolute top-1 right-1 border border-first rounded-full w-1 h-1 shadow-xl bounce-point"></span>
+          <span className="border border-first rounded-full w-4 h-4 shadow-xl"></span>
+        </Link>
+        {renderButton("Impressum", "impressum")}
+       {/* {renderButton("AGB", "agb")} */}
+        {renderButton("Datenschutz", "privacyPolicy")}
+        <div className="my-5 text-center flex justify-center">
+          © Siyli-endurance-coaching 2022-{currentYear}
+        </div>
+      </div>
+    </>
+  );
 
   return (
-    <div className="flex flex-col items-center gap-2 max-w-xl">
-      {activeComponent === "profil" && (
-        <>
-          <Image
-            className="absolute top-0 right-0 h-16 w-full z-10 object-cover object-top opacity-50"
-            src="/images/triathlonImage_2.jpg"
-            alt="sport image"
-            quality={100}
-            priority
-            width={600}
-            height={600}
-          />
-          <div className="h-16 absolute right-0 top-0 w-full  bg-gradient-to-b from-transparent via-transparent via-80% to-first z-10"></div>
-
-          <div className="flex items-center mx-auto text-center border border-sixth/50 mt-11 mb-10 px-3 py-1 z-20 rounded-md backdrop-blur-sm shadow-xl">
-            <span>Willkommen {session?.user.name}</span>
-          </div>
-
-          {!session && (
-            <button
-              onClick={() => handleComponentChange("login")}
-              className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md my-1 "
-            >
-              <div className="ml-5">Anmelden</div>
-              <ArrowRightSvg />
-            </button>
-          )}
-
-          <button
-            onClick={() => handleComponentChange("zones")}
-            className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1 "
-          >
-            <div className="ml-5">Persönliche Kalenderwerte</div>
-            <ArrowRightSvg />
-          </button>
-
-          <button
-            onClick={() => handleComponentChange("infos")}
-            className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1 "
-          >
-            <div className="ml-5">Informationen</div>
-            <ArrowRightSvg />
-          </button>
-
-          <button
-            onClick={() => handleComponentChange("wishYouWhat")}
-            className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1 "
-          >
-            <div className="ml-5">Wünsch dir was</div>
-            <ArrowRightSvg />
-          </button>
-
-          {session && (
-            <button
-              onClick={() => handleComponentChange("myPlans")}
-              className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md my-1 "
-            >
-              <div className="ml-5">Meine Pläne</div>
-              <ArrowRightSvg />
-            </button>
-          )}
-
-          {session && (
-            <button
-              onClick={() => handleComponentChange("userInfo")}
-              className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1 "
-            >
-              <div className="ml-5">Konto</div>
-              <ArrowRightSvg />
-            </button>
-          )}
-
-          <button
-            onClick={() => handleComponentChange("trainingpeaks")}
-            className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1"
-          >
-            <div className="ml-5  bg-first rounded-md">
-              <Image
-                alt="trainingpeaks"
-                className="w-auto h-7 "
-                src={trainingpeaksLogo}
-              />
-            </div>
-            <ArrowRightSvg />
-          </button>
-
-         
-        </>
-      )}
-      {activeComponent === "heartrateByAge" && (
-        <HeartrateByAge setShowInfos={() => handleComponentChange("infos")} />
-      )}
-      {activeComponent === "heartrateMax" && (
-        <HeartrateMax setShowInfos={() => handleComponentChange("infos")} />
-      )}
-      {activeComponent === "powerWatt" && (
-        <PowerWatt setShowInfos={() => handleComponentChange("infos")} />
-      )}
-      {activeComponent === "login" && (
-        <Login
-          setShowProfil={() => handleComponentChange("profil")}
-          setShowRegisterForm={() => handleComponentChange("registerForm")}
-        />
-      )}
-      {activeComponent === "zones" && (
-        <Zones setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "infos" && (
-        <Infos
-          setShowProfil={() => handleComponentChange("profil")}
-          setShowHeartrateByAge={() => handleComponentChange("heartrateByAge")}
-          setShowHeartrateMax={() => handleComponentChange("heartrateMax")}
-          setShowPowerWatt={() => handleComponentChange("powerWatt")}
-        />
-      )}
-      {activeComponent === "wishYouWhat" && (
-        <WishYouWhat setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "trainingpeaks" && (
-        <Trainingpeaks setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "myPlans" && (
-        <MyPlans setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "userInfo" && (
-        <UserInfo setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "appUpdates" && (
-        <AppUpdates setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "registerForm" && (
-        <RegisterForm
-          setShowProfil={() => handleComponentChange("profil")}
-          setShowRegisterForm={setShowLogin}
-        />
-      )}
-      {activeComponent === "agb" && (
-        <Agb setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "impressum" && (
-        <Impressum setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "privacyPolicy" && (
-        <PrivacyPolicy setShowProfil={() => handleComponentChange("profil")} />
-      )}
-      {activeComponent === "profil" && (
-        <>
-          <Image
-            priority
-            src={logo}
-            alt="logo"
-            className="mx-auto w-40 mt-20"
-            width={100}
-            height={100}
-          />
-          <Link
-            target="_blank"
-            href="https://www.instagram.com/siyli_app.de?igshid=OGQ5ZDc2ODk2ZA%3D%3D&utm_source=qr"
-            className="relative flex text-center justify-center items-center m-10 border border-first w-8 h-8 rounded-md cursor-pointer shadow-sm"
-          >
-            <span className="absolute top-1 right-1 border border-first rounded-full w-1 h-1 shadow-xl bounce-point "></span>
-            <span className="border border-first rounded-full w-4 h-4  shadow-xl"></span>
-          </Link>
-          <button
-            onClick={() => handleComponentChange("impressum")}
-            className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1 "
-          >
-            <div className="ml-5">Impressum</div>
-            <ArrowRightSvg />
-          </button>
-          <button
-            onClick={() => handleComponentChange("agb")}
-            className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1 "
-          >
-            <div className="ml-5">AGB</div>
-            <ArrowRightSvg />
-          </button>
-          <button
-            onClick={() => handleComponentChange("privacyPolicy")}
-            className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1 "
-          >
-            <div className="ml-5">Datenschutz</div>
-            <ArrowRightSvg />
-          </button>
-          <div className="my-5 text-center flex  justify-center">
-            © Siyli-endurance-coaching 2022-{currentYear}{" "}
-          </div>{" "}
-        </>
-      )}
+    <div className="flex flex-col items-center justify-center w-screen mx-auto gap-2 max-w-xl">
+      {renderContent()}
     </div>
   );
 }

@@ -35,7 +35,7 @@ const Day = ({ day, activities }) => {
   return (
     <>
       <div
-        className={`shadow-md bg-fourth/10 py-1 mb-1 ${allDaySessionsDone ? "border-l-2 border-r-2 border-green" : ""}`}
+        className={`shadow-md bg-fourth/10 py-1 mb-3 ${allDaySessionsDone ? "border-l-2 border-r-2 border-green" : ""}`}
       >
         <div className="ml-1 text-s text-fifth/80">{day}</div>
       </div>
@@ -48,7 +48,7 @@ const Day = ({ day, activities }) => {
         return (
           <div
             key={`${activity._id.$oid}-${index}`} 
-            className="ml-1 m-1"
+            className="mx-1"
           >
             <div
               className={`cursor-pointer shadow border-t-2 ${getActivityBorderColor(activity.activity)}`}
@@ -91,8 +91,8 @@ const Day = ({ day, activities }) => {
       })}
 
       <button
-        className="border border-alert/50 w-7 rounded text-alert ml-1 -mt-1 mb-5 shadow"
-        onClick={handleAddSessionClick} // to AddSessionMenu
+        className="border border-alert/50 w-7 rounded text-alert ml-1 mb-5 shadow"
+        onClick={handleAddSessionClick} // opens AddSessionMenu
       >
         <PlusSvg />
       </button>

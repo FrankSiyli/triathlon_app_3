@@ -6,7 +6,36 @@ import ArrowRightSvg from "@/app/components/SVGs/arrows/ArrowRightSvg";
 import { useRecoilState } from "recoil";
 import { activeComponentState } from "@/app/recoil/atoms/activeComponentState";
 
-function PlansView() {
+const planTypes = [
+  {
+    type: "triathlonPlans",
+    name: "Triathlon",
+    imageSrc: "/images/triathlonImage.jpg",
+    apiEndpoint: "/api/trainingPlans/fetchTriathlonPlans",
+  },
+  {
+    type: "runPlans",
+    name: "Laufen",
+    imageSrc: "/images/runImage.jpg",
+    apiEndpoint: "/api/trainingPlans/fetchRunPlans",
+  },
+  {
+    type: "swimPlans",
+    name: "Schwimmen",
+    imageSrc: "/images/swimImage.jpg",
+    apiEndpoint: "/api/trainingPlans/fetchSwimPlans",
+  },
+  {
+    type: "planBuilder",
+    name: "Plan erstellen",
+    subTitle: "Feature ist in Arbeit",
+    imageSrc: "/images/planBuilderImage.jpg",
+  },
+];
+
+const PlansView = () => {
+  const [hoveredConsumableId, setHoveredConsumableId] = useState(null);
+
   const [activeComponent, setActiveComponent] =
     useRecoilState(activeComponentState);
 
@@ -14,94 +43,72 @@ function PlansView() {
     setActiveComponent(planType);
   };
 
-  const planTypes = [
-    {
-      type: "triathlonPlans",
-      name: "Triathlon",
-      imageSrc: "/images/triathlonImage.jpg",
-    },
-    {
-      type: "runPlans",
-      name: "Laufen",
-      imageSrc: "/images/runImage.jpg",
-    },
-    {
-      type: "swimPlans",
-      name: "Schwimmen",
-      imageSrc: "/images/swimImage.jpg",
-    },
-    {
-      type: "planBuilder",
-      name: "Plan erstellen",
-      subTitle: "Feature ist in Arbeit",
-      imageSrc: "/images/planBuilderImage.jpg",
-    },
-  ];
+  const renderPlanButton = ({ type, name, imageSrc, subTitle }) => (
+    <button
+      key={type}
+      onMouseEnter={() => setHoveredConsumableId(type)}
+      onMouseLeave={() => setHoveredConsumableId(null)}
+      className="flex justify-center items-center w-full max-w-xl h-10 shadow hover:shadow-md rounded-md my-1 transform transition-all duration-300"
+      onClick={() => handlePlanTypeClick(type)}
+    >
+      <div className="absolute top-0 left-0 flex items-center overflow-hidden">
+        <Image
+          src={imageSrc}
+          alt={name}
+          width={640}
+          height={360}
+          className={`h-10 w-16 rounded shadow transform transition-transform duration-300 ${
+            hoveredConsumableId === type ? "scale-150" : ""
+          }`}
+        />
+        <div className="h-10 absolute left-0 top-0 w-16 bg-gradient-to-r from-transparent via-transparent via-80% to-first z-40"></div>
+      </div>
+      <div className="flex flex-row ml-5">
+        <p className="relative">
+          {name}{" "}
+          {subTitle && (
+            <p className="absolute bottom-2 -right-28 text-alert text-xs">
+              {subTitle}
+            </p>
+          )}
+        </p>
+      </div>
+      <div className="absolute top- right-0">
+        <ArrowRightSvg />
+      </div>
+    </button>
+  );
+
+  const renderPlanComponent = (type, title, apiEndpoint, image) => (
+    <PlanComponent
+      key={type}
+      title={title}
+      apiEndpoint={apiEndpoint}
+      setShowPlans={() => handlePlanTypeClick("plans")}
+      image={image}
+    />
+  );
 
   return (
     <>
       {activeComponent === "plans" && (
-        <div>
-          <span className="flex justify-center bg-lightBlue text-fifth/80 my-5 px-3 py-1 z-20 rounded-sm">
+        <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
+          <span className="flex mx-auto text-center bg-fourth/10 text-fifth/80 my-5 px-3 py-1 z-20 rounded-sm">
             Trainingspläne
           </span>
 
-          <div className=" h-auto w-full overflow-y-auto max-h-screen ">
-            {planTypes.map((planType) => (
-              <button
-                key={planType.type}
-                className="relative flex justify-between items-center h-12 w-full max-w-xl shadow p-2 rounded-md  my-1 "
-                onClick={() => handlePlanTypeClick(planType.type)}
-              >
-                <div>
-                  <Image
-                    className="h-12 object-cover absolute left-0 top-0 rounded-l-sm"
-                    src={planType.imageSrc}
-                    alt="siyli app"
-                    width={80}
-                    height={80}
-                  />
-                  <div className="h-12 absolute left-0 top-0 w-20  bg-gradient-to-r from-transparent via-transparent via-80% to-first z-40"></div>
-                </div>
-                <div className="flex flex-col">
-                  <p className="ml-5"> {planType.name}</p>
-                  <p className="ml-5 text-alert text-xs">
-                    {" "}
-                    {planType.subTitle}
-                  </p>
-                </div>
-                <ArrowRightSvg />
-              </button>
-            ))}
+          <div className="h-auto w-full flex flex-col items-center overflow-y-auto max-h-screen">
+            {planTypes.map(renderPlanButton)}
           </div>
         </div>
       )}
 
-      {activeComponent === "runPlans" && (
-        <PlanComponent
-          title="Laufpläne"
-          apiEndpoint="/api/trainingPlans/fetchRunPlans"
-          setShowPlans={() => handlePlanTypeClick("plans")}
-          image="/images/runImage.jpg"
-        />
-      )}
+      {planTypes
+        .filter((plan) => plan.type === activeComponent)
+        .map(({ type, name, apiEndpoint, imageSrc }) =>
+          renderPlanComponent(type, `${name}`, apiEndpoint, imageSrc)
+        )}
 
-      {activeComponent === "swimPlans" && (
-        <PlanComponent
-          title="Schwimmpläne"
-          apiEndpoint="/api/trainingPlans/fetchSwimPlans"
-          setShowPlans={() => handlePlanTypeClick("plans")}
-          image="/images/swimImage.jpg"
-        />
-      )}
-      {activeComponent === "triathlonPlans" && (
-        <PlanComponent
-          title="Triathlonpläne"
-          apiEndpoint="/api/trainingPlans/fetchTriathlonPlans"
-          setShowPlans={() => handlePlanTypeClick("plans")}
-          image="/images/triathlonImage.jpg"
-        />
-      )}
       {activeComponent === "planBuilder" && (
         <PlanBuilder
           title="Plan erstellen"
@@ -109,6 +116,7 @@ function PlansView() {
           image="/images/planBuilderImage.jpg"
         />
       )}
+
       {activeComponent === "newPlan" && (
         <NewPlan
           title="Plan erstellen"
@@ -116,9 +124,8 @@ function PlansView() {
           image="/images/planBuilderImage.jpg"
         />
       )}
-      
     </>
   );
-}
+};
 
 export default PlansView;

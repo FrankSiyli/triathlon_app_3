@@ -45,15 +45,15 @@ body {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   color: #1e1f22;
-  background: rgb(0,163,177);
-  background: linear-gradient(150deg, #dfecee 0%, rgba(245,244,245,1) 40%);  white-space: pre-line;
+  background: rgb(0, 163, 177);
+  background: linear-gradient(150deg, #dfecee 0%, rgba(245, 244, 245, 1) 40%);
+  white-space: pre-line;
   vertical-align: bottom;
 }
 
 button:hover {
   background: none !important;
 }
-
 
 @media print {
   html,
@@ -163,35 +163,48 @@ button:hover {
 
 /*----------------tables----------------------*/
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0a1120;
+  -webkit-box-shadow: 0 0 0px 1000px #f5f4f5 inset;
+}
+
 input[type="number"] {
-  background-color: #0a112079;
+  background-color: #f5f4f5;
   border: 1px #00a3b1 solid;
   text-align: center;
 }
 
 input[type="text"] {
-  background-color: #0a112079;
+  background-color: #f5f4f5;
   border: 1px #00a3b1 solid;
   text-align: center;
 }
 
 input[type="time"] {
-  background-color: #0a112079;
+  background-color: #f5f4f5;
   border: 1px #00a3b1 solid;
   text-align: center;
 }
 input[type="string"] {
-  background-color: #0a112079;
+  background-color: #f5f4f5;
   border: 1px #00a3b1 solid;
   text-align: center;
 }
 input[type="email"] {
-  background-color: #0a112079;
+  background-color: #f5f4f5;
   border: 1px #00a3b1 solid;
   text-align: center;
 }
 input[type="password"] {
-  background-color: #0a112079;
+  background-color: #f5f4f5;
   border: 1px #00a3b1 solid;
   text-align: center;
 }
@@ -200,7 +213,6 @@ textarea {
   padding: 10px;
   font-size: 16px;
   line-height: 1.5;
-  color: white;
   resize: vertical;
 }
 
@@ -234,6 +246,3 @@ tr {
 #zone5 {
   background-color: rgba(255, 0, 0, 0.7);
 }
-
-
-

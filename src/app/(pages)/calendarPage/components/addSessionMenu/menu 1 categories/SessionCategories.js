@@ -16,13 +16,13 @@ import { clickedSessionCategoryState } from "@/app/recoil/atoms/addSession/click
 import { clickedSessionCategoryApiState } from "@/app/recoil/atoms/addSession/clickedSessionCategoryApiState";
 
 const sessionCategoriesArray = [
-  { type: "swim", component: <SwimSvg />, label: "Schwimmen", api: "/api/planBuilder/fetchAllSwimSessions" },
-  { type: "bike", component: <BicycleSvg />, label: "Rad", api: "/api/planBuilder/fetchAllBikeSessions" },
-  { type: "run", component: <ShoeSvg />, label: "Laufen", api: "/api/planBuilder/fetchAllRunSessions" },
-  { type: "yoga", component: <YogaSvg />, label: "Yoga", api: "/api/planBuilder/fetchAllYogaSessions" },
-  { type: "stabi", component: <StabiSvg />, label: "Stabi", api: "/api/planBuilder/fetchAllStabiSessions" },
-  { type: "fascia", component: <FasciaRollSvg />, label: "Faszienrolle", api: "/api/planBuilder/fetchAllFasciaSessions" },
-  { type: "others", component: <OthersSvg />, label: "Andere", api: "/api/planBuilder/fetchAllOthersSessions" },
+  { type: "swim", component: <SwimSvg />, label: "Schwimmen", api: "/api/addSessions/fetchAllSwimSessions" },
+  { type: "bike", component: <BicycleSvg />, label: "Rad", api: "/api/addSessions/fetchAllBikeSessions" },
+  { type: "run", component: <ShoeSvg />, label: "Laufen", api: "/api/addSessions/fetchAllRunSessions" },
+  { type: "yoga", component: <YogaSvg />, label: "Yoga", api: "/api/addSessions/fetchAllYogaSessions" },
+  { type: "stabi", component: <StabiSvg />, label: "Stabi", api: "/api/addSessions/fetchAllStabiSessions" },
+  { type: "fascia", component: <FasciaRollSvg />, label: "Faszienrolle", api: "/api/planaddSessionsBuilder/fetchAllFasciaSessions" },
+  { type: "others", component: <OthersSvg />, label: "Andere", api: "/api/addSessions/fetchAllOthersSessions" },
 ];
 
 const SessionCategories = ({ isLoading, singleSessions }) => {
