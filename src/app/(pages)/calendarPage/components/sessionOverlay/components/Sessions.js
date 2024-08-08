@@ -31,12 +31,12 @@ const Sessions = ({
   const savedHrMax = useRecoilValue(savedHrMaxState);
   const savedWattValue = useRecoilValue(savedWattState);
   const [wattIsActive, setWattIsActive] = useRecoilState(wattIsActiveState);
-
   const [openWarmUpImage, setOpenWarmUpImage] = useState(null);
   const [openMainImage, setOpenMainImage] = useState(null);
   const [openCoolDownImage, setOpenCoolDownImage] = useState(null);
   const [loggedInUserLastLoadedPlan, setLoggedInUserLastLoadedPlan] =
     useRecoilState(loggedInUserLastLoadedPlanState);
+
   const handleWattClick = () => {
     setWattIsActive(!wattIsActive);
   };
@@ -65,12 +65,10 @@ const Sessions = ({
             headers: {
               "Content-Type": "application/json",
             },
-
             body: JSON.stringify({
               email: userEmail,
               planId: planId,
-              week: currentWeek,
-              session: activity[4],
+              session: activity, // Ensure activity is correctly referenced
             }),
           }
         );
@@ -81,8 +79,8 @@ const Sessions = ({
       } catch (error) {
         console.error("User update error:", error);
       }
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const renderExercises = (exercises, openImageState, setOpenImageState) => {
@@ -162,7 +160,7 @@ const Sessions = ({
     ));
   };
 
-  if (!Array.isArray(activity.sessionParts)) return null;
+  if (!activity.sessionParts || typeof activity.sessionParts !== 'object') return null;
 
   return (
     <>
@@ -177,26 +175,20 @@ const Sessions = ({
 
           <button
             onClick={handleIsDoneClick}
-            className="btn btn-ghost btn-sm border border-transparent "
+            className="btn btn-ghost btn-sm border border-transparent"
           >
-            {isLoading && (
+            {isLoading ? (
               <div className="flex justify-center items-center border border-alert rounded-md w-7 h-7">
                 <span className="loading loading-ring loading-xs"></span>
               </div>
-            )}
-            {!isLoading && !activity.isDone && (
+            ) : (
               <div className="border border-alert rounded-md">
-                <CheckSvg />
-              </div>
-            )}
-            {!isLoading && activity.isDone && (
-              <div className="border border-alert rounded-md ">
-                <UncheckSvg />
+                {activity.isDone ? <UncheckSvg /> : <CheckSvg />}
               </div>
             )}
           </button>
 
-          {activity.activity === "Rad" ? (
+          {activity.activity === "Rad" && (
             <button
               onClick={handleWattClick}
               className="flex justify-center items-center text-sm m-3 border border-alert rounded-md"
@@ -209,89 +201,67 @@ const Sessions = ({
                 Puls
               </span>
             </button>
-          ) : null}
+          )}
         </div>
         <div className="w-full h-auto text-s text-right">
           <p className="px-1">{activity.activity}</p>
           <p className="px-1">{activity.description}</p>
           <div className="mt-3">
-            {totalDistance > 0 ? (
+            {totalDistance > 0 && (
               <div className="flex justify-end text-xs px-1 -mb-2">
-                <div className="flex items-center">
-                  <DistanceSvg />
-                </div>
+                <DistanceSvg />
                 {totalDistance}m
               </div>
-            ) : null}
-            {totalDistance > 0 && totalDuration > 0 ? (
+            )}
+            {totalDistance > 0 && totalDuration > 0 && (
               <span className="mr-5 text-xs">+</span>
-            ) : null}
-            {totalDuration > 0 ? (
+            )}
+            {totalDuration > 0 && (
               <div className="flex justify-end text-xs items-center px-1 -mt-1">
                 <WatchSvg />
                 {formatTime(totalDuration)}
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       </div>
-      <hr
-        className={`m-3  ${activity.isDone ? "text-green" : "opacity-5"}`}
-      ></hr>
 
-      {activity.sessionParts.map((sessionSections, sessionSectionsIndex) => {
-        return (
-          <div key={sessionSectionsIndex} className="text-s">
-            {sessionSections.warmUp && sessionSections.warmUp.length > 0 && (
-              <div>
-                <p className="text-left bg-fourth/10 p-1">Warm Up</p>
-                {renderExercises(
-                  sessionSections.warmUp[0]?.exercises,
-                  openWarmUpImage,
-                  setOpenWarmUpImage
-                )}
-              </div>
-            )}
-            {sessionSections.main && sessionSections.main.length > 0 && (
-              <div>
-                <p className="text-left bg-fourth/10 p-1">Hauptteil</p>
-                {renderExercises(
-                  sessionSections.main[0]?.exercises,
-                  openMainImage,
-                  setOpenMainImage
-                )}
-              </div>
-            )}
-            {sessionSections.coolDown &&
-              sessionSections.coolDown.length > 0 && (
-                <div>
-                  <p className="text-left bg-fourth/10 p-1">Cool Down</p>
-                  {renderExercises(
-                    sessionSections.coolDown[0]?.exercises,
-                    openCoolDownImage,
-                    setOpenCoolDownImage
-                  )}
-                </div>
+      <hr className={`m-3 ${activity.isDone ? "text-green" : "opacity-5"}`}></hr>
+
+      {Object.entries(activity.sessionParts).map(([key, sessionSections]) => (
+        <div key={key} className="text-s">
+          {sessionSections.warmUp && sessionSections.warmUp.length > 0 && (
+            <div>
+              <p className="text-left bg-fourth/10 p-1">Warm Up</p>
+              {renderExercises(
+                sessionSections.warmUp[0]?.exercises,
+                openWarmUpImage,
+                setOpenWarmUpImage
               )}
-          </div>
-        );
-      })}
-
-      <hr className="m-3 opacity-20 "></hr>
-      <div className="flex flex-col  items-center">
-        <button
-          className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert shadow text-fifth/70"
-          onClick={handleViewClick}
-        >
-          Druckversion
-        </button>
-        <button
-          onClick={() => toggleOverlay(activity.id)}
-          className="border border-alert shadow rounded-md mb-20"
-        >
-          <UncheckSvg />
-        </button>
-      </div>
+            </div>
+          )}
+          {sessionSections.main && sessionSections.main.length > 0 && (
+            <div>
+              <p className="text-left bg-fourth/10 p-1">Hauptteil</p>
+              {renderExercises(
+                sessionSections.main[0]?.exercises,
+                openMainImage,
+                setOpenMainImage
+              )}
+            </div>
+          )}
+          {sessionSections.coolDown && sessionSections.coolDown.length > 0 && (
+            <div>
+              <p className="text-left bg-fourth/10 p-1">Cool Down</p>
+              {renderExercises(
+                sessionSections.coolDown[0]?.exercises,
+                openCoolDownImage,
+                setOpenCoolDownImage
+              )}
+            </div>
+          )}
+        </div>
+      ))}
     </>
   );
 };

@@ -19,13 +19,14 @@ const Day = ({ day, activities }) => {
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [homepagePlanClickedDay, setHomepagePlanClickedDay] = useRecoilState(homepagePlanClickedDayState);
 
-  const allDaySessionsDone = activities.every(activity =>
-    activity.sessionParts?.every(part =>
-      ["warmUp", "main", "coolDown"].every(partType =>
-        part[partType]?.every(session => session.isDone)
-      )
-    )
-  );
+  const allDaySessionsDone = activities.every(activity => {
+    // Ensure sessionParts is an object and contains the expected keys
+    const sessionParts = activity.sessionParts || {};
+    return ["warmUp", "main", "coolDown"].every(partType => {
+      const parts = sessionParts[partType] || [];
+      return Array.isArray(parts) && parts.every(session => session.isDone);
+    });
+  });
 
   const handleAddSessionClick = () => {
     setHomepagePlanClickedDay(day);

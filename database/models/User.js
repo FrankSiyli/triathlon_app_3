@@ -1,4 +1,6 @@
 import mongoose, { Schema, models } from "mongoose";
+import { PlansSchema } from "../schemas/PlansSchema";
+
 
 const UserSchema = new Schema(
   {
@@ -9,80 +11,13 @@ const UserSchema = new Schema(
     email: {
       type: String,
       required: true,
+      unique: true, 
     },
     password: {
       type: String,
       required: true,
     },
-    trainingPlans: [
-      {
-        _id: Schema.Types.ObjectId,
-        category: String,
-        name: String,
-        info: String,
-        wishFrom: String,
-        duration: Number,
-        weeks: [
-          {
-            week: Number,
-            sessions: [
-              {
-                day: String,
-                activity: String,
-                description: String,
-                isDone: Boolean,
-                sessionParts: [
-                  {
-                    warmUp: [
-                      {
-                        multiplier: Number,
-                        exercises: [
-                          {
-                            name: String,
-                            distance: Number,
-                            duration: Number,
-                            zone: String,
-                            imageLink: String,
-                          },
-                        ],
-                      },
-                    ],
-                    main: [
-                      {
-                        multiplier: Number,
-                        exercises: [
-                          {
-                            name: String,
-                            distance: Number,
-                            duration: Number,
-                            zone: String,
-                            imageLink: String,
-                          },
-                        ],
-                      },
-                    ],
-                    coolDown: [
-                      {
-                        multiplier: Number,
-                        exercises: [
-                          {
-                            name: String,
-                            distance: Number,
-                            duration: Number,
-                            zone: String,
-                            imageLink: String,
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    trainingPlans: [PlansSchema],
     heartRate: {
       type: Number,
       default: 160,
@@ -105,7 +40,7 @@ const UserSchema = new Schema(
     },
     forgotPasswordTokenExpiry: {
       type: Date,
-      default: "",
+      default: null, // Use null instead of empty string
     },
     verifyToken: {
       type: String,
@@ -113,12 +48,13 @@ const UserSchema = new Schema(
     },
     verifyTokenExpiry: {
       type: Date,
-      default: "",
+      default: null, // Use null instead of empty string
     },
   },
-  { timestamps: true }
+  { timestamps: true } // Automatically handles createdAt and updatedAt
 );
 
-const User = models?.User || mongoose.model("User", UserSchema);
+// Create and export User model
+const User = models.User || mongoose.model("User", UserSchema);
 
 export default User;

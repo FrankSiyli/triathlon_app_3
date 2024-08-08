@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import PrintSessions from "./components/PrintSessions";
 import Sessions from "./components/Sessions";
-import calculateTotalDistance from "../../logicFunctions/totalDistanceFunction";
-import calculateTotalDuration from "../../logicFunctions/totalDurationFunction";
 import NavBar from "@/app/components/NavBar/NavBar";
 import Alert from "@/app/components/Alerts/Alert";
 import getActivityBorderColor from "@/app/helperFunctions/getActivityBorderColor";
+import { calculateTotalDistance } from "@/app/helperFunctions/calculateTotalDistance";
+import { calculateTotalDuration } from "@/app/helperFunctions/calculateTotalDuration";
 
 const SessionOverlay = ({
   sessionSections,

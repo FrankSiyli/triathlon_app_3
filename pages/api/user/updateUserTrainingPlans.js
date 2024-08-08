@@ -4,17 +4,20 @@ import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
   await dbConnect();
+  console.log("Database connected");
 
   if (req.method === "POST") {
     try {
       const { email, trainingPlans, id } = req.body;
+      console.log("Request payload:", req.body);
+
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
 
-      const existingTrainingPlanIds = user.trainingPlans.map((plan) => plan.id);
-      if (!existingTrainingPlanIds.includes(id)) {
+      const existingTrainingPlanIds = user.trainingPlans.map((plan) => plan.id.toString());
+      if (!existingTrainingPlanIds.includes(id.toString())) {
         const hasId = trainingPlans.id;
         if (!hasId) {
           const newId = new ObjectId();
@@ -22,13 +25,14 @@ export default async function handler(req, res) {
         }
         user.trainingPlans.unshift(trainingPlans);
         await user.save();
-        return res.status(201).json();
+        return res.status(201).json({ message: "Training plan added" });
       } else {
         return res
           .status(200)
           .json({ message: "Plan wurde bereits gespeichert" });
       }
     } catch (error) {
+      console.error("Error occurred while updating user:", error);
       return res
         .status(500)
         .json({ message: "An error occurred while updating user" });

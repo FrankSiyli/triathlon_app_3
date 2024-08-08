@@ -121,6 +121,9 @@ function CalendarPage() {
     </div>
   );
 
+  console.log("calendarpage homepagePlan", homepagePlan)
+
+
   return (
     <>
       {showAddSessionMenu && (

@@ -4,40 +4,41 @@ const { Schema } = mongoose;
 mongoose.Promise = global.Promise;
 
 const exerciseSchema = new Schema({
-  name: { type: String, required: true },
-  distance: { type: Number, default: 0 },
-  duration: { type: Number, default: 0 },
+  name: { type: String },
+  distance: { type: Number },
+  duration: { type: Number },
   zone: { type: String },
   imageLink: { type: String },
 });
 
 const sessionSchema = new Schema({
   _id: { type: Schema.Types.ObjectId, auto: true },
-  activity: { type: String, required: true },
+  activity: { type: String },
   description: { type: String },
   isDone: { type: Boolean, default: false },
-  sessionParts: {
+  sessionParts: [{
     warmUp: [{
-      multiplier: { type: Number, default: 1 },
+      multiplier: { type: Number },
       exercises: [exerciseSchema],
     }],
     main: [{
-      multiplier: { type: Number, default: 1 },
+      multiplier: { type: Number },
       exercises: [exerciseSchema],
     }],
     coolDown: [{
-      multiplier: { type: Number, default: 1 },
+      multiplier: { type: Number },
       exercises: [exerciseSchema],
     }],
-  },
+  }],
   sessionType: { type: String },
   sessionCategory: { type: String },
 });
 
+// Define the schema for the training plans
 const PlansSchema = new Schema({
-  _id: { type: Schema.Types.ObjectId, auto: true }, 
-  category: { type: String, required: true },
-  name: { type: String, required: true },
+  _id: { type: String },
+  category: { type: String },
+  name: { type: String },
   info: { type: String },
   wishFrom: { type: String },
   duration: { type: Number, required: true }, 
