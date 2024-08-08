@@ -168,14 +168,14 @@ const Sessions = ({
         <div className="flex flex-col items-start">
           <button
             onClick={() => toggleOverlay(activity.id)}
-            className="m-3 border border-alert rounded-md shadow hover:text-alert"
+            className="m-2 border border-alert rounded-md  hover:text-alert shadow hover:shadow-xl"
           >
             <UncheckSvg />
           </button>
 
           <button
             onClick={handleIsDoneClick}
-            className="btn btn-ghost btn-sm border border-transparent"
+            className="m-2 rounded-md  hover:text-alert shadow hover:shadow-xl"
           >
             {isLoading ? (
               <div className="flex justify-center items-center border border-alert rounded-md w-7 h-7">

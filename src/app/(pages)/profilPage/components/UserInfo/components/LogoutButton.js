@@ -45,7 +45,7 @@ const LogoutButton = ({ setShowProfil }) => {
       ) : (
         <button
           onClick={handleLogoutClick}
-          className="btn btn-sm m-5 mx-auto btn-outline border border-alert text-first hover:text-alert"
+          className="btn btn-sm m-5 mx-auto btn-outline border border-alert text-alert hover:text-alert/30"
         >
           Abmelden
         </button>

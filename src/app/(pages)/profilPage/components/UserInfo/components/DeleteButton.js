@@ -65,7 +65,7 @@ const DeleteButton = ({ setShowProfil }) => {
       ) : (
         <button
           onClick={handleDeleteUserClick}
-          className="underline underline-offset-2 decoration-red m-5 mx-auto hover:text-alert  text-first "
+          className="underline underline-offset-2 decoration-red mt-40 m-5 mx-auto text-fifth hover:border-4 hover:border-red hover:p-1 hover:shadow-2xl"
         >
           Konto löschen
         </button>

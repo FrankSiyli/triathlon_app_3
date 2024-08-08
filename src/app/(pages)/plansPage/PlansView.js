@@ -28,7 +28,6 @@ const planTypes = [
   {
     type: "planBuilder",
     name: "Plan erstellen",
-    subTitle: "Feature ist in Arbeit",
     imageSrc: "/images/planBuilderImage.jpg",
   },
 ];
@@ -66,11 +65,7 @@ const PlansView = () => {
       <div className="flex flex-row ml-5">
         <p className="relative">
           {name}{" "}
-          {subTitle && (
-            <p className="absolute bottom-2 -right-28 text-alert text-xs">
-              {subTitle}
-            </p>
-          )}
+         
         </p>
       </div>
       <div className="absolute top- right-0">

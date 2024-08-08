@@ -19,23 +19,24 @@ const Day = ({ day, activities }) => {
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [homepagePlanClickedDay, setHomepagePlanClickedDay] = useRecoilState(homepagePlanClickedDayState);
 
-  const allDaySessionsDone = activities.every(activity => {
-    const sessionParts = activity.sessionParts || {};
-    return ["warmUp", "main", "coolDown"].every(partType => {
-      const parts = sessionParts[partType] || [];
-      return Array.isArray(parts) && parts.every(session => session.isDone);
-    });
-  });
+  const allDaySessionsDone = () => {
+    const singleActivities = activities.map(
+      (singleActivity) => singleActivity.isDone
+    );
+    return singleActivities.every((value) => value === true);
+  };
 
   const handleAddSessionClick = () => {
     setHomepagePlanClickedDay(day);
     setShowAddSessionMenu(true);
   };
 
+
+
   return (
     <>
       <div
-        className={`shadow-md bg-fourth/10 py-1 mb-3 ${allDaySessionsDone ? "border-l-2 border-r-2 border-green" : ""}`}
+        className={`shadow-md bg-fourth/10 py-1 mb-3 ${!allDaySessionsDone ? "border-l-2 border-r-2 border-green" : ""}`}
       >
         <div className="ml-1 text-s text-fifth/80">{day}</div>
       </div>
