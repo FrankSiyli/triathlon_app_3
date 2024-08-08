@@ -92,7 +92,7 @@ const PlanComponent = ({ setShowPlans, title, apiEndpoint, image }) => {
         >
           <ArrowLeftSvg />
         </button>
-        <p>{title}</p>
+        <p className="text-alert">{title}</p>
         <Image
           className="relative h-16 w-24 rounded-bl"
           src={image}

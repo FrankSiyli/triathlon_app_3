@@ -69,7 +69,7 @@ function CalendarPage() {
 
   const renderCalendar = () => (
     <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
-      <div className="flex mx-auto text-center bg-fourth/10 text-fifth/80 mt-5 mb-5 px-3 py-1 rounded-sm">
+      <div className="flex mx-auto text-center text-alert mt-5 mb-5 px-3 py-1 rounded-sm">
         {homepagePlan?.name}
       </div>
       <WeekScrollButtons

@@ -100,13 +100,13 @@ function Login({ setShowProfil, setShowRegisterForm }) {
     <>
       <div className="w-full max-w-xl mx-auto">
         <button
-          className="top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent text-first "
+          className="top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent "
           onClick={handleBackClick}
         >
           <ArrowLeftSvg />
         </button>
       </div>
-      <p className=" mx-auto w-40 text-center -mt-10">Login</p>
+      <p className=" mx-auto w-40 text-center -mt-10 text-alert">Login</p>
 
       {isLoading ? (
         <Loader isLoading={isLoading} />
@@ -128,12 +128,12 @@ function Login({ setShowProfil, setShowRegisterForm }) {
               placeholder="Passwort"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="btn btn-sm m-5 mx-auto btn-outline border border-alert text-first hover:text-alert">
+            <button className="btn btn-sm m-5 mx-auto btn-outline border border-alert text-alert hover:text-alert/30">
               Anmelden
             </button>
             <button
               onClick={handleRegisterClick}
-              className="underline underline-offset-2 hover:text-alert"
+              className="underline underline-offset-2 hover:text-alert text-s mt-10"
             >
               Konto erstellen
             </button>

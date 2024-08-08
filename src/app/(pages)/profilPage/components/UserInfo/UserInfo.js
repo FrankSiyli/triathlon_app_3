@@ -74,13 +74,13 @@ const UserInfo = ({ setShowProfil }) => {
     <>
       <div className="w-full max-w-xl mx-auto">
         <button
-          className="top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent text-first "
+          className="top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent "
           onClick={handleBackClick}
         >
           <ArrowLeftSvg />
         </button>
       </div>
-      <p className=" mx-auto w-40 text-center -mt-10">Konto</p>
+      <p className=" mx-auto w-40 text-center -mt-10 text-alert">Konto</p>
       <div className="w-full mt-10">
         <div className="flex justify-between w-full max-w-xl shadow-md p-2 rounded-md  my-1 ">
           <span className="ml-2">Name:</span>{" "}

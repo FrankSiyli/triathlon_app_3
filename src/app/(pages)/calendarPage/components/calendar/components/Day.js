@@ -81,7 +81,6 @@ const Day = ({ day, activities }) => {
                 activityIndex={index}
                 openOverlay={openOverlay}
                 toggleOverlay={toggleOverlay}
-                homepagePlan={homepagePlan}
                 initialOpen={isOpen}
               />
             )}

@@ -68,7 +68,7 @@ const Sessions = ({
             body: JSON.stringify({
               email: userEmail,
               planId: planId,
-              session: activity, // Ensure activity is correctly referenced
+              session: activity, 
             }),
           }
         );

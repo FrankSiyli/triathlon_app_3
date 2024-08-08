@@ -142,7 +142,7 @@ export default function RegisterForm({ setShowProfil, setShowRegisterForm }) {
           <ArrowLeftSvg />
         </button>
       </div>
-      <p className=" mx-auto w-40 text-center -mt-10">Konto erstellen</p>
+      <p className=" mx-auto w-40 text-center -mt-10 text-alert">Konto erstellen</p>
 
       {isLoading && <Loader error={error} isLoading={isLoading} />}
 

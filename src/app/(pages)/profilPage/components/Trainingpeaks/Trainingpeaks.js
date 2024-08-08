@@ -19,7 +19,7 @@ const Trainingpeaks = ({ setShowProfil }) => {
           <ArrowLeftSvg />
         </button>
       </div>
-      <p className=" mx-auto w-40 text-center -mt-10">Trainingpeaks</p>
+      <p className=" mx-auto w-40 text-center -mt-10 text-alert">Trainingpeaks</p>
 
       <div className="w-11/12 border border-first/50 linear-background rounded-md p-4 my-20 mx-auto max-w-xl text-center">
         <p>
@@ -40,6 +40,8 @@ const Trainingpeaks = ({ setShowProfil }) => {
               alt="trainingpeaks"
               className="w-auto h-10 "
               src={trainingpeaksLogo}
+              width={200}
+              height={200}
             />
           </div>
         </Link>

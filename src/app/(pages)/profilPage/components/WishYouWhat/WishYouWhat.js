@@ -119,13 +119,13 @@ const WishYouWhat = ({ setShowProfil }) => {
     <>
       <div className="w-full max-w-xl mx-auto">
         <button
-          className="top-5 left-5 btn btn-ghost btn-sm m-3 border border-transparent text-first "
+          className="top-5 left-5 btn btn-ghost btn-sm m-3 border border-transparent"
           onClick={handleBackClick}
         >
           <ArrowLeftSvg />
         </button>
       </div>
-      <p className="mx-auto w-40 text-center -mt-10">Wünsch dir was!</p>
+      <p className="mx-auto w-40 text-center -mt-10 text-alert">Wünsch dir was!</p>
       <div className="mb-20">
         <div className="w-11/12   border border-first/50 linear-background rounded-md p-4 my-20 mx-auto max-w-xl text-center">
           <p>

@@ -100,7 +100,7 @@ function ProfilView() {
 
   const renderProfileView = () => (
     <>
-      <div className="flex justify-center mx-auto bg-fourth/10 text-fifth/80 mt-5 mb-5 px-3 py-1 rounded-sm">
+      <div className="flex justify-center mx-auto text-alert mt-5 mb-5 px-3 py-1 rounded-sm">
         <span>Willkommen {session?.user.name}</span>
       </div>
       <div className="w-full">
@@ -111,13 +111,15 @@ function ProfilView() {
         {session && renderButton("Meine Pläne", "myPlans")}
         {session && renderButton("Konto", "userInfo")}
         {renderButton(
-          "Trainingpeaks",
+           <Image
+           alt="trainingpeaks"
+           className="-ml-4 h-6"
+           src={trainingpeaksLogo}
+           width={200}
+           height={200}
+         />,
           "trainingpeaks",
-          <Image
-            alt="trainingpeaks"
-            className="w-auto h-7"
-            src={trainingpeaksLogo}
-          />
+         
         )}
         <Image
           priority

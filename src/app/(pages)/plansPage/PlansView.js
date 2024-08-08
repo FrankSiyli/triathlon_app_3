@@ -88,7 +88,7 @@ const PlansView = () => {
     <>
       {activeComponent === "plans" && (
         <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
-          <span className="flex mx-auto text-center bg-fourth/10 text-fifth/80 my-5 px-3 py-1 z-20 rounded-sm">
+          <span className="flex mx-auto text-center text-alert my-5 px-3 py-1 z-20 rounded-sm">
             Trainingspläne
           </span>
 

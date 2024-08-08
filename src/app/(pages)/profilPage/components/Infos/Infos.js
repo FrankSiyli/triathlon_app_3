@@ -32,7 +32,7 @@ function Infos({
           <ArrowLeftSvg />
         </button>
       </div>
-      <p className=" mx-auto w-40 text-center -mt-10 mb-10">Informationen</p>
+      <p className=" mx-auto w-40 text-center -mt-10 mb-10 text-alert">Informationen</p>
 
       <>
         <button

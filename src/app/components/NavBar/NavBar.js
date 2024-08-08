@@ -23,10 +23,10 @@ function NavBar({ setShowCalendar, setShowPlans, setShowProfil, showCalendar, sh
         <button
           key={index}
           onClick={onClick}
-          className={`flex flex-col items-center justify-center w-1/3 ${isActive ? "text-alert shadow border-t scale-105" : "text-fifth/40"}`}
+          className={`flex flex-col items-center justify-center w-1/3 ${isActive ? "text-blue shadow border-t scale-105" : "text-fifth/40"}`}
         >
           <Icon className="h-5 w-5" />
-          <span className="text-alert">{label}</span>
+          <span className="text-blue">{label}</span>
         </button>
       ))}
     </div>

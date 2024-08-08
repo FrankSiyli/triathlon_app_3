@@ -64,7 +64,7 @@ function Zones({ setShowProfil }) {
           <ArrowLeftSvg />
         </button>
       </div>
-      <p className=" mx-auto w-40 text-center -mt-10">Kalenderwerte</p>
+      <p className=" mx-auto w-40 text-center -mt-10 text-alert">Kalenderwerte</p>
 
       <div className="w-11/12 max-w-xl mt-10 mx-auto flex flex-col gap-2 justify-center content-center ">
         <div className="border border-first/50 rounded-md text-center p-3 linear-background ">

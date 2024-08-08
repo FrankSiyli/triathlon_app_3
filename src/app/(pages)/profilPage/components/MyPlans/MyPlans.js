@@ -58,7 +58,7 @@ function MyPlans({ setShowProfil }) {
           >
             <ArrowLeftSvg />
       </button>
-      <p className="mx-auto w-40 text-center -mt-10">Meine Pläne</p>
+      <p className="mx-auto w-40 text-center -mt-10 text-alert">Meine Pläne</p>
 
       {isLoading ? (
         <Loader isLoading={isLoading} />
