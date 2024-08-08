@@ -20,56 +20,69 @@ const PlanComponent = ({ setShowPlans, title, apiEndpoint, image }) => {
     error,
     isLoading: isLoadingPlan,
   } = useSWR(apiEndpoint, fetcher);
+  const plans = data?.plans;
   const [expandedPlanIndex, setExpandedPlanIndex] = useState(null);
+  const [expandedPlan, setExpandedPlan] = useState(null);
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
-  const [loggedInUserLastLoadedPlan, setLoggedInUserLastLoadedPlan] =
-    useRecoilState(loggedInUserLastLoadedPlanState);
   const [showAlert, setShowAlert] = useState(false);
   const [message, setMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loggedInUserLastLoadedPlan, setLoggedInUserLastLoadedPlan] =
+    useRecoilState(loggedInUserLastLoadedPlanState);
 
-  const plans = data?.plans || [];
-
-  const handleInfoClick = (planId) => {
-    setExpandedPlanIndex((prev) => (prev === planId ? null : planId));
+  const handleInfoClick = (plan) => {
+    setExpandedPlanIndex((prevExpandedPlan) =>
+      prevExpandedPlan === plan._id ? null : plan._id
+    );
+    setExpandedPlan(plan);
   };
 
-  const handleLoadPlanClick = async (event, plan) => {
-    event.stopPropagation();
+  const handleLoadPlanClick = async (event) => {
     setIsLoading(true);
-
     const session = await getSession();
-    setHomepagePlan(plan);
-
+    const planId = expandedPlanIndex;
+    setHomepagePlan(expandedPlan);
+    event.stopPropagation();
     if (session) {
+      setIsLoggedIn(true);
       try {
-        const response = await fetch("/api/user/updateUserTrainingPlans", {
+        const userEmail = session.user.email;
+        const updateUser = await fetch("/api/user/updateUserTrainingPlans", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
-            email: session.user.email,
-            trainingPlans: plan,
-            id: plan._id,
+            email: userEmail,
+            trainingPlans: expandedPlan,
+            id: planId,
           }),
         });
-
-        if (response.ok) {
-          console.log("plancomponent response ok")
-
-          const responseData = await response.json();
-          setMessage(responseData.message);
-          setLoggedInUserLastLoadedPlan(plan);
+        if (updateUser.ok) {
+          if (updateUser.status === 200) {
+            const responseJson = await updateUser.json();
+            const serverMessage = responseJson.message;
+            setShowAlert(true);
+            setMessage(serverMessage);
+          }
+          setLoggedInUserLastLoadedPlan(expandedPlan);
         }
       } catch (error) {
-        console.error("Failed to update user training plans", error);
+        console.error("user update error");
       }
-    } else {
-      setMessage("Im Kalender geladen");
     }
-
-    setShowAlert(true);
     setIsLoading(false);
+    setTimeout(() => {
+      setShowAlert(true);
+      setMessage(
+        session
+          ? "Im Kalender und unter meine Pläne geladen"
+          : "Im Kalender geladen"
+      );
+    }, 1000);
   };
+
   return (
     <div className="w-full flex flex-col items-center justify-center mx-auto">
       <div className="w-full max-w-xl flex relative justify-between items-center">
@@ -102,7 +115,7 @@ const PlanComponent = ({ setShowPlans, title, apiEndpoint, image }) => {
           {plans.map((plan) => (
             <div key={plan._id} className="w-full">
               <button
-                onClick={() => handleInfoClick(plan._id)}
+                onClick={() => handleInfoClick(plan)}
                 className="flex justify-between items-center w-full max-w-xl h-10 shadow hover:shadow-md rounded-md my-1 transform transition-all duration-300"
               >
                 <div className="absolute -top-2 left-1 text-alert text-sm">

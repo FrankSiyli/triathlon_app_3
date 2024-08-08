@@ -63,7 +63,6 @@ const FetchedUserPlans = ({
   };
 
 
-console.log("fetcheduserplans homepagePlan", homepagePlan)
 
   return (
     <>

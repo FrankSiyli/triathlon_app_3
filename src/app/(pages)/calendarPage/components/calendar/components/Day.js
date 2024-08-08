@@ -20,7 +20,6 @@ const Day = ({ day, activities }) => {
   const [homepagePlanClickedDay, setHomepagePlanClickedDay] = useRecoilState(homepagePlanClickedDayState);
 
   const allDaySessionsDone = activities.every(activity => {
-    // Ensure sessionParts is an object and contains the expected keys
     const sessionParts = activity.sessionParts || {};
     return ["warmUp", "main", "coolDown"].every(partType => {
       const parts = sessionParts[partType] || [];
@@ -44,16 +43,14 @@ const Day = ({ day, activities }) => {
       {activities.map((activity, index) => {
         const totalDistance = calculateTotalDistance(activity);
         const totalDuration = calculateTotalDuration(activity);
-        const isOpen = openOverlay === activity._id.$oid;
+        const activityId = activity._id.$oid || activity._id;
+        const isOpen = openOverlay === activityId;
 
         return (
-          <div
-            key={`${activity._id.$oid}-${index}`} 
-            className="mx-1"
-          >
+          <div key={`${activityId}-${index}`} className="mx-1">
             <div
               className={`cursor-pointer shadow border-t-2 ${getActivityBorderColor(activity.activity)}`}
-              onClick={() => !isOpen && toggleOverlay(activity._id.$oid)}
+              onClick={() => toggleOverlay(activityId)}
             >
               <div className="text-xs py-1 ml-1">
                 <p>{activity.activity}</p>
@@ -77,7 +74,7 @@ const Day = ({ day, activities }) => {
             </div>
             {isOpen && (
               <SessionOverlay
-                key={`session-overlay-${activity._id.$oid}-${index}`} 
+                key={`session-overlay-${activityId}-${index}`} 
                 sessionSections={activity.sessionParts}
                 activity={activity}
                 activityIndex={index}

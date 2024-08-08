@@ -34,7 +34,6 @@ const sessionSchema = new Schema({
   sessionCategory: { type: String },
 });
 
-// Define the schema for the training plans
 const PlansSchema = new Schema({
   _id: { type: String },
   category: { type: String },
