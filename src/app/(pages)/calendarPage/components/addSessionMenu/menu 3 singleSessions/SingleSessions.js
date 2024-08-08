@@ -33,7 +33,6 @@ const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
   const addSessionToPlan = async (session) => {
     if (!homepagePlan?.weeks?.[currentWeek]) return;
 
-    // Update local state
     const updatedDays = {
       ...homepagePlan.weeks[currentWeek].days,
       [homepagePlanClickedDay]: [
@@ -51,28 +50,24 @@ const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
 
     setHomepagePlan(newHomepagePlan);
 
-    // Update database
     if (sessionData?.user?.email) {
       try {
-        const response = await fetch('/api/user/updateUserTrainingPlans', {
-          method: 'POST',
+        const response = await fetch("/api/user/updateUserTrainingPlans", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             email: sessionData.user.email,
-            trainingPlans: newHomepagePlan,  // Send updated plan
-            id: newPlan.id, 
+            trainingPlans: newHomepagePlan,
           }),
         });
 
         if (!response.ok) {
-          throw new Error('Failed to update user plan');
+          throw new Error("Failed to update user plan");
         }
-
-        console.log('User plan updated successfully');
       } catch (error) {
-        console.error('An error occurred while updating the user plan:', error);
+        console.error("An error occurred while updating the user plan:", error);
       }
     }
 
