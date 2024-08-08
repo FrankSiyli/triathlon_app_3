@@ -13,8 +13,10 @@ import SingleSessionParts from "../menu 4 singleSessionParts/SingleSessionParts"
 import { currentHomepagePlanWeekState } from "@/app/recoil/atoms/plans/currentHomepagePlanWeekState";
 import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
 import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
+import { useSession } from "next-auth/react";
 
 const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
+  const { data: sessionData } = useSession();
   const [showSessionParts, setShowSessionParts] = useState({});
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [newPlan] = useRecoilState(newPlanState);
@@ -28,9 +30,10 @@ const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
     setShowSessionParts((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
-  const addSessionToPlan = (session) => {
+  const addSessionToPlan = async (session) => {
     if (!homepagePlan?.weeks?.[currentWeek]) return;
 
+    // Update local state
     const updatedDays = {
       ...homepagePlan.weeks[currentWeek].days,
       [homepagePlanClickedDay]: [
@@ -39,12 +42,41 @@ const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
       ],
     };
 
-    setHomepagePlan((prev) => ({
-      ...prev,
-      weeks: prev.weeks.map((week, index) =>
+    const newHomepagePlan = {
+      ...homepagePlan,
+      weeks: homepagePlan.weeks.map((week, index) =>
         index === currentWeek ? { ...week, days: updatedDays } : week
       ),
-    }));
+    };
+
+    setHomepagePlan(newHomepagePlan);
+
+    // Update database
+    if (sessionData?.user?.email) {
+      try {
+        const response = await fetch('/api/user/updateUserTrainingPlans', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: sessionData.user.email,
+            trainingPlans: newHomepagePlan,  // Send updated plan
+            id: newPlan.id, 
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update user plan');
+        }
+
+        console.log('User plan updated successfully');
+      } catch (error) {
+        console.error('An error occurred while updating the user plan:', error);
+      }
+    }
+
+    setShowAddSessionMenu(false);
   };
 
   return (
@@ -99,7 +131,6 @@ const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
                     onClick={(e) => {
                       e.stopPropagation();
                       addSessionToPlan(session);
-                      setShowAddSessionMenu(false);
                     }}
                     className="btn btn-sm m-5 mx-auto btn-outline border border-alert text-alert hover:text-alert/30 bg-first"
                   >

@@ -13,8 +13,16 @@ export default async function handler(req, res) {
         return res.status(404).json({ message: "User not found" });
       }
 
-      const existingTrainingPlanIds = user.trainingPlans.map((plan) => plan.id);
-      if (!existingTrainingPlanIds.includes(id)) {
+      // Find the index of the plan with the matching ID
+      const planIndex = user.trainingPlans.findIndex(plan => plan.id.toString() === id);
+
+      if (planIndex !== -1) {
+        // Update existing plan
+        user.trainingPlans[planIndex] = trainingPlans;
+        await user.save();
+        return res.status(200).json({ message: "Plan updated successfully" });
+      } else {
+        // Add new plan if not found
         const hasId = trainingPlans.id;
         if (!hasId) {
           const newId = new ObjectId();
@@ -22,16 +30,11 @@ export default async function handler(req, res) {
         }
         user.trainingPlans.unshift(trainingPlans);
         await user.save();
-        return res.status(201).json();
-      } else {
-        return res
-          .status(200)
-          .json({ message: "Plan wurde bereits gespeichert" });
+        return res.status(201).json({ message: "Plan added successfully" });
       }
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "An error occurred while updating user" });
+      console.error("Error updating user plan:", error);
+      return res.status(500).json({ message: "An error occurred while updating user" });
     }
   } else {
     return res.status(405).json({ message: "Method not allowed" });

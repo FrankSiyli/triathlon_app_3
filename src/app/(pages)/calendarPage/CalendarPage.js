@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import React, {  useState } from "react";
 import NavBar from "@/app/components/NavBar/NavBar";
 import WeekScrollButtons from "./components/calendar/components/WeekScrollButtons";
 import { useRecoilState } from "recoil";
@@ -12,26 +11,7 @@ import Sessions from "./components/addSessionMenu/AddSessionMenu";
 import { currentHomepagePlanWeekState } from "@/app/recoil/atoms/plans/currentHomepagePlanWeekState";
 import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
 
-const initialPlanState = {
-  _id: uuidv4(),
-  category: "Default Category",
-  name: "Default Plan Name",
-  info: "Some info about the plan",
-  wishFrom: "Default Wish",
-  duration: 4,
-  weeks: Array.from({ length: 4 }, (_, weekIndex) => ({
-    week: weekIndex + 1,
-    days: {
-      Montag: [],
-      Dienstag: [],
-      Mittwoch: [],
-      Donnerstag: [],
-      Freitag: [],
-      Samstag: [],
-      Sonntag: [],
-    },
-  })),
-};
+
 
 function CalendarPage() {
   const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(showAddSessionMenuState);
@@ -43,12 +23,6 @@ function CalendarPage() {
   const [currentWeek, setCurrentWeek] = useRecoilState(currentHomepagePlanWeekState);
   const numberOfPlanWeeks = homepagePlan?.duration;
   const currentWeekDays = homepagePlan?.weeks?.[currentWeek]?.days;
-
-  useEffect(() => {
-    if (!homepagePlan || !homepagePlan.weeks) {
-      setHomepagePlan(initialPlanState);
-    }
-  }, [homepagePlan, setHomepagePlan]);
 
   const handleBackgroundClick = () => setShowAddSessionMenu(false);
 
