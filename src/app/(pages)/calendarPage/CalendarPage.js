@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import NavBar from "@/app/components/NavBar/NavBar";
 import WeekScrollButtons from "./components/calendar/components/WeekScrollButtons";
 import { useRecoilState } from "recoil";
@@ -10,10 +10,11 @@ import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSe
 import Sessions from "./components/addSessionMenu/AddSessionMenu";
 import { currentHomepagePlanWeekState } from "@/app/recoil/atoms/plans/currentHomepagePlanWeekState";
 import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
-
-
+import PlusSvg from "@/app/components/SVGs/PlusSvg";
+import { useSession } from "next-auth/react";
 
 function CalendarPage() {
+  const { data: sessionData } = useSession();
   const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(showAddSessionMenuState);
   const [showCalendar, setShowCalendar] = useState(true);
   const [showPlans, setShowPlans] = useState(false);
@@ -27,21 +28,23 @@ function CalendarPage() {
   const handleBackgroundClick = () => setShowAddSessionMenu(false);
 
   const handleDayClick = (week, day) => {
-    setSelectedWeek(week);
     setHomepagePlanClickedDay(day);
     setShowAddSessionMenu(true);
   };
 
   const addSessionToHomepagePlanClickedDay = (session) => {
-    if (selectedWeek !== null && homepagePlanClickedDay) {
+    if (homepagePlanClickedDay) {
       setHomepagePlan((prevPlan) => {
         const updatedWeeks = prevPlan.weeks.map((week, index) => {
-          if (index === selectedWeek - 1) { 
+          if (index === currentWeek) {
             return {
               ...week,
               days: {
                 ...week.days,
-                [homepagePlanClickedDay]: [...(week.days[homepagePlanClickedDay] || []), session],
+                [homepagePlanClickedDay]: [
+                  ...(week.days[homepagePlanClickedDay] || []),
+                  session,
+                ],
               },
             };
           }
@@ -67,17 +70,71 @@ function CalendarPage() {
     }
   };
 
+  const handleAddWeekToPlan = async () => {
+    const newWeek = {
+      week: homepagePlan.weeks.length + 1, 
+      days: {
+        Montag: [], 
+        Dienstag: [], 
+        Mittwoch: [], 
+        Donnerstag: [], 
+        Freitag: [], 
+        Samstag: [], 
+        Sonntag: [], 
+      },
+    };
+    
+
+    const updatedWeeks = [...homepagePlan.weeks, newWeek];
+    const newHomepagePlan = {
+      ...homepagePlan,
+      weeks: updatedWeeks,
+      duration: homepagePlan.duration + 1,
+    };
+
+    setHomepagePlan(newHomepagePlan);
+
+    if (sessionData?.user?.email) {
+      try {
+        const response = await fetch("/api/user/updateUserTrainingPlans", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: sessionData.user.email,
+            trainingPlans: newHomepagePlan,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to update user plan");
+        }
+      } catch (error) {
+        console.error("An error occurred while updating the user plan:", error);
+      }
+    }
+  };
+
   const renderCalendar = () => (
     <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
       <div className="flex mx-auto text-center text-alert mt-5 mb-5 px-3 py-1 rounded-sm">
         {homepagePlan?.name}
       </div>
-      <WeekScrollButtons
-        currentWeek={currentWeek}
-        numberOfPlanWeeks={numberOfPlanWeeks}
-        handlePreviousWeekClick={handlePreviousWeekClick}
-        handleNextWeekClick={handleNextWeekClick}
-      />
+      <div className="flex">
+        <WeekScrollButtons
+          currentWeek={currentWeek}
+          numberOfPlanWeeks={numberOfPlanWeeks}
+          handlePreviousWeekClick={handlePreviousWeekClick}
+          handleNextWeekClick={handleNextWeekClick}
+        />
+        <button
+          onClick={handleAddWeekToPlan}
+          className="flex items-center justify-center border border-alert/50 w-10 rounded text-alert ml-1 mb-5 shadow"
+        >
+          <PlusSvg />
+        </button>
+      </div>
       <div className="flex flex-col sm:flex-row w-full">
         {currentWeekDays &&
           Object.entries(currentWeekDays).map(([day, activities]) => (
@@ -95,8 +152,6 @@ function CalendarPage() {
     </div>
   );
 
-
-
   return (
     <>
       {showAddSessionMenu && (
@@ -106,9 +161,17 @@ function CalendarPage() {
         ></div>
       )}
 
-      {showPlans ? <PlansView /> : showCalendar && homepagePlan ? renderCalendar() : showProfil && <ProfilView />}
+      {showPlans ? (
+        <PlansView />
+      ) : showCalendar && homepagePlan ? (
+        renderCalendar()
+      ) : (
+        showProfil && <ProfilView />
+      )}
 
-      {showAddSessionMenu && <Sessions onAddSession={addSessionToHomepagePlanClickedDay} />}
+      {showAddSessionMenu && (
+        <Sessions onAddSession={addSessionToHomepagePlanClickedDay} />
+      )}
 
       <NavBar
         showCalendar={showCalendar}

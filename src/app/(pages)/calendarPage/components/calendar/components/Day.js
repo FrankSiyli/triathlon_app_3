@@ -37,7 +37,7 @@ const Day = ({ day, activities }) => {
     setShowAddSessionMenu(true);
   };
 
-  const removeSessionFromPlan = async (activityId) => {
+  const handleRemoveSessionFromPlan = async (activityId) => {
     const updatedDays = {
       ...homepagePlan.weeks[currentWeek].days,
       [day]: homepagePlan.weeks[currentWeek].days[day].filter(
@@ -99,7 +99,7 @@ const Day = ({ day, activities }) => {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  removeSessionFromPlan(activityId);
+                  handleRemoveSessionFromPlan(activityId);
                 }}
                 className="absolute top-0 right-0 m-1"
               >

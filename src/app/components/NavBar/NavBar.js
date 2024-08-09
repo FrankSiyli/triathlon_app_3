@@ -18,15 +18,15 @@ function NavBar({ setShowCalendar, setShowPlans, setShowProfil, showCalendar, sh
   };
 
   return (
-    <div className="fixed bottom-0 left-0 w-full flex justify-between h-12 text-xs bg-lightBlue z-30">
+    <div className="fixed bottom-0 left-0 w-full flex justify-between h-12 text-xs bg-first z-30 border-t border-fifth/30">
       {navItems.map(({ label, Icon, isActive, onClick }, index) => (
         <button
           key={index}
           onClick={onClick}
-          className={`flex flex-col items-center justify-center w-1/3 ${isActive ? "text-blue shadow border-t scale-105" : "text-fifth/40"}`}
+          className={`flex flex-col items-center justify-center w-1/3 ${isActive ? "text-fifth shadow border-t border-alert scale-105" : "text-alert"}`}
         >
           <Icon className="h-5 w-5" />
-          <span className="text-blue">{label}</span>
+          <span className="text-alert">{label}</span>
         </button>
       ))}
     </div>
