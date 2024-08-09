@@ -248,7 +248,7 @@ function CalendarPage() {
       <div className="flex flex-col sm:flex-row w-full">
         {currentWeekDays &&
           Object.entries(currentWeekDays).map(([day, activities]) => (
-            <div key={day} className="flex flex-col w-full">
+            <div key={day} className="flex flex-col w-full last:mb-40">
               <Day
                 day={day}
                 activities={activities}
