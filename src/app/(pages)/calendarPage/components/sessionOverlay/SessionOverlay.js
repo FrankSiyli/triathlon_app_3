@@ -7,7 +7,6 @@ import Alert from "@/app/components/Alerts/Alert";
 import getActivityBorderColor from "@/app/helperFunctions/getActivityBorderColor";
 import { calculateTotalDistance } from "@/app/helperFunctions/calculateTotalDistance";
 import { calculateTotalDuration } from "@/app/helperFunctions/calculateTotalDuration";
-import ArrowLeftSvg from "@/app/components/SVGs/arrows/ArrowLeftSvg";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import { useRecoilState } from "recoil";
 import CheckSvg from "@/app/components/SVGs/CheckSvg";
