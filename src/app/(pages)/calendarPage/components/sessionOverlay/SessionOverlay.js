@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import PrintSessions from "./components/PrintSessions";
 import Sessions from "./components/Sessions";
 import NavBar from "@/app/components/NavBar/NavBar";
@@ -15,8 +15,9 @@ import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 import WatchSvg from "@/app/components/SVGs/WatchSvg";
 import { formatTime } from "@/app/helperFunctions/formatTime";
 import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
-import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
 import { wattIsActiveState } from "@/app/recoil/atoms/wattIsActiveState";
+import { getSession } from "next-auth/react";
+import { useReactToPrint } from "react-to-print";
 
 const SessionOverlay = ({
   sessionSections,
@@ -39,6 +40,11 @@ const SessionOverlay = ({
   const handleViewClick = () => {
     setOverlayView(!overlayView);
   };
+
+  const printComponentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => printComponentRef.current,
+  });
 
   const handleIsDoneClick = async () => {
     const session = await getSession();
@@ -84,8 +90,9 @@ const SessionOverlay = ({
     setIsLoading(false);
   };
 
-
-
+  const handleWattClick = () => {
+    setWattIsActive(!wattIsActive);
+  };
 
   return (
     <div>
@@ -96,7 +103,7 @@ const SessionOverlay = ({
         ></div>
       )}
       <div
-        className={`bg-first fixed z-30 max-w-xl my-2 mx-auto inset-0 text-center overflow-x-hidden overflow-y-scroll border-t-4 ${getActivityBorderColor(
+        className={`fixed z-30 max-w-xl my-2 mx-auto inset-0 bg-[#fff] text-center overflow-x-hidden overflow-y-scroll border-t-4 ${getActivityBorderColor(
           activity.activity
         )} ${initialOpen ? "block" : "hidden"}`}
       >
@@ -105,37 +112,31 @@ const SessionOverlay = ({
             <div className="flex">
               <div className="flex flex-col items-start">
                 <button
-                  onClick={() => toggleOverlay(dayIndex, activityIndex)}
-                  className=" btn btn-ghost btn-sm  m-3 border border-transparent text-first "
+                  onClick={() => toggleOverlay(activity.id)}
+                  className="m-2 border border-alert rounded-md  hover:text-alert shadow hover:shadow-xl"
                 >
-                  <ArrowLeftSvg />
+                  <UncheckSvg />
                 </button>
 
                 <button
                   onClick={handleIsDoneClick}
-                  className=" btn btn-ghost btn-sm  border border-transparent text-first "
+                  className="m-2 rounded-md  hover:text-alert shadow hover:shadow-xl"
                 >
-                  {isLoading && (
+                  {isLoading ? (
                     <div className="flex justify-center items-center border border-alert rounded-md w-7 h-7">
                       <span className="loading loading-ring loading-xs"></span>
                     </div>
-                  )}
-                  {!isLoading && !activity[3] && (
+                  ) : (
                     <div className="border border-alert rounded-md">
-                      <CheckSvg />
-                    </div>
-                  )}
-                  {!isLoading && activity[3] && (
-                    <div className="border border-alert rounded-md ">
-                      <UncheckSvg />
+                      {activity.isDone ? <UncheckSvg /> : <CheckSvg />}
                     </div>
                   )}
                 </button>
 
-                {activity[0] === "Rad" ? (
+                {activity.activity === "Rad" && (
                   <button
                     onClick={handleWattClick}
-                    className="flex justify-center items-center text-sm m-3  border border-alert rounded-md"
+                    className="flex justify-center items-center text-sm m-3 border border-alert rounded-md"
                   >
                     <span
                       className={`ml-1 ${wattIsActive ? "text-alert" : null}`}
@@ -149,11 +150,11 @@ const SessionOverlay = ({
                       Puls
                     </span>
                   </button>
-                ) : null}
+                )}
               </div>
-              <div className="w-full h-auto text-right p-1 mr-1">
-                <p>{activity[0]}</p>
-                <p className="my-1">{activity[1]}</p>
+              <div className="w-full h-auto text-right p-1 mr-1 text-s">
+                <p className="px-1">{activity.activity}</p>
+                <p className="px-1">{activity.description}</p>
                 {totalDistance > 0 ? (
                   <div className="flex justify-end mt-5 -mb-2">
                     <div className="flex items-center">
@@ -174,9 +175,7 @@ const SessionOverlay = ({
               </div>
             </div>
             <hr
-              className={`m-3  ${
-                activity[3] ? "text-green" : "opacity-20"
-              }`}
+              className={`m-3  ${activity[3] ? "text-green" : "opacity-0"}`}
             ></hr>
             <Sessions
               activity={activity}
@@ -184,16 +183,15 @@ const SessionOverlay = ({
               activityIndex={activityIndex}
               wattIsActive={wattIsActive}
             />
-            <hr className="m-3 opacity-20 "></hr>
             <div className="flex flex-col  items-center">
               <button
-                className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert text-first"
+                className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert/30 text-alert"
                 onClick={handleViewClick}
               >
                 Druckversion
               </button>
               <button
-                onClick={() => toggleOverlay(dayIndex, activityIndex)}
+                onClick={() => toggleOverlay( activityIndex)}
                 className="border border-alert text-alert rounded-md mb-20"
               >
                 <UncheckSvg />
@@ -204,17 +202,16 @@ const SessionOverlay = ({
           <>
             <div className="flex">
               <button
-                onClick={() => toggleOverlay(dayIndex, activityIndex)}
-                className="focus:outline-none top-5 left-5 btn btn-ghost btn-sm  m-3 border border-transparent text-first "
+                onClick={() => toggleOverlay( activityIndex)}
+                className="border border-alert text-alert rounded-md m-3"
               >
-                <ArrowLeftSvg />
+                <UncheckSvg />
               </button>{" "}
             </div>
             <PrintSessions
               ref={printComponentRef}
               activity={activity}
               openOverlay={openOverlay}
-              dayIndex={dayIndex}
               activityIndex={activityIndex}
               totalDistance={totalDistance}
               totalDuration={totalDuration}
@@ -223,20 +220,20 @@ const SessionOverlay = ({
             <div className="flex flex-col items-center gap-10">
               <div className="flex flex-row gap-3">
                 <button
-                  className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert text-first"
+                  className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert/30 text-alert"
                   onClick={handleViewClick}
                 >
                   Farbversion
                 </button>
                 <button
                   onClick={handlePrint}
-                  className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert text-first"
+                  className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert/30 text-alert"
                 >
                   drucken
                 </button>
               </div>
               <button
-                onClick={() => toggleOverlay(dayIndex, activityIndex)}
+                onClick={() => toggleOverlay(false)}
                 className="border border-alert text-alert rounded-md mb-20"
               >
                 <UncheckSvg />

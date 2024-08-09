@@ -164,69 +164,7 @@ const Sessions = ({
 
   return (
     <>
-      <div className="flex">
-        <div className="flex flex-col items-start">
-          <button
-            onClick={() => toggleOverlay(activity.id)}
-            className="m-2 border border-alert rounded-md  hover:text-alert shadow hover:shadow-xl"
-          >
-            <UncheckSvg />
-          </button>
-
-          <button
-            onClick={handleIsDoneClick}
-            className="m-2 rounded-md  hover:text-alert shadow hover:shadow-xl"
-          >
-            {isLoading ? (
-              <div className="flex justify-center items-center border border-alert rounded-md w-7 h-7">
-                <span className="loading loading-ring loading-xs"></span>
-              </div>
-            ) : (
-              <div className="border border-alert rounded-md">
-                {activity.isDone ? <UncheckSvg /> : <CheckSvg />}
-              </div>
-            )}
-          </button>
-
-          {activity.activity === "Rad" && (
-            <button
-              onClick={handleWattClick}
-              className="flex justify-center items-center text-sm m-3 border border-alert rounded-md"
-            >
-              <span className={`ml-1 ${wattIsActive ? "text-alert" : null}`}>
-                W
-              </span>
-              <span className="m-1">|</span>
-              <span className={`mr-1 ${!wattIsActive ? "text-alert" : null}`}>
-                Puls
-              </span>
-            </button>
-          )}
-        </div>
-        <div className="w-full h-auto text-s text-right">
-          <p className="px-1">{activity.activity}</p>
-          <p className="px-1">{activity.description}</p>
-          <div className="mt-3">
-            {totalDistance > 0 && (
-              <div className="flex justify-end text-xs px-1 -mb-2">
-                <DistanceSvg />
-                {totalDistance}m
-              </div>
-            )}
-            {totalDistance > 0 && totalDuration > 0 && (
-              <span className="mr-5 text-xs">+</span>
-            )}
-            {totalDuration > 0 && (
-              <div className="flex justify-end text-xs items-center px-1 -mt-1">
-                <WatchSvg />
-                {formatTime(totalDuration)}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <hr className={`m-3 ${activity.isDone ? "text-green" : "opacity-5"}`}></hr>
+    
 
       {Object.entries(activity.sessionParts).map(([key, sessionSections]) => (
         <div key={key} className="text-s">

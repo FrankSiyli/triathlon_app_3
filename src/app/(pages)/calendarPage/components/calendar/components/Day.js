@@ -7,7 +7,6 @@ import { calculateTotalDistance } from "@/app/helperFunctions/calculateTotalDist
 import { calculateTotalDuration } from "@/app/helperFunctions/calculateTotalDuration";
 import getActivityBorderColor from "@/app/helperFunctions/getActivityBorderColor";
 import { useRecoilState } from "recoil";
-import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import { useOpenOverlay } from "../../../stateHooks/useOpenOverlay";
 import SessionOverlay from "../../sessionOverlay/SessionOverlay";
 import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
@@ -16,7 +15,6 @@ import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePl
 const Day = ({ day, activities }) => {
   const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(showAddSessionMenuState);
   const { openOverlay, toggleOverlay } = useOpenOverlay();
-  const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [homepagePlanClickedDay, setHomepagePlanClickedDay] = useRecoilState(homepagePlanClickedDayState);
 
   const allDaySessionsDone = () => {

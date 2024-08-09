@@ -133,20 +133,20 @@ const PrintSessions = forwardRef(
     };
 
     return (
-      <div ref={printComponentRef}>
+      <div ref={ref}>
         {Array.isArray(activity.sessionParts) &&
           activity.sessionParts.map((sessionSections, sessionIndex) => (
             <div
               key={`sessionPart-${sessionIndex}`}
               className="print-page p-1 m-3 mx-auto min-h-screen"
             >
-              <div>
+              <div className="flex justify-between">
                 <Image
                   src={logoBlack}
                   alt="logo"
-                  className="absolute top-4 left-2 object-contain"
-                  width={60}
-                  height={60}
+                  className="w-20 object-contain"
+                  width={200}
+                  height={200}
                 />
                 <div className="text-right mr-3">
                   <p className="underline underline-offset-2">
@@ -183,28 +183,7 @@ const PrintSessions = forwardRef(
               )}
             </div>
           ))}
-        <div className="flex flex-col items-center gap-10">
-          <div className="flex flex-row gap-3">
-            <button
-              className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert shadow text-fifth/70"
-              onClick={handleViewClick}
-            >
-              Farbversion
-            </button>
-            <button
-              onClick={handlePrint}
-              className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert shadow text-fifth/70"
-            >
-              drucken
-            </button>
-          </div>
-          <button
-            onClick={() => toggleOverlay(activity.id)}
-            className="border border-alert shadow rounded-md mb-20"
-          >
-            <UncheckSvg />
-          </button>
-        </div>
+        
       </div>
     );
   }
