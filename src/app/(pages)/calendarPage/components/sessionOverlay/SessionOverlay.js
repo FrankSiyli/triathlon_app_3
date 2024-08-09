@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PrintSessions from "./components/PrintSessions";
 import Sessions from "./components/Sessions";
 import NavBar from "@/app/components/NavBar/NavBar";
@@ -16,6 +16,7 @@ import { formatTime } from "@/app/helperFunctions/formatTime";
 import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
 import { wattIsActiveState } from "@/app/recoil/atoms/wattIsActiveState";
 import { useReactToPrint } from "react-to-print";
+import { useSession } from "next-auth/react";
 
 const SessionOverlay = ({
   sessionSections,
@@ -23,6 +24,7 @@ const SessionOverlay = ({
   toggleOverlay,
   initialOpen = false,
 }) => {
+  const { data: sessionData } = useSession();
   const [overlayView, setOverlayView] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
@@ -37,24 +39,49 @@ const SessionOverlay = ({
     content: () => printComponentRef.current,
   });
 
-  const handleIsDoneClick = () => {
-    setHomepagePlan((prevPlan) => {
-      const updatedWeeks = prevPlan.weeks.map((week) => {
-        const updatedDays = Object.entries(week.days).reduce((acc, [day, activities]) => {
-          const updatedActivities = activities.map((act) =>
-            act._id === activity._id ? { ...act, isDone: !act.isDone } : act
-          );
-          return { ...acc, [day]: updatedActivities };
-        }, {});
-        return { ...week, days: updatedDays };
-      });
-      return { ...prevPlan, weeks: updatedWeeks };
-    });
-  };
 
-  const handleWattClick = () => {
-    setWattIsActive(!wattIsActive);
+  const handleIsDoneClick = async () => {
+    const updatedPlan = homepagePlan.weeks.map((week) => {
+      const updatedDays = Object.entries(week.days).reduce((acc, [day, activities]) => {
+        const updatedActivities = activities.map((act) =>
+          (act._id.$oid || act._id) === (activity._id.$oid || activity._id)
+            ? { ...act, isDone: !act.isDone }
+            : act
+        );
+        return { ...acc, [day]: updatedActivities };
+      }, {});
+      return { ...week, days: updatedDays };
+    });
+  
+    const newHomepagePlan = { ...homepagePlan, weeks: updatedPlan };
+    setHomepagePlan(newHomepagePlan);
+  
+    if (sessionData?.user?.email) {
+      try {
+        const response = await fetch("/api/user/updateUserTrainingPlans", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: sessionData.user.email,
+            trainingPlans: newHomepagePlan,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to update user plan");
+        }
+      } catch (error) {
+        console.error("An error occurred while updating the user plan:", error);
+      }
+    }
   };
+  
+
+const handleWattClick = () => {
+  setWattIsActive(!wattIsActive);
+};
 
   const handleViewClick = () => {
     setOverlayView(!overlayView);

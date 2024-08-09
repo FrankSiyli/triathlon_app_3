@@ -101,7 +101,7 @@ const Day = ({ day, activities }) => {
                   e.stopPropagation();
                   handleRemoveSessionFromPlan(activityId);
                 }}
-                className="absolute top-0 right-0 m-1"
+                className="absolute top-0 right-0 m-1 bg-first"
               >
                 <UncheckSvg />
               </button>

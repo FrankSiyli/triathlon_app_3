@@ -23,7 +23,7 @@ function NavBar() {
         <button
           key={index}
           onClick={onClick}
-          className={`flex flex-col items-center justify-center w-1/3 ${isActive ? "text-fifth shadow border-t border-alert scale-105" : "text-alert"}`}
+          className={`flex flex-col items-center justify-center w-1/3 ${isActive ? "text-fifth/70 shadow border-t border-alert scale-105" : "text-alert/70"}`}
         >
           <Icon className="h-5 w-5" />
           <span className="text-alert">{label}</span>
