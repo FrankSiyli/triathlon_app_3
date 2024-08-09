@@ -79,7 +79,7 @@ const Day = ({ day, activities }) => {
   return (
     <>
       <div
-        className={`shadow-md bg-fourth/10 py-1 mb-3 ${!allDaySessionsDone() ? "border-l-2 border-r-2 border-green" : ""}`}
+        className={`shadow-md bg-fourth/10 py-1 mb-3 ${allDaySessionsDone() && activities.length !== 0 ? "border-l-2  border-green" : ""}`}
       >
         <div className="ml-1 text-s text-fifth/80">{day}</div>
       </div>
@@ -93,7 +93,7 @@ const Day = ({ day, activities }) => {
         return (
           <div key={`${activityId}-${index}`} className="mx-1">
             <div
-              className={`relative cursor-pointer shadow border-t-2 ${getActivityBorderColor(activity.activity)}`}
+              className={`relative cursor-pointer shadow ${getActivityBorderColor(activity.activity)} ${activity.isDone  ?"bg-green/10" : ""}`}
               onClick={() => toggleOverlay(activityId)}
             >
               <button

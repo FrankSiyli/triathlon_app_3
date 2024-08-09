@@ -14,7 +14,6 @@ import PlusSvg from "@/app/components/SVGs/PlusSvg";
 import { useSession } from "next-auth/react";
 import { navBarState } from "@/app/recoil/atoms/navBar/navBarState";
 import CheckSvg from "@/app/components/SVGs/CheckSvg";
-import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 
 function CalendarPage() {
   const { data: sessionData } = useSession();
@@ -23,8 +22,6 @@ function CalendarPage() {
   const [homepagePlanClickedDay, setHomepagePlanClickedDay] = useRecoilState(homepagePlanClickedDayState);
   const [currentWeek, setCurrentWeek] = useRecoilState(currentHomepagePlanWeekState);
   const [activeView, setActiveView] = useRecoilState(navBarState);
-
-  // State for editable plan name
   const [isEditingName, setIsEditingName] = useState(false);
   const [newPlanName, setNewPlanName] = useState(homepagePlan?.name || '');
 

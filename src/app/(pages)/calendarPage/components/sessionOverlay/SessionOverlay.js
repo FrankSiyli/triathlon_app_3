@@ -15,18 +15,14 @@ import WatchSvg from "@/app/components/SVGs/WatchSvg";
 import { formatTime } from "@/app/helperFunctions/formatTime";
 import DistanceSvg from "@/app/components/SVGs/DistanceSvg";
 import { wattIsActiveState } from "@/app/recoil/atoms/wattIsActiveState";
-import { getSession } from "next-auth/react";
 import { useReactToPrint } from "react-to-print";
 
 const SessionOverlay = ({
   sessionSections,
   activity,
-  activityIndex,
-  openOverlay,
   toggleOverlay,
   initialOpen = false,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [overlayView, setOverlayView] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState("");
@@ -36,68 +32,39 @@ const SessionOverlay = ({
   const totalDistance = calculateTotalDistance(activity, sessionSections);
   const totalDuration = calculateTotalDuration(activity, sessionSections);
 
-  const handleViewClick = () => {
-    setOverlayView(!overlayView);
-  };
-
   const printComponentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => printComponentRef.current,
   });
 
-  const handleIsDoneClick = async () => {
-    const session = await getSession();
-    const planId = homepagePlan._id;
-    if (!session) {
-      setShowAlert(true);
-      setError("Bitte melde dich an");
-      return;
-    }
-    if (session) {
-      if (loggedInUserLastLoadedPlan.length === 0) {
-        setShowAlert(true);
-        setError("Bitte wähle einen neuen Plan");
-        return;
-      }
-      setIsLoading(true);
-      try {
-        const userEmail = session.user.email;
-        const updateUserSessionIsDone = await fetch(
-          "/api/user/updateUserTrainingPlanMadeSessions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-
-            body: JSON.stringify({
-              email: userEmail,
-              planId: planId,
-              week: currentWeek,
-              session: activity[4],
-            }),
-          }
-        );
-        if (updateUserSessionIsDone.ok) {
-          const { updatedPlan } = await updateUserSessionIsDone.json();
-          setHomepagePlan(updatedPlan);
-        }
-      } catch (error) {
-        console.error("User update error:", error);
-      }
-    }
-    setIsLoading(false);
+  const handleIsDoneClick = () => {
+    setHomepagePlan((prevPlan) => {
+      const updatedWeeks = prevPlan.weeks.map((week) => {
+        const updatedDays = Object.entries(week.days).reduce((acc, [day, activities]) => {
+          const updatedActivities = activities.map((act) =>
+            act._id === activity._id ? { ...act, isDone: !act.isDone } : act
+          );
+          return { ...acc, [day]: updatedActivities };
+        }, {});
+        return { ...week, days: updatedDays };
+      });
+      return { ...prevPlan, weeks: updatedWeeks };
+    });
   };
 
   const handleWattClick = () => {
     setWattIsActive(!wattIsActive);
   };
 
+  const handleViewClick = () => {
+    setOverlayView(!overlayView);
+  };
+
   return (
     <div>
       {initialOpen && (
         <div
-          onClick={() => toggleOverlay(activity.id)}
+          onClick={() => toggleOverlay(activity._id)}
           className="fixed top-0 left-0 w-screen h-screen bg-background/70 z-20"
         ></div>
       )}
@@ -111,24 +78,26 @@ const SessionOverlay = ({
             <div className="flex">
               <div className="flex flex-col items-start">
                 <button
-                  onClick={() => toggleOverlay(activity.id)}
-                  className="m-2 border border-alert rounded-md  hover:text-alert shadow hover:shadow-xl"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleOverlay(activity._id);
+                  }}
+                  className="m-2 border border-alert/50 rounded-md hover:text-alert shadow hover:shadow-xl"
                 >
                   <UncheckSvg />
                 </button>
 
                 <button
-                  onClick={handleIsDoneClick}
-                  className="m-2 rounded-md  hover:text-alert shadow hover:shadow-xl"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleIsDoneClick();
+                  }}
+                  className="m-2 rounded-md hover:text-alert shadow hover:shadow-xl"
                 >
-                  {isLoading ? (
-                    <div className="flex justify-center items-center border border-alert rounded-md w-7 h-7">
-                      <span className="loading loading-ring loading-xs"></span>
-                    </div>
+                  {activity.isDone ? (
+                    <span className="text-xs flex justify-center items-center border border-alert/50 rounded text-alert text-left px-1 line-through">abgeschlossen</span>
                   ) : (
-                    <div className="border border-alert rounded-md">
-                      {activity.isDone ? <UncheckSvg /> : <CheckSvg />}
-                    </div>
+                   <span className="text-xs flex justify-center items-center border border-alert/50 rounded text-alert text-left px-1">abgeschlossen</span>
                   )}
                 </button>
 
@@ -154,35 +123,32 @@ const SessionOverlay = ({
               <div className="w-full h-auto text-right p-1 mr-1 text-s">
                 <p className="px-1">{activity.activity}</p>
                 <p className="px-1">{activity.description}</p>
-                {totalDistance > 0 ? (
+                {totalDistance > 0 && (
                   <div className="flex justify-end mt-5 -mb-2">
                     <div className="flex items-center">
                       <DistanceSvg />
                     </div>
                     {totalDistance}m
                   </div>
-                ) : null}
-                {totalDistance > 0 && totalDuration > 0 ? (
+                )}
+                {totalDistance > 0 && totalDuration > 0 && (
                   <span className="mr-5">+</span>
-                ) : null}
-                {totalDuration > 0 ? (
+                )}
+                {totalDuration > 0 && (
                   <div className="flex justify-end items-center -mt-1">
                     <WatchSvg />
                     {formatTime(totalDuration)}
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
-            <hr
-              className={`m-3  ${activity[3] ? "text-green" : "opacity-0"}`}
-            ></hr>
+            <div className={`my-3 border ${activity.isDone ? " border-green" : "border-fifth/50"}`}></div>
             <Sessions
               activity={activity}
-              openOverlay={openOverlay}
-              activityIndex={activityIndex}
+              openOverlay={true}
               wattIsActive={wattIsActive}
             />
-            <div className="flex flex-col  items-center">
+            <div className="flex flex-col items-center">
               <button
                 className="btn btn-sm m-3 w-32 btn-outline border border-alert hover:text-alert/30 text-alert"
                 onClick={handleViewClick}
@@ -190,7 +156,10 @@ const SessionOverlay = ({
                 Druckversion
               </button>
               <button
-                onClick={() => toggleOverlay( activityIndex)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleOverlay(activity._id);
+                }}
                 className="border border-alert text-alert rounded-md mb-20"
               >
                 <UncheckSvg />
@@ -201,17 +170,19 @@ const SessionOverlay = ({
           <>
             <div className="flex">
               <button
-                onClick={() => toggleOverlay( activityIndex)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleOverlay(activity._id);
+                }}
                 className="border border-alert text-alert rounded-md m-3"
               >
                 <UncheckSvg />
-              </button>{" "}
+              </button>
             </div>
             <PrintSessions
               ref={printComponentRef}
               activity={activity}
-              openOverlay={openOverlay}
-              activityIndex={activityIndex}
+              openOverlay={true}
               totalDistance={totalDistance}
               totalDuration={totalDuration}
               wattIsActive={wattIsActive}
@@ -232,7 +203,10 @@ const SessionOverlay = ({
                 </button>
               </div>
               <button
-                onClick={() => toggleOverlay(false)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleOverlay(activity._id);
+                }}
                 className="border border-alert text-alert rounded-md mb-20"
               >
                 <UncheckSvg />
