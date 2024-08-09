@@ -1,20 +1,20 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { userNameState } from "@/app/recoil/atoms/user/userNameState";
+import { navBarState } from "@/app/recoil/atoms/navBar/navBarState";
 
-function NavBar({ setShowCalendar, setShowPlans, setShowProfil, showCalendar, showPlans, showProfil }) {
+function NavBar() {
+  const [activeView, setActiveView] = useRecoilState(navBarState);
   const [userName] = useRecoilState(userNameState);
 
   const navItems = [
-    { label: "Kalender", Icon: CalendarIcon, isActive: showCalendar, onClick: () => handleClick('calendar') },
-    { label: "Pläne", Icon: PlansIcon, isActive: showPlans, onClick: () => handleClick('plans') },
-    { label: userName || "Profil", Icon: ProfileIcon, isActive: showProfil, onClick: () => handleClick('profile') }
+    { label: "Kalender", Icon: CalendarIcon, isActive: activeView === 'calendar', onClick: () => handleClick('calendar') },
+    { label: "Pläne", Icon: PlansIcon, isActive: activeView === 'plans', onClick: () => handleClick('plans') },
+    { label: userName || "Profil", Icon: ProfileIcon, isActive: activeView === 'profile', onClick: () => handleClick('profil') }
   ];
 
   const handleClick = (view) => {
-    setShowCalendar(view === 'calendar');
-    setShowPlans(view === 'plans');
-    setShowProfil(view === 'profile');
+    setActiveView(view);
   };
 
   return (

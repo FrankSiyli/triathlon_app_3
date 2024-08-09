@@ -12,19 +12,17 @@ import { currentHomepagePlanWeekState } from "@/app/recoil/atoms/plans/currentHo
 import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
 import PlusSvg from "@/app/components/SVGs/PlusSvg";
 import { useSession } from "next-auth/react";
-import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
+import { navBarState } from "@/app/recoil/atoms/navBar/navBarState";
 
 function CalendarPage() {
   const { data: sessionData } = useSession();
   const [showAddSessionMenu, setShowAddSessionMenu] = useRecoilState(showAddSessionMenuState);
-  const [showCalendar, setShowCalendar] = useState(true);
-  const [showPlans, setShowPlans] = useState(false);
-  const [showProfil, setShowProfil] = useState(false);
   const [homepagePlan, setHomepagePlan] = useRecoilState(homepagePlanState);
   const [homepagePlanClickedDay, setHomepagePlanClickedDay] = useRecoilState(homepagePlanClickedDayState);
   const [currentWeek, setCurrentWeek] = useRecoilState(currentHomepagePlanWeekState);
   const numberOfPlanWeeks = homepagePlan?.duration;
   const currentWeekDays = homepagePlan?.weeks?.[currentWeek]?.days;
+  const [activeView, setActiveView] = useRecoilState(navBarState);
 
   const handleBackgroundClick = () => setShowAddSessionMenu(false);
 
@@ -185,7 +183,7 @@ function CalendarPage() {
       </div>
         <button
           onClick={handleDeleteWeek}
-          className="border border-red rounded text-fifth my-5 px-1 text-xs shadow hover:shadow-md"
+          className="border border-red rounded text-fifth m-5 px-1 text-xs shadow hover:shadow-md"
         >
           Woche löschen 
         </button>
@@ -216,12 +214,12 @@ function CalendarPage() {
         ></div>
       )}
 
-      {showPlans ? (
+      {activeView === "plans" ? (
         <PlansView />
-      ) : showCalendar && homepagePlan ? (
+      ) : activeView === "calendar" && homepagePlan ? (
         renderCalendar()
       ) : (
-        showProfil && <ProfilView />
+        activeView ==="profil" && <ProfilView />
       )}
 
       {showAddSessionMenu && (
@@ -229,12 +227,6 @@ function CalendarPage() {
       )}
 
       <NavBar
-        showCalendar={showCalendar}
-        setShowCalendar={setShowCalendar}
-        showPlans={showPlans}
-        setShowPlans={setShowPlans}
-        showProfil={showProfil}
-        setShowProfil={setShowProfil}
       />
     </>
   );

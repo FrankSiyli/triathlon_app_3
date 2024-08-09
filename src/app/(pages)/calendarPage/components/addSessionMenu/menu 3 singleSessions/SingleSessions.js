@@ -8,12 +8,12 @@ import { calculateTotalDuration } from "@/app/helperFunctions/calculateTotalDura
 import { calculateTotalDistance } from "@/app/helperFunctions/calculateTotalDistance";
 import { homepagePlanState } from "@/app/recoil/atoms/plans/homepagePlanState";
 import { useRecoilState } from "recoil";
-import { newPlanState } from "@/app/recoil/atoms/planBuilder/newPlanState";
 import SingleSessionParts from "../menu 4 singleSessionParts/SingleSessionParts";
 import { currentHomepagePlanWeekState } from "@/app/recoil/atoms/plans/currentHomepagePlanWeekState";
 import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
 import { showAddSessionMenuState } from "@/app/recoil/atoms/addSession/showAddSessionMenuState";
 import { useSession } from "next-auth/react";
+import { newPlanState } from "@/app/recoil/atoms/newPlan/newPlanState";
 
 const SingleSessions = ({ singleSessions, sessionUnderCategory }) => {
   const { data: sessionData } = useSession();
