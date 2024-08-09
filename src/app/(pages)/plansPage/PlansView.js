@@ -87,7 +87,7 @@ const PlansView = () => {
   
     setHomepagePlan({
       _id: newPlanId, 
-      name: "Neuer Plan",
+      name: "Planname // klicken um zu ändern",
       weeks: [
         {
           week: 1,
