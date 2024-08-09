@@ -42,7 +42,7 @@ const SessionCategories = ({ isLoading, singleSessions }) => {
         <div key={index} className={`flex flex-col justify-center items-center p-1 w-full ${index === 0 ? 'mt-16' : ''}`}>
           <div
             onClick={() => handleClick(index, sessionType.type, sessionType.api)}
-            className={`flex w-full h-10 items-center justify-between cursor-pointer text-s shadow p-1 border-alert/30 rounded bg-first border-t-2 ${getActivityBorderColor(sessionType.label)}`}
+            className={`flex w-full h-10 items-center justify-between cursor-pointer text-s shadow p-1 rounded bg-first border-l ${getActivityBorderColor(sessionType.label)}`}
           >
             <span>{sessionType.component}</span>
             <p>{sessionType.label}</p>

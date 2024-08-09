@@ -24,6 +24,10 @@ function CalendarPage() {
   const currentWeekDays = homepagePlan?.weeks?.[currentWeek]?.days;
   const [activeView, setActiveView] = useRecoilState(navBarState);
 
+
+  console.log("calendarpage homepagePlan", homepagePlan)
+
+
   const handleBackgroundClick = () => setShowAddSessionMenu(false);
 
   const handleDayClick = (week, day) => {
