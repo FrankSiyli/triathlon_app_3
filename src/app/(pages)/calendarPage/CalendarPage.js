@@ -12,6 +12,7 @@ import { currentHomepagePlanWeekState } from "@/app/recoil/atoms/plans/currentHo
 import { homepagePlanClickedDayState } from "@/app/recoil/atoms/plans/homepagePlanClickedDayState";
 import PlusSvg from "@/app/components/SVGs/PlusSvg";
 import { useSession } from "next-auth/react";
+import UncheckSvg from "@/app/components/SVGs/UncheckSvg";
 
 function CalendarPage() {
   const { data: sessionData } = useSession();
@@ -70,6 +71,10 @@ function CalendarPage() {
     }
   };
 
+
+
+  // add a week to the plan
+
   const handleAddWeekToPlan = async () => {
     const newWeek = {
       week: homepagePlan.weeks.length + 1, 
@@ -116,12 +121,55 @@ function CalendarPage() {
     }
   };
 
+
+
+  // remove the current week from the plan
+
+  const handleDeleteWeek = async () => {
+    if (currentWeek < 0 || currentWeek >= homepagePlan?.weeks?.length) {
+      console.error("Invalid week index");
+      return;
+    }
+  
+    const updatedWeeks = homepagePlan.weeks.filter((_, index) => index !== currentWeek);
+    const newHomepagePlan = {
+      ...homepagePlan,
+      weeks: updatedWeeks,
+      duration: homepagePlan.duration - 1,
+    };
+  
+    setHomepagePlan(newHomepagePlan);
+    setCurrentWeek(currentWeek-1)
+  
+    if (sessionData?.user?.email) {
+      try {
+        const response = await fetch("/api/user/updateUserTrainingPlans", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: sessionData.user.email,
+            trainingPlans: newHomepagePlan,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to update user plan");
+        }
+      } catch (error) {
+        console.error("An error occurred while updating the user plan:", error);
+      }
+    }
+  };
+  
+
   const renderCalendar = () => (
     <div className="flex flex-col items-center relative overflow-y-auto max-h-screen w-screen">
       <div className="flex mx-auto text-center text-alert mt-5 mb-5 px-3 py-1 rounded-sm">
         {homepagePlan?.name}
       </div>
-      <div className="flex">
+      <div className="relative">
         <WeekScrollButtons
           currentWeek={currentWeek}
           numberOfPlanWeeks={numberOfPlanWeeks}
@@ -130,11 +178,17 @@ function CalendarPage() {
         />
         <button
           onClick={handleAddWeekToPlan}
-          className="flex items-center justify-center border border-alert/50 w-10 rounded text-alert ml-1 mb-5 shadow"
+          className="absolute top-0 -right-11 flex items-center justify-center border border-alert/50 w-10 h-10 rounded text-alert ml-1 mb-5 shadow"
         >
           <PlusSvg />
         </button>
       </div>
+        <button
+          onClick={handleDeleteWeek}
+          className="border border-alert/50 rounded text-red mb-5 bg-first px-1 text-s shadow hover:shadow-md"
+        >
+          Woche löschen 
+        </button>
       <div className="flex flex-col sm:flex-row w-full">
         {currentWeekDays &&
           Object.entries(currentWeekDays).map(([day, activities]) => (
@@ -151,6 +205,7 @@ function CalendarPage() {
       </div>
     </div>
   );
+  
 
   return (
     <>

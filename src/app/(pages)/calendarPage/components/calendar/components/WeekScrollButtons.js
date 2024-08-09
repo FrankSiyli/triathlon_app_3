@@ -9,7 +9,7 @@ const WeekScrollButtons = ({
   handleNextWeekClick,
 }) => {
   return (
-    <div className="relative flex justify-between p-1 mb-5 items-center border border-alert/30 shadow rounded-sm">
+    <div className="relative h-10 flex justify-between p-1 mb-2 items-center border border-alert/50 shadow rounded-sm">
       <button
         onClick={handlePreviousWeekClick}
         disabled={currentWeek === 0}
