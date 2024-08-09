@@ -359,7 +359,7 @@ export const examplePlan = {
                       {
                         name: "Schwerpunkt Ganzkörper",
                         distance: 0,
-                        duration: 20,
+                        duration: 1200,
                         zone: "",
                       },
                     ],
@@ -1456,7 +1456,7 @@ export const examplePlan = {
                       {
                         name: "Schwerpunkt Ganzkörper",
                         distance: 0,
-                        duration: 10,
+                        duration: 600,
                         zone: "",
                       },
                     ],
@@ -1678,7 +1678,7 @@ export const examplePlan = {
                       {
                         name: "Schwerpunkt Hüfte",
                         distance: 0,
-                        duration: 20,
+                        duration: 1200,
                         zone: "",
                       },
                     ],
@@ -1885,7 +1885,7 @@ export const examplePlan = {
                       {
                         name: "Schwerpunkt Schultern und Nacken",
                         distance: 0,
-                        duration: 20,
+                        duration: 1200,
                         zone: "",
                       },
                     ],
@@ -2151,7 +2151,7 @@ export const examplePlan = {
                       {
                         name: "Schwerpunkt Ganzkörper",
                         distance: 0,
-                        duration: 10,
+                        duration: 600,
                         zone: "",
                       },
                     ],
@@ -2329,7 +2329,7 @@ export const examplePlan = {
                       {
                         name: "Schwerpunkt Ganzkörper",
                         distance: 0,
-                        duration: 20,
+                        duration: 1200,
                         zone: "",
                       },
                     ],

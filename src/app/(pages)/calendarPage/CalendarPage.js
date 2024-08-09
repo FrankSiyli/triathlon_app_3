@@ -185,7 +185,7 @@ function CalendarPage() {
       </div>
         <button
           onClick={handleDeleteWeek}
-          className="border border-alert/50 rounded text-red mb-5 bg-first px-1 text-s shadow hover:shadow-md"
+          className="border border-red rounded text-fifth my-5 px-1 text-xs shadow hover:shadow-md"
         >
           Woche löschen 
         </button>
